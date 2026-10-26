@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paper goose vs logo</title>
+<!-- Dev page: checks the paper goose against the logo. Shows the logo's goose next to the idle frame and
+     reports how many of the goose's pixels match the logo exactly (his drawn walking legs and feet, and
+     the part the lettering hides, are left out of the count). Saves the side-by-side to /_scratch/compare.png. -->
+<style>body { margin: 0; background: #ddd; font: 14px system-ui; } canvas { display: block; width: 100vw; height: auto; } pre { margin: 8px; }</style>
+</head>
+<body>
+<pre id="log">checking…</pre>
+<canvas id="c"></canvas>
+<script type="module">
+  import { GOOSE_SRC as R, GOOSE_FRAMES, GOOSE_FRAME, drawGoose, drawGooseParts, loadGoose, sticker } from '../site/paper-art.js';
+  await loadGoose('../site/assets/goose-sprite.png?' + Date.now());
+  const logo = await createImageBitmap(await (await fetch('/source/logo.jpg')).blob());
+  // pixel check: the standing goose drawn at logo scale against the logo, above his (drawn) feet
+  const a = document.createElement('canvas'); a.width = R.w; a.height = R.h; const ag = a.getContext('2d', { willReadFrequently: true });
+  ag.save(); ag.translate(-R.x, -R.y); drawGooseParts(ag, {}); ag.restore(); const s = ag.getImageData(0, 0, R.w, R.h).data;
+  ag.clearRect(0, 0, R.w, R.h); ag.drawImage(logo, R.x, R.y, R.w, R.h, 0, 0, R.w, R.h); const l = ag.getImageData(0, 0, R.w, R.h).data;
+  let n = 0, same = 0, worst = 0;
+  for (let i = 0; i < s.length; i += 4) {
+    if (s[i + 3] < 255 || i / 4 / R.w + R.y > 1120) continue; n++;
+    const d = Math.max(Math.abs(s[i] - l[i]), Math.abs(s[i + 1] - l[i + 1]), Math.abs(s[i + 2] - l[i + 2]));
+    if (!d) same++; worst = Math.max(worst, d);
+  }
+  document.getElementById('log').textContent = `${same} of ${n} goose pixels above the lettering identical to the logo `
+    + `(${(100 * same / n).toFixed(2)}%); the rest differ by at most ${worst} colour step(s) out of 255`;
+  // side by side: logo crop and the idle sticker frame
+  const c = document.getElementById('c'); c.width = R.w + 620; c.height = Math.max(R.h, GOOSE_FRAME.h);
+  const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+  g.drawImage(logo, R.x, R.y, R.w, R.h, 0, 0, R.w, R.h);
+  const f = document.createElement('canvas'); f.width = GOOSE_FRAME.w; f.height = GOOSE_FRAME.h; drawGoose(f.getContext('2d'), GOOSE_FRAMES[0]);
+  g.fillStyle = '#9DB38F'; g.fillRect(R.w + 10, 0, 610, c.height); g.drawImage(sticker(f, 16), R.w + 15, 0);
+  window.result = (await fetch('/_scratch/compare.png', { method: 'PUT', body: await new Promise(r => c.toBlob(r, 'image/png')) })).status;
+</script>
+</body>
+</html>

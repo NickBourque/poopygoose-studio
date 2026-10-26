@@ -1,0 +1,12 @@
+# Raw models from the image-to-3D tool (tens of MB each); regenerate them from image-to-3d/inputs
+image-to-3d/generated/
+
+# Scratch output from the dev pages in tools/
+_scratch/
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

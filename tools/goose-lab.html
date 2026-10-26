@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goose lab</title>
+<!-- Dev page: inspect the code-built goose from fixed angles, export it as .glb, and render stills. -->
+<style>
+  body { margin: 0; background: #F6F1E7; font: 14px system-ui; color: #482319; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; }
+  .view { aspect-ratio: 5 / 6; position: relative; background: #efe9de; }
+  .view canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .bar { padding: 8px; display: flex; gap: 8px; }
+</style>
+<script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+</script>
+</head>
+<body>
+<div class="bar">
+  <button id="glb">Export poopy-goose.glb</button>
+  <button id="png">Render stills</button>
+  <span id="msg"></span>
+</div>
+<div class="grid" id="grid"></div>
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+  import { mountGoose, buildGoose } from '../explorations/3d-goose/goose3d.js';
+
+  const params = new URLSearchParams(location.search);
+  if (params.get('cols')) document.getElementById('grid').style.gridTemplateColumns = `repeat(${params.get('cols')}, 1fr)`;
+  const angles = (params.get('angles') || '0,0.8,1.57,3.14').split(',').map(Number);
+  const cam = params.get('close') ? { fov: 13, y: 3.6, z: 12, target: 3.05 } : params.get('far') ? { fov: 26, y: 2.6, z: 13.5, target: 1.9 } : undefined;
+  // ?compare=1 puts the original render first, cropped to the same framing as the model views
+  if (params.get('compare')) {
+    const el = document.createElement('div'); el.className = 'view';
+    el.style.background = 'url(/source/goose-3d.jpg) ' + (params.get('close') ? '52% 18% / 270%' : '52% 62% / 135%');
+    document.getElementById('grid').appendChild(el);
+  }
+  // ?refs=0,15,28,46 adds those frames of the turnaround video (60-frame sprite sheet, 10 x 6) as a reference row
+  for (const f of (params.get('refs') || '').split(',').filter(Boolean).map(Number)) {
+    const el = document.createElement('div'); el.className = 'view';
+    el.style.background = `url(/source/retired/goose-spin-460.webp) ${(f % 10) / 9 * 100}% ${Math.floor(f / 10) / 5 * 100}% / 1000% 600% no-repeat #efe9de`;
+    document.getElementById('grid').appendChild(el);
+  }
+  window.views = angles.map(a => {
+    const el = document.createElement('div'); el.className = 'view'; document.getElementById('grid').appendChild(el);
+    const g = mountGoose(el, { yaw: a, camera: cam }); return g;
+  });
+
+  const msg = document.getElementById('msg');
+  // Saves through the local preview server's PUT route (dev only).
+  const put = async (path, blob) => (await fetch('/' + path, { method: 'PUT', body: blob })).status;
+
+  document.getElementById('glb').onclick = async () => {
+    const { root } = buildGoose();
+    root.updateMatrixWorld(true);
+    const glb = await new GLTFExporter().parseAsync(root, { binary: true });
+    msg.textContent = 'glb ' + await put('assets-3d/poopy-goose.glb', new Blob([glb], { type: 'model/gltf-binary' }));
+  };
+
+  // High-res transparent stills of the goose (no pond) for social cards etc.
+  window.renderStill = async (path, { w = 1200, h = 1440, yaw = 0.35, ground = false, camera } = {}) => {
+    const el = document.createElement('div'); el.style.cssText = `position:fixed;left:-9999px;width:${w / 2}px;height:${h / 2}px`;
+    document.body.appendChild(el);
+    const g = mountGoose(el, { yaw, camera });
+    g.scene.getObjectByName('ground').visible = ground;
+    g.renderer.setPixelRatio(2); g.renderer.setSize(w / 2, h / 2, false);
+    g.root.parent.rotation.y = yaw; // the turntable; normally set on the next animation frame
+    g.renderer.render(g.scene, g.camera);
+    const blob = await new Promise(r => g.renderer.domElement.toBlob(r, 'image/png'));
+    el.remove();
+    return path + ' ' + await put(path, blob);
+  };
+  document.getElementById('png').onclick = async () => { msg.textContent = await renderStill('site/assets/goose-model.png'); };
+</script>
+</body>
+</html>

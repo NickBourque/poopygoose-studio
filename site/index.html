@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poopy Goose Studio</title>
+  <meta name="description" content="Poopy Goose is a cozy-chaos video game about a very cute paper goose with a very bad habit. Now hatching at Poopy Goose Studio.">
+  <meta name="theme-color" content="#F6F1E7">
+  <link rel="canonical" href="https://poopygoose.studio/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://poopygoose.studio/">
+  <meta property="og:title" content="Poopy Goose Studio">
+  <meta property="og:description" content="One goose. Zero manners. A cozy-chaos game, now hatching.">
+  <meta property="og:image" content="https://poopygoose.studio/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Poopy Goose Studio, home">
+      <img src="assets/goose-head-sticker.png" alt="" width="44" height="44">
+      <span class="brand-text"><span class="brand-name">Poopy Goose</span><span class="brand-sub">Studio</span></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#goose">The goose</a>
+      <a href="#game">The game</a>
+      <a class="btn btn-small" href="#flock">Get updates</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="pill"><span class="dot" aria-hidden="true"></span> A game in the nest</p>
+        <h1>One goose.<br>Zero <span class="squiggle">manners.</span></h1>
+        <p class="lede">Poopy Goose is a cozy-chaos game about a very cute goose with a very bad habit, waddling through a little world made of paper. We're hatching it right now. Come waddle along.</p>
+        <div class="cta-row">
+          <a class="btn" href="#flock">Join the flock</a>
+          <a class="btn btn-ghost" href="#goose">Meet the goose</a>
+        </div>
+      </div>
+
+      <div class="hero-stage">
+        <div class="paper-stage" id="paper-world" role="img"
+             aria-label="A paper diorama: a flat, sticker-style Poopy Goose waddles round a little paper pond, flipping round like a sheet of card when he turns.">
+          <img class="paper-fallback" src="assets/goose-paper.png" alt="" width="430" height="531">
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="band" aria-hidden="true">
+      <svg class="wave" viewBox="0 0 1600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22Q50 4 100 22T200 22T300 22T400 22T500 22T600 22T700 22T800 22T900 22T1000 22T1100 22T1200 22T1300 22T1400 22T1500 22T1600 22V40H0z"/></svg>
+      <div class="marquee"><div class="marquee-track">
+        <div class="marquee-group">
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+        </div>
+        <div class="marquee-group">
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+          <span>Honk</span><i>✦</i><span>Waddle</span><i>✦</i><span>Plop</span><i>✦</i><span>Repeat</span><i>✦</i>
+        </div>
+      </div></div>
+      <div class="drips"></div>
+    </div>
+
+    <!-- MEET THE GOOSE -->
+    <section class="meet" id="goose">
+      <div class="meet-art">
+        <div class="blob" aria-hidden="true"></div>
+        <div class="paper-solo" id="meet-goose" role="img"
+             aria-label="Close-up of the paper Poopy Goose on a little patch of grass. Use the buttons below to make him move.">
+          <img class="paper-fallback" src="assets/goose-paper.png" alt="" width="430" height="531">
+        </div>
+        <div class="moves" role="group" aria-label="Make the goose move">
+          <button type="button" class="move" data-move="honk">Honk</button>
+          <button type="button" class="move" data-move="flip">Flip</button>
+          <button type="button" class="move" data-move="waddle">Waddle</button>
+          <button type="button" class="move" data-move="flap">Flap</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="eyebrow">Character file #001</p>
+        <h2>Meet Poopy Goose</h2>
+        <p>Round of belly, sweet of face, and absolutely not to be trusted near a freshly washed car. Poopy Goose means well. Mostly.</p>
+
+        <dl class="facts">
+          <div><dt>Class</dt><dd>Agent of chaos</dd></div>
+          <div><dt>Home</dt><dd>The pond (allegedly)</dd></div>
+          <div><dt>Likes</dt><dd>Bread, puddles, picnics</dd></div>
+          <div><dt>Signature move</dt><dd>The Drop</dd></div>
+        </dl>
+
+        <ul class="stats" aria-label="Goose stats">
+          <li><span>Honk</span><meter min="0" max="10" value="9">9 of 10</meter><b>9</b></li>
+          <li><span>Waddle</span><meter min="0" max="10" value="4">4 of 10</meter><b>4</b></li>
+          <li><span>Charm</span><meter min="0" max="10" value="10">10 of 10</meter><b>10</b></li>
+          <li class="stat-unknown"><span>Aim</span><span class="bar-unknown" role="img" aria-label="unknown"></span><b>???</b></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- THE GAME -->
+    <section class="game" id="game">
+      <header class="section-head">
+        <p class="eyebrow">What we're making</p>
+        <h2>A little paper world. A lot of mischief.</h2>
+      </header>
+
+      <div class="features">
+        <article class="feature">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 58L10 22c6 4 12 2 14-5l8 13 8-13c2 7 8 9 14 5z" /><path d="M32 30v14M24 17l3 18M40 17l-3 18" /></svg>
+          <h3>Waddle everywhere</h3>
+          <p>A handcrafted diorama world of card and paper: picnics, puddles, and people who really should have known better.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6l6 16 17 1-13 11 4 17-14-9-14 9 4-17L9 23l17-1z" /></svg>
+          <h3>Cause tasteful chaos</h3>
+          <p>Swipe snacks, honk at the worst possible moment, and turn everyone's tidy plans into feathery mayhem.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8c0 0-16 20-16 32a16 16 0 0 0 32 0C48 28 32 8 32 8z" /><path d="M25 40a7 7 0 0 0 7 7" /></svg>
+          <h3>Leave your mark</h3>
+          <p>Every goose has a signature move. Ours is… memorable. You'll see.</p>
+        </article>
+      </div>
+      <p class="tba">Platforms and release date: <strong>to be honked</strong> (announced) soon.</p>
+    </section>
+
+    <!-- SIGN UP -->
+    <section class="flock" id="flock">
+      <div class="flock-inner">
+        <picture class="flock-logo">
+          <source srcset="assets/logo-480.webp 480w, assets/logo-1000.webp 1000w" sizes="(max-width: 900px) 70vw, 420px" type="image/webp">
+          <img src="assets/logo-1000.png" width="1000" height="944" loading="lazy" alt="Poopy Goose Studio logo: a winking cartoon goose above drippy brown lettering.">
+        </picture>
+        <div class="flock-copy">
+          <h2>Join the flock</h2>
+          <p>Dev diaries, sneak peeks, and the occasional honk. No spam, just goose.</p>
+          <form class="signup" id="signup" novalidate>
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@pond.com" required>
+            <button class="btn" type="submit">Count me in</button>
+          </form>
+          <p class="form-msg" id="form-msg" role="status"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <svg class="wave" viewBox="0 0 1600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22Q50 4 100 22T200 22T300 22T400 22T500 22T600 22T700 22T800 22T900 22T1000 22T1100 22T1200 22T1300 22T1400 22T1500 22T1600 22V40H0z"/></svg>
+    <div class="footer-inner">
+      <img src="assets/goose-head-sticker.png" alt="" width="56" height="56">
+      <p>© <span id="year">2026</span> Poopy Goose Studio · <a href="mailto:hello@poopygoose.studio">hello@poopygoose.studio</a></p>
+      <p class="tiny">Made with bread crumbs and questionable decisions.</p>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+  <script type="module">
+    import { mountPaperGoose } from './paper-diorama.js';
+    const [, meet] = await Promise.all([
+      mountPaperGoose(document.getElementById('paper-world')),
+      mountPaperGoose(document.getElementById('meet-goose'), { mode: 'solo' }),
+    ]);
+    for (const b of document.querySelectorAll('[data-move]')) b.addEventListener('click', () => meet[b.dataset.move]());
+    document.documentElement.classList.add('has-paper');
+  </script>
+</body>
+</html>

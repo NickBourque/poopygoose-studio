@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paper diorama test</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Nunito:wght@800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F6F1E7; }
+  #stage { width: 100vw; height: 72vh; }
+  #solo { width: 420px; height: 420px; }
+</style>
+<script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+</script>
+</head>
+<body>
+<div id="stage"></div>
+<div id="solo"></div>
+<script type="module">
+  import { mountPaperGoose } from '../site/paper-diorama.js';
+  window.scene1 = await mountPaperGoose(document.getElementById('stage'));
+  window.solo = await mountPaperGoose(document.getElementById('solo'), { mode: 'solo' });
+  window.ready = true;
+</script>
+</body>
+</html>

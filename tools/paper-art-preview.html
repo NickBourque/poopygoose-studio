@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paper art preview</title>
+<!-- Dev page: shows every frame of the paper goose and each scenery piece on a sage background. -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Nunito:wght@800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #9DB38F; font: 13px system-ui; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; align-items: flex-end; }
+  canvas { height: 260px; width: auto; }
+  .small canvas { height: 150px; }
+</style>
+</head>
+<body>
+<div class="row" id="goose"></div>
+<div class="row small" id="scenery"></div>
+<script type="module">
+  import { GOOSE_FRAMES, drawGoose, loadGoose, sticker, scenery } from '../site/paper-art.js';
+  await document.fonts.ready;
+  await loadGoose('../site/assets/goose-sprite.png?' + Date.now());
+  for (const pose of GOOSE_FRAMES) {
+    const f = document.createElement('canvas'); f.width = 600; f.height = 780;
+    drawGoose(f.getContext('2d'), pose);
+    const s = sticker(f, 16); s.title = pose.name; document.getElementById('goose').appendChild(s);
+  }
+  for (const [name, make] of Object.entries(scenery)) { const c = make(); c.title = name; document.getElementById('scenery').appendChild(c); }
+  window.ready = true;
+</script>
+</body>
+</html>

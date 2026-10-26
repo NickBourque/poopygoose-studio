@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Optimise model</title>
+<!--
+  Dev page: shrinks a heavy single-mesh .glb (e.g. from an image-to-3D tool) for the web and saves it
+  through the local preview server's PUT route.
+  ?src=/image-to-3d/generated/base_basic_pbr.glb&out=explorations/3d-goose/goose.glb&tris=80000&color=2048&normal=1024&rough=512
+  - tris: target triangle count (meshoptimizer simplification; keeps texture seams intact)
+  - method=cluster&cells=120: the cruder grid-clustering fallback (can smear texture across seams)
+  - color / normal / rough: texture sizes in px (saved as JPEG)
+-->
+<style>body { font: 14px/1.5 system-ui; margin: 16px; } pre { white-space: pre-wrap; }</style>
+<script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+</script>
+</head>
+<body>
+<pre id="log">working…</pre>
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+  import { MeshoptSimplifier } from 'https://cdn.jsdelivr.net/npm/meshoptimizer@0.21.0/meshopt_simplifier.module.js';
+
+  const p = new URLSearchParams(location.search);
+  const opt = {
+    src: p.get('src'), out: p.get('out'), method: p.get('method') || 'meshopt', tris: +(p.get('tris') || 80000),
+    cells: +(p.get('cells') || 120), color: +(p.get('color') || 2048), normal: +(p.get('normal') || 1024), rough: +(p.get('rough') || 512),
+  };
+
+  // Quadric edge-collapse simplification (meshoptimizer). It keeps texture seams intact: where the
+  // source splits a vertex for two UV islands, edges only collapse along the seam, so no triangle
+  // ever stretches across the gaps between texture pieces.
+  async function simplifyMeshopt(geo, targetTris) {
+    await MeshoptSimplifier.ready;
+    const pos = geo.attributes.position;
+    const positions = new Float32Array(pos.array);
+    const indices = new Uint32Array(geo.index.array);
+    const [out, error] = MeshoptSimplifier.simplify(indices, positions, 3, targetTris * 3, 0.02);
+    // drop vertices nothing uses any more and renumber
+    const remap = new Int32Array(pos.count).fill(-1), keep = [];
+    for (const i of out) if (remap[i] < 0) { remap[i] = keep.length; keep.push(i); }
+    const result = new THREE.BufferGeometry();
+    for (const [name, attr] of Object.entries(geo.attributes)) {
+      const arr = new attr.array.constructor(keep.length * attr.itemSize);
+      keep.forEach((src, k) => { for (let c = 0; c < attr.itemSize; c++) arr[k * attr.itemSize + c] = attr.array[src * attr.itemSize + c]; });
+      result.setAttribute(name, new THREE.BufferAttribute(arr, attr.itemSize, attr.normalized));
+    }
+    const idx = out.map(i => remap[i]);
+    result.setIndex(keep.length > 65535 ? new THREE.BufferAttribute(Uint32Array.from(idx), 1) : new THREE.BufferAttribute(Uint16Array.from(idx), 1));
+    log(`  meshopt relative error ${error.toExponential(2)}`);
+    return result;
+  }
+  const lines = [];
+  const log = s => { lines.push(s); document.getElementById('log').textContent = lines.join('\n'); };
+
+  // UV islands: groups of vertices joined by triangles. Texture seams are where the source mesh
+  // splits a vertex in two, so connected components by index are exactly the texture's pieces.
+  function uvIslands(count, index) {
+    const parent = new Int32Array(count).map((_, i) => i);
+    const find = i => { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; };
+    for (let f = 0; f < index.length; f += 3) {
+      const a = find(index[f]), b = find(index[f + 1]), c = find(index[f + 2]);
+      parent[b] = a; parent[find(c)] = a;
+    }
+    const island = new Int32Array(count);
+    for (let i = 0; i < count; i++) island[i] = find(i);
+    return island;
+  }
+
+  // Vertex clustering on a grid. Positions (and normals) are averaged per grid cell, so the surface
+  // stays watertight; texture coordinates are averaged per cell *within one UV island*, so a merged
+  // corner never takes its texture position from another piece of the texture or the gaps between.
+  function simplify(geo, cellsAcross) {
+    const pos = geo.attributes.position, uv = geo.attributes.uv;
+    const index = geo.index ? geo.index.array : [...Array(pos.count).keys()];
+    const island = uvIslands(pos.count, index);
+    geo.computeBoundingBox();
+    const { min, max } = geo.boundingBox, cell = (max.y - min.y) / cellsAcross;
+    const cellOf = new Int32Array(pos.count), cellIds = new Map(), cellSum = [];
+    const subOf = new Int32Array(pos.count), subIds = new Map(), subSum = [];
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+      const key = `${Math.floor((x - min.x) / cell)},${Math.floor((y - min.y) / cell)},${Math.floor((z - min.z) / cell)}`;
+      let c = cellIds.get(key);
+      if (c === undefined) { c = cellSum.length; cellIds.set(key, c); cellSum.push([0, 0, 0, 0]); }
+      const s = cellSum[c]; s[0] += x; s[1] += y; s[2] += z; s[3]++;
+      cellOf[i] = c;
+      const u = uv.getX(i), v = uv.getY(i);
+      const skey = `${c}|${island[i]}`;
+      let k = subIds.get(skey);
+      if (k === undefined) { k = subSum.length; subIds.set(skey, k); subSum.push([c, 0, 0, 0]); }
+      const t = subSum[k]; t[1] += u; t[2] += v; t[3]++;
+      subOf[i] = k;
+    }
+    // triangles between the new vertices, dropping collapsed and duplicate ones
+    const tris = [], seen = new Set();
+    for (let f = 0; f < index.length; f += 3) {
+      const a = subOf[index[f]], b = subOf[index[f + 1]], c = subOf[index[f + 2]];
+      if (cellOf[index[f]] === cellOf[index[f + 1]] || cellOf[index[f + 1]] === cellOf[index[f + 2]] || cellOf[index[f]] === cellOf[index[f + 2]]) continue;
+      const key = [a, b, c].sort((m, n) => m - n).join(',');
+      if (seen.has(key)) continue;
+      seen.add(key); tris.push(a, b, c);
+    }
+    const n = subSum.length, P = new Float32Array(n * 3), UV = new Float32Array(n * 2), N = new Float32Array(n * 3);
+    for (let k = 0; k < n; k++) {
+      const [c, su, sv, cnt] = subSum[k], s = cellSum[c];
+      P.set([s[0] / s[3], s[1] / s[3], s[2] / s[3]], k * 3);
+      UV.set([su / cnt, sv / cnt], k * 2);
+    }
+    // smooth normals shared per grid cell, so UV seams don't show as shading seams
+    const cellN = new Float32Array(cellSum.length * 3), A = new THREE.Vector3(), B = new THREE.Vector3(), C = new THREE.Vector3();
+    for (let f = 0; f < tris.length; f += 3) {
+      A.fromArray(P, tris[f] * 3); B.fromArray(P, tris[f + 1] * 3); C.fromArray(P, tris[f + 2] * 3);
+      const fn = B.sub(A).cross(C.sub(A)); // area-weighted face normal
+      for (const k of [tris[f], tris[f + 1], tris[f + 2]]) { const c = subSum[k][0]; cellN[c * 3] += fn.x; cellN[c * 3 + 1] += fn.y; cellN[c * 3 + 2] += fn.z; }
+    }
+    for (let k = 0; k < n; k++) { const c = subSum[k][0]; A.fromArray(cellN, c * 3).normalize().toArray(N, k * 3); }
+    const out = new THREE.BufferGeometry();
+    out.setAttribute('position', new THREE.BufferAttribute(P, 3));
+    out.setAttribute('normal', new THREE.BufferAttribute(N, 3));
+    out.setAttribute('uv', new THREE.BufferAttribute(UV, 2));
+    out.setIndex(tris.length > 65535 ? new THREE.Uint32BufferAttribute(tris, 1) : new THREE.Uint16BufferAttribute(tris, 1));
+    return out;
+  }
+
+  // redraw a texture's image at a smaller size; the exporter then writes it as JPEG
+  function shrink(tex, size) {
+    if (!tex) return;
+    const img = tex.image, s = Math.min(size, img.width), c = document.createElement('canvas');
+    c.width = c.height = s;
+    const g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(img, 0, 0, s, s);
+    tex.image = c; tex.userData.mimeType = 'image/jpeg'; tex.needsUpdate = true;
+    return `${img.width} -> ${s}px`;
+  }
+
+  try {
+    const t0 = performance.now();
+    const gltf = await new GLTFLoader().loadAsync(opt.src);
+    const meshes = []; gltf.scene.traverse(o => o.isMesh && meshes.push(o));
+    log(`loaded ${opt.src}: ${meshes.length} mesh(es)`);
+    for (const mesh of meshes) {
+      const before = (mesh.geometry.index ? mesh.geometry.index.count : mesh.geometry.attributes.position.count) / 3;
+      mesh.geometry = opt.method === 'cluster' ? simplify(mesh.geometry, opt.cells) : await simplifyMeshopt(mesh.geometry, opt.tris);
+      log(`  ${mesh.name}: ${before} -> ${mesh.geometry.index.count / 3} triangles, ${mesh.geometry.attributes.position.count} vertices`);
+      const m = mesh.material;
+      log(`  colour ${shrink(m.map, opt.color)}, normal ${shrink(m.normalMap, opt.normal)}, metal/rough ${shrink(m.roughnessMap, opt.rough)}${m.emissiveMap ? ', emissive ' + shrink(m.emissiveMap, opt.color) : ''}`);
+    }
+    const glb = await new GLTFExporter().parseAsync(gltf.scene, { binary: true });
+    const res = await fetch('/' + opt.out, { method: 'PUT', body: new Blob([glb], { type: 'model/gltf-binary' }) });
+    log(`saved ${opt.out} (${(glb.byteLength / 1048576).toFixed(2)} MB) -> ${res.status} in ${Math.round(performance.now() - t0)} ms`);
+    window.done = true;
+  } catch (e) { log('error: ' + (e.stack || e)); window.done = true; }
+</script>
+</body>
+</html>

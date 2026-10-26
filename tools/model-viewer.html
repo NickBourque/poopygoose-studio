@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Model viewer</title>
+<!-- Dev page: show any .glb from several angles with the site's lighting. ?src=/path.glb&angles=0,1.57,3.14&yaw=0 -->
+<style>
+  body { margin: 0; background: #F6F1E7; font: 14px system-ui; }
+  .grid { display: grid; grid-template-columns: repeat(var(--cols, 4), 1fr); gap: 4px; padding: 4px; }
+  .view { aspect-ratio: 5 / 6; position: relative; background: #efe9de; }
+  .view canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #msg { padding: 6px 8px; }
+</style>
+<script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+</script>
+</head>
+<body>
+<div id="msg">loading…</div>
+<div class="grid" id="grid"></div>
+<script type="module">
+  import { mountGoose } from '../explorations/3d-goose/goose3d.js';
+  const p = new URLSearchParams(location.search);
+  const angles = (p.get('angles') || '0,0.6,1.57,3.14').split(',').map(Number);
+  document.getElementById('grid').style.setProperty('--cols', p.get('cols') || angles.length);
+  const t0 = performance.now();
+  // ?src2= adds a second row with another model at the same angles (e.g. original vs optimised);
+  // ?close=1 frames the head
+  const camera = p.get('close') ? { fov: 13, y: 3.7, z: 12, target: 3.15 } : undefined;
+  window.views = [p.get('src'), p.get('src2')].filter(Boolean).flatMap(src => angles.map(a => {
+    const el = document.createElement('div'); el.className = 'view'; document.getElementById('grid').appendChild(el);
+    return mountGoose(el, { yaw: a, model: src, modelYaw: Number(p.get('yaw')) || 0, camera });
+  }));
+  // report when the model has replaced the built-in goose
+  const check = setInterval(() => {
+    if (views.every(v => v.parts.wings.length === 0)) {
+      clearInterval(check);
+      document.getElementById('msg').textContent = `loaded ${p.get('src')} in ${Math.round(performance.now() - t0)} ms`;
+    }
+  }, 200);
+</script>
+</body>
+</html>

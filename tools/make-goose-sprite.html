@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Make goose sprite</title>
+<!--
+  Dev page: cuts the goose out of the logo (source/logo.jpg) and saves site/assets/goose-sprite.png
+  through the local preview server's PUT route. Layout and part boxes come from site/paper-art.js.
+  - under: the goose exactly as in the logo, minus his near wing and the logo's sitting feet (the
+           site draws walking legs instead). The lettering hides the bottom of his body; those few
+           pixels are drawn in, continuing the logo's own outlines and colours.
+  - wing:  the near wing on its own, so it can flap
+  - blink: face patch with the open eye shut (the logo's wink, mirrored)
+  - honk:  face patch with the lower bill dropped open
+  ?debug=1 also saves check images to /_scratch/.
+-->
+<style>body { font: 14px/1.5 system-ui; margin: 16px; background: #9DB38F; } canvas { max-width: 100%; display: block; margin-top: 8px; }</style>
+</head>
+<body>
+<pre id="log">working…</pre>
+<script type="module">
+  import { GOOSE_SRC as R, GOOSE_PARTS, WING_OUTLINE, LOGO_FEET, goosePartsLayout } from '../site/paper-art.js';
+  const debug = new URLSearchParams(location.search).has('debug');
+  const lines = [], log = s => { lines.push(s); document.getElementById('log').textContent = lines.join('\n'); };
+  const put = async (file, canvas) => (await fetch('/' + file, { method: 'PUT', body: await new Promise(r => canvas.toBlob(r, 'image/png')) })).status;
+  const canvas = (w = R.w, h = R.h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+  // a canvas in logo-pixel coordinates over the goose's box
+  const logoCanvas = () => { const c = canvas(), g = c.getContext('2d'); g.translate(-R.x, -R.y); g.lineJoin = g.lineCap = 'round'; return [c, g]; };
+  const P = d => new Path2D(d);
+
+  const logo = await createImageBitmap(await (await fetch('/source/logo.jpg')).blob());
+  const src = canvas(); src.getContext('2d').drawImage(logo, R.x, R.y, R.w, R.h, 0, 0, R.w, R.h);
+  const img = src.getContext('2d').getImageData(0, 0, R.w, R.h), px = img.data, W = R.w, H = R.h, N = W * H;
+  const lum = new Float32Array(N), sat = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const r = px[i * 4], g = px[i * 4 + 1], b = px[i * 4 + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    lum[i] = 0.299 * r + 0.587 * g + 0.114 * b; sat[i] = mx ? (mx - mn) / mx : 0;
+  }
+  const idx = (x, y) => (y - R.y) * W + (x - R.x);
+  const N4 = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+  function flood(seeds, ok, out) {
+    const st = [...seeds];
+    for (const i of st) out[i] = 1;
+    while (st.length) {
+      const i = st.pop(), x = i % W, y = (i / W) | 0;
+      for (const [dx, dy] of N4) {
+        const nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+        const j = ny * W + nx; if (!out[j] && ok(j)) { out[j] = 1; st.push(j); }
+      }
+    }
+    return out;
+  }
+
+  // ---- 1. the goose's silhouette ----
+  // The lettering: dark pixels joined to the bottom rows, plus its white halo (within 26 px).
+  const letter = new Uint8Array(N), seeds = [];
+  for (let y = H - 30; y < H; y++) for (let x = 0; x < W; x++) if (lum[y * W + x] < 110) seeds.push(y * W + x);
+  flood(seeds, j => lum[j] < 110, letter);
+  const dist = new Float32Array(N).fill(1e9);
+  for (let i = 0; i < N; i++) if (letter[i]) dist[i] = 0;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const i = y * W + x;
+    if (x > 0) dist[i] = Math.min(dist[i], dist[i - 1] + 1); if (y > 0) dist[i] = Math.min(dist[i], dist[i - W] + 1);
+    if (x > 0 && y > 0) dist[i] = Math.min(dist[i], dist[i - W - 1] + 1.414); if (x < W - 1 && y > 0) dist[i] = Math.min(dist[i], dist[i - W + 1] + 1.414); }
+  for (let y = H - 1; y >= 0; y--) for (let x = W - 1; x >= 0; x--) { const i = y * W + x;
+    if (x < W - 1) dist[i] = Math.min(dist[i], dist[i + 1] + 1); if (y < H - 1) dist[i] = Math.min(dist[i], dist[i + W] + 1);
+    if (x < W - 1 && y < H - 1) dist[i] = Math.min(dist[i], dist[i + W + 1] + 1.414); if (x > 0 && y < H - 1) dist[i] = Math.min(dist[i], dist[i + W - 1] + 1.414); }
+  const zone = new Uint8Array(N); for (let i = 0; i < N; i++) zone[i] = dist[i] <= 26 ? 1 : 0;
+  // where the halo is wider than that, take its remaining light pixels too
+  { const halo = []; for (let i = 0; i < N; i++) if (zone[i]) halo.push(i);
+    flood(halo, j => dist[j] <= 40 && lum[j] > 205 && sat[j] < 0.1, zone); }
+  // Background: light, grey pixels reachable from the box's edge without crossing an outline.
+  const pass = j => !zone[j] && lum[j] > 200 && sat[j] < 0.12;
+  const edge = [];
+  for (let x = 0; x < W; x++) for (const y of [0, H - 1]) if (pass(y * W + x)) edge.push(y * W + x);
+  for (let y = 0; y < H; y++) for (const x of [0, W - 1]) if (pass(y * W + x)) edge.push(y * W + x);
+  const bg = flood(edge, pass, new Uint8Array(N));
+  for (let i = 0; i < N; i++) if (zone[i]) bg[i] = 1;
+  // The goose is the biggest piece left (drops of poop flying off the lettering are smaller pieces).
+  const lab = new Int32Array(N).fill(-1); let best = -1, bestN = 0;
+  for (let s = 0, k = 0; s < N; s++) {
+    if (bg[s] || lab[s] >= 0) continue;
+    const piece = flood([s], j => !bg[j], new Uint8Array(N)); let n = 0;
+    for (let i = 0; i < N; i++) if (piece[i]) { lab[i] = k; n++; }
+    if (n > bestN) { bestN = n; best = k; } k++;
+  }
+  const mask = new Uint8Array(N); for (let i = 0; i < N; i++) mask[i] = lab[i] === best ? 1 : 0;
+  // drop the 2 px next to the lettering (blended with its halo); the drawn-in parts show there instead
+  for (let i = 0; i < N; i++) { if (!mask[i]) continue; const x = i % W, y = (i / W) | 0;
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const nx = x + dx, ny = y + dy;
+      if (nx >= 0 && ny >= 0 && nx < W && ny < H && zone[ny * W + nx]) mask[i] = 2; } }
+  for (let i = 0; i < N; i++) if (mask[i] === 2) mask[i] = 0;
+  // The logo's goose pixels as an image (alpha = mask).
+  const cut = (keep = () => true) => {
+    const c = canvas(), g = c.getContext('2d'), out = g.createImageData(W, H);
+    for (let i = 0; i < N; i++) if (mask[i] && keep(i)) { out.data.set(px.subarray(i * 4, i * 4 + 3), i * 4); out.data[i * 4 + 3] = 255; }
+    g.putImageData(out, 0, 0); return c;
+  };
+  log(`goose: ${bestN} px`);
+
+  // ---- 2. what the lettering hides ----
+  // Colour of the logo just above the cut, per column, for continuing fills downwards.
+  const cutY = new Int32Array(W).fill(-1);
+  for (let x = 0; x < W; x++) for (let y = H - 1; y >= 0; y--) if (mask[y * W + x]) { cutY[x] = y; break; }
+  // average colour of the logo's pixels just above the cut, over columns x0..x1
+  function cutColour(x0, x1, want) {
+    let s = [0, 0, 0], n = 0;
+    for (let x = x0; x <= x1; x++) { const cx = x - R.x; if (cx < 0 || cx >= W || cutY[cx] < 0) continue;
+      for (let dy = 4; dy <= 14; dy++) { const i = (cutY[cx] - dy) * W + cx; if (mask[i] && want(i)) { s[0] += px[i * 4]; s[1] += px[i * 4 + 1]; s[2] += px[i * 4 + 2]; n++; } } }
+    return n ? `rgb(${s.map(v => Math.round(v / n)).join(',')})` : null;
+  }
+  // continue the colours at the cut downwards, blending into the body's lower shade
+  function columnFill(g, x0, x1, want) {
+    for (let x = x0; x <= x1; x++) {
+      const c = cutColour(x - 18, x + 18, want); if (!c) continue;
+      const top = cutY[x - R.x] + R.y - 8, grad = g.createLinearGradient(0, top, 0, top + 70);
+      grad.addColorStop(0, c); grad.addColorStop(1, GREY);
+      g.fillStyle = grad; g.fillRect(x, top, 1, 120);
+    }
+  }
+  const INK = 'rgb(69,35,25)', GREY = 'rgb(191,201,180)', LW = 19;
+  const isOrange = i => sat[i] > 0.35 && lum[i] > 90, isBelly = i => lum[i] > 120 && !isOrange(i);
+  const isDeepOrange = i => sat[i] > 0.55 && lum[i] > 90;
+  // body bottom (behind the feet): continues the rump line round under him to the right foot
+  const BODY_FILL = P('M 690 1120 L 718 1180 C 735 1212 748 1238 776 1255 C 806 1270 862 1270 912 1266 L 1050 1262 C 1110 1258 1160 1244 1192 1222 L 1192 1120 Z');
+  const BODY_EDGE = P('M 718 1180 C 735 1212 748 1238 776 1255 C 806 1270 862 1270 912 1266 L 1050 1262 C 1110 1258 1160 1244 1192 1222');
+  // left foot: the logo shows its top (ankle bump in the middle); three round toes at the bottom
+  const FOOT_L_D = `M 913 1177 C 900 1185 896 1210 899 1232 C 901 1250 922 1262 940 1252 C 952 1264 970 1266 981 1254
+    C 993 1266 1012 1265 1021 1252 C 1036 1260 1052 1252 1053 1234 C 1054 1212 1046 1188 1028 1176`;
+  const FOOT_L = P(FOOT_L_D), FOOT_L_FILL = P(`${FOOT_L_D} L 1028 1150 L 913 1150 Z`);
+  const TOES_L = P('M 940 1252 L 942 1242 M 981 1254 L 981 1244 M 1021 1252 L 1019 1242');
+  // right foot: its top and front toe show; the sole runs back under him
+  const FOOT_R_D = 'M 1190 1192 C 1191 1222 1206 1236 1232 1236 C 1256 1236 1278 1234 1292 1227';
+  const FOOT_R = P(FOOT_R_D), FOOT_R_FILL = P(`${FOOT_R_D} L 1284 1200 L 1278 1178 L 1262 1171 L 1238 1175 L 1210 1180 L 1192 1176 Z`);
+
+  function drawHidden(g, { feet = true } = {}) {
+    g.save(); g.clip(BODY_FILL); g.fillStyle = GREY; g.fill(BODY_FILL); columnFill(g, 737, 1191, isBelly); g.restore();
+    g.strokeStyle = INK; g.lineWidth = LW; g.stroke(BODY_EDGE);
+    if (!feet) return;
+    g.fillStyle = cutColour(920, 1030, isDeepOrange); g.fill(FOOT_L_FILL);
+    g.strokeStyle = INK; g.lineWidth = LW; g.stroke(FOOT_L); g.lineWidth = 8; g.stroke(TOES_L);
+    g.fillStyle = cutColour(1195, 1270, isDeepOrange); g.fill(FOOT_R_FILL);
+    g.strokeStyle = INK; g.lineWidth = LW; g.stroke(FOOT_R);
+  }
+
+  // feet as cut-out regions: from just above each foot's top outline down past its sole
+  const [FOOT_L_REGION, FOOT_R_REGION] = LOGO_FEET.map(P);
+  const WING_REGION = P(WING_OUTLINE);
+
+  // ---- 3. full goose ----
+  const [full, fg] = logoCanvas();
+  drawHidden(fg);
+  fg.drawImage(cut(), R.x, R.y);
+
+  // ---- 4. under: wing and feet replaced by plain body ----
+  const [under, ug] = logoCanvas();
+  drawHidden(ug, { feet: false });
+  ug.drawImage(cut(), R.x, R.y);
+  ug.save(); ug.clip(WING_REGION);
+  const wingGrad = ug.createLinearGradient(0, 990, 0, 1170); wingGrad.addColorStop(0, 'rgb(243,244,244)'); wingGrad.addColorStop(0.55, 'rgb(236,238,235)'); wingGrad.addColorStop(1, GREY);
+  ug.fillStyle = wingGrad; ug.fill(WING_REGION); ug.restore();
+  // keep the logo's own pixels in a thin band along the cut, so the wing's soft edge lands on the same
+  // pixels and the goose stays exact where they join
+  { const [band, bdg] = logoCanvas(); bdg.lineWidth = 3; bdg.stroke(WING_REGION);
+    bdg.globalCompositeOperation = 'source-in'; bdg.drawImage(full, R.x, R.y); ug.drawImage(band, R.x, R.y); }
+  // feet: cleared, then plain belly where they covered his body
+  // (filled with a soft blend of the belly colours around the hole, fading into the lower shade)
+  for (const region of [FOOT_L_REGION, FOOT_R_REGION]) ug.save(), ug.globalCompositeOperation = 'destination-out', ug.fill(region), ug.restore();
+  {
+    // hole = where a foot covered his body
+    const [hole, hg0] = logoCanvas(); hg0.fillStyle = '#000';
+    for (const region of [FOOT_L_REGION, FOOT_R_REGION]) { hg0.save(); hg0.clip(region); hg0.fill(BODY_FILL); hg0.restore(); }
+    const hd = hg0.getImageData(0, 0, W, H).data;
+    // the belly around it, without outlines, blurred; reading it back un-premultiplies, which spreads
+    // the nearby colours into the hole
+    const src = ug.getImageData(0, 0, W, H);
+    for (let i = 0; i < N; i++) { const o = i * 4; if (0.299 * src.data[o] + 0.587 * src.data[o + 1] + 0.114 * src.data[o + 2] < 150) src.data[o + 3] = 0; }
+    const [plain, pg] = logoCanvas(); pg.putImageData(src, 0, 0);
+    const [soft, sg0] = logoCanvas(); sg0.setTransform(1, 0, 0, 1, 0, 0); sg0.filter = 'blur(18px)'; sg0.drawImage(plain, 0, 0);
+    const sd = sg0.getImageData(0, 0, W, H).data, out = ug.getImageData(0, 0, W, H);
+    const grey = [191, 201, 180];
+    for (let i = 0; i < N; i++) {
+      const o = i * 4, h = hd[o + 3] / 255; if (!h) continue;
+      const w = Math.min(1, sd[o + 3] / 140), c = [0, 1, 2].map(k => sd[o + k] * w + grey[k] * (1 - w));
+      const a0 = out.data[o + 3] / 255; // blend under whatever is left at the hole's soft edge
+      for (let k = 0; k < 3; k++) out.data[o + k] = Math.round(out.data[o + k] * a0 + c[k] * (1 - a0));
+      out.data[o + 3] = Math.round(255 * Math.max(a0, h));
+    }
+    ug.putImageData(out, 0, 0);
+  }
+  ug.strokeStyle = INK; ug.lineWidth = LW; ug.stroke(BODY_EDGE);
+  // the body's right outline runs down into the right foot; carry it on to the bottom
+  ug.stroke(P('M 1190 1176 C 1192 1196 1192 1210 1190 1224'));
+
+  // ---- 5. pieces ----
+  const piece = (from, region) => { const [c, g] = logoCanvas(); g.save(); g.clip(region); g.drawImage(from, R.x, R.y); g.restore(); return c; };
+  const wing = piece(full, WING_REGION);
+
+  // ---- 6. blink: the open left eye shut, using the logo's own wink mirrored across the face ----
+  const FACE_X = 1027; // the bill's centre line
+  const [blink, bg2] = logoCanvas(); bg2.drawImage(full, R.x, R.y);
+  {
+    const component = (sx, sy, box) => flood([idx(sx, sy)], j => { const x = j % W + R.x, y = ((j / W) | 0) + R.y;
+      return x >= box[0] && x <= box[2] && y >= box[1] && y <= box[3] && lum[j] < 150; }, new Uint8Array(N));
+    // find a dark seed pixel inside each eye
+    const seed = (x0, y0, x1, y1) => { for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) if (lum[idx(x, y)] < 80) return [x, y]; };
+    const leftEye = component(...seed(930, 570, 945, 585), [905, 540, 962, 625]);
+    const winkSeed = seed(1105, 580, 1130, 600);
+    const wink = component(...winkSeed, [1092, 545, 1155, 622]);
+    // paint the left eye out with the skin colour around it
+    bg2.fillStyle = 'rgb(244,245,245)';
+    for (let i = 0; i < N; i++) if (leftEye[i]) { const x = i % W + R.x, y = ((i / W) | 0) + R.y; bg2.beginPath(); bg2.arc(x + 0.5, y + 0.5, 3.2, 0, 7); bg2.fill(); }
+    // the wink as ink with soft edges, mirrored into the left eye's place
+    const [wc, wg] = logoCanvas(); const wd = wg.getImageData(0, 0, W, H);
+    for (let i = 0; i < N; i++) {
+      const x = i % W, y = (i / W) | 0; let near = false;
+      for (let dy = -2; dy <= 2 && !near; dy++) for (let dx = -2; dx <= 2; dx++) { const j = (y + dy) * W + x + dx; if (j >= 0 && j < N && wink[j]) { near = true; break; } }
+      if (!near) continue;
+      const a = Math.max(0, Math.min(1, (244 - lum[i]) / (244 - 50)));
+      wd.data.set([69, 35, 25, Math.round(a * 255)], i * 4);
+    }
+    wg.putImageData(wd, 0, 0);
+    bg2.save(); bg2.translate(2 * FACE_X, 0); bg2.scale(-1, 1); bg2.drawImage(wc, R.x, R.y); bg2.restore();
+  }
+
+  // ---- 7. honk: the lower bill drops open ----
+  // The jaw (lower bill, cut along its outline) drops and narrows a little; the mouth opens between.
+  const D = 28, JS = 0.86, CX = 1025;
+  const JAW = P('M 957 703 L 1093 703 L 1090 716 L 1077 733 L 1055 745 L 1025 749 L 995 745 L 973 733 L 961 716 Z');
+  const [honk, hg] = logoCanvas(); hg.drawImage(full, R.x, R.y);
+  {
+    const jaw = piece(full, JAW), jx = x => CX + (x - CX) * JS, top = 703 + D;
+    const MOUTH = P(`M 955 699 Q ${CX} 708 1095 699 C 1095 ${top - 14} ${jx(1093) + 6} ${top - 4} ${jx(1093)} ${top + 4}
+      L ${jx(957)} ${top + 4} C ${jx(957) - 6} ${top - 4} 955 ${top - 14} 955 699 Z`);
+    hg.fillStyle = 'rgb(92,30,24)'; hg.fill(MOUTH);
+    hg.save(); hg.clip(MOUTH); hg.fillStyle = 'rgb(232,112,104)'; hg.beginPath(); hg.ellipse(CX, top + 2, 44, 16, 0, 0, 7); hg.fill(); hg.restore();
+    hg.strokeStyle = INK; hg.lineWidth = 15; hg.stroke(MOUTH);
+    hg.save(); hg.translate(CX, D); hg.scale(JS, 1); hg.translate(-CX, 0); hg.drawImage(jaw, R.x, R.y); hg.restore();
+    hg.lineWidth = 13; hg.stroke(P(`M ${jx(959)} ${top + 1} Q ${CX} ${top + 8} ${jx(1091)} ${top + 1}`));
+  }
+
+  // ---- 8. pack and save ----
+  const L = goosePartsLayout(), sheet = canvas(L.w, L.h), sg = sheet.getContext('2d');
+  const place = (name, from) => { const r = GOOSE_PARTS[name], a = L.parts[name]; sg.drawImage(from, r.x - R.x, r.y - R.y, r.w, r.h, a.x, a.y, r.w, r.h); };
+  place('under', under); place('wing', wing); place('blink', blink); place('honk', honk);
+  log(`goose-sprite.png ${L.w} x ${L.h} -> ${await put('site/assets/goose-sprite.png', sheet)}`);
+  document.body.appendChild(sheet);
+
+  if (debug) {
+    const m = canvas(), mg = m.getContext('2d'); mg.fillStyle = '#E05AC8'; mg.fillRect(0, 0, W, H); mg.drawImage(full, 0, 0);
+    log(`debug -> ${await put('_scratch/full.png', m)}`);
+    const u = canvas(), ugg = u.getContext('2d'); ugg.fillStyle = '#E05AC8'; ugg.fillRect(0, 0, W, H); ugg.drawImage(under, 0, 0);
+    log(`debug -> ${await put('_scratch/under.png', u)}`);
+  }
+  window.done = true;
+</script>
+</body>
+</html>

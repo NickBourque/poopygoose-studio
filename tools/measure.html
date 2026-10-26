@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Measure</title>
+<!-- Dev page: shows a region of a reference image with a labelled pixel grid, for matching the 3D model to it. -->
+<style>body { margin: 0; background: #888; } canvas { display: block; }</style>
+<canvas id="c"></canvas>
+<script>
+  // ?src=/source/goose-3d.jpg&x=700&y=200&w=600&h=600&step=50
+  const p = new URLSearchParams(location.search);
+  const [x, y, w, h, step] = ['x', 'y', 'w', 'h', 'step'].map((k, i) => +(p.get(k) || [0, 0, 2000, 2000, 100][i]));
+  const img = new Image();
+  img.onload = () => {
+    const c = document.getElementById('c'), scale = Math.min(innerWidth / w, innerHeight / h);
+    c.width = w * scale; c.height = h * scale;
+    const g = c.getContext('2d');
+    g.drawImage(img, x, y, w, h, 0, 0, c.width, c.height);
+    g.font = '11px sans-serif'; g.lineWidth = 1;
+    for (let gx = Math.ceil(x / step) * step; gx < x + w; gx += step) {
+      const sx = (gx - x) * scale; g.strokeStyle = gx % (step * 2) ? 'rgba(255,0,0,.35)' : 'rgba(255,0,0,.7)';
+      g.beginPath(); g.moveTo(sx, 0); g.lineTo(sx, c.height); g.stroke(); g.fillStyle = 'red'; g.fillText(gx, sx + 2, 11);
+    }
+    for (let gy = Math.ceil(y / step) * step; gy < y + h; gy += step) {
+      const sy = (gy - y) * scale; g.strokeStyle = gy % (step * 2) ? 'rgba(0,0,255,.35)' : 'rgba(0,0,255,.7)';
+      g.beginPath(); g.moveTo(0, sy); g.lineTo(c.width, sy); g.stroke(); g.fillStyle = 'blue'; g.fillText(gy, 2, sy - 2);
+    }
+  };
+  img.src = p.get('src') || '/source/goose-3d.jpg';
+</script>

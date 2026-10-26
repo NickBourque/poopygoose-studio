@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Make paper assets</title>
+<!-- Dev page: rebuilds the site's still images from the paper art and saves them through the local
+     preview server's PUT route. Run it after changing site/paper-art.js.
+     - site/assets/goose-paper.png: the idle goose sticker, trimmed (shown before the 3D scene loads)
+     - site/og-image.jpg: the 1200 x 630 social-share card (logo + honking paper goose on a grass card) -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Nunito:wght@800&display=swap" rel="stylesheet">
+<style>body { font: 14px/1.5 system-ui; margin: 16px; } img { max-width: 600px; display: block; margin-top: 8px; }</style>
+</head>
+<body>
+<pre id="log">working…</pre>
+<script type="module">
+  import { GOOSE_FRAMES, GOOSE_FRAME, drawGoose, loadGoose, sticker, scenery, PAL } from '../site/paper-art.js';
+  await document.fonts.ready;
+  await loadGoose('../site/assets/goose-sprite.png?' + Date.now());
+  const lines = [], log = s => { lines.push(s); document.getElementById('log').textContent = lines.join('\n'); };
+  const put = async (file, blob) => (await fetch('/' + file, { method: 'PUT', body: blob })).status;
+  const blobOf = (c, type, q) => new Promise(r => c.toBlob(r, type, q));
+
+  // one goose frame as a sticker at the given scale
+  function gooseSticker(name, scale) {
+    const f = document.createElement('canvas'); f.width = GOOSE_FRAME.w * scale; f.height = GOOSE_FRAME.h * scale;
+    const g = f.getContext('2d'); g.scale(scale, scale); drawGoose(g, GOOSE_FRAMES.find(p => p.name === name));
+    return sticker(f, 16 * scale);
+  }
+  // crop a canvas to its non-transparent pixels
+  function trim(c) {
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+    for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 8) {
+      if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+    const out = document.createElement('canvas'); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+    out.getContext('2d').drawImage(c, -x0, -y0);
+    return out;
+  }
+
+  try {
+    // fallback sticker
+    const fallback = trim(gooseSticker('idle', 0.75));
+    log(`goose-paper.png ${fallback.width} x ${fallback.height} -> ${await put('site/assets/goose-paper.png', await blobOf(fallback, 'image/png'))}`);
+
+    // social card
+    const og = document.createElement('canvas'); og.width = 1200; og.height = 630;
+    const o = og.getContext('2d'); o.imageSmoothingQuality = 'high';
+    o.fillStyle = PAL.cream || '#F6F1E7'; o.fillRect(0, 0, 1200, 630);
+    const logo = await createImageBitmap(await (await fetch('/site/assets/logo-1000.png')).blob());
+    const lh = 500; o.drawImage(logo, 60, 65, logo.width * lh / logo.height, lh);
+    // grass card: a paper ellipse with a darker edge below
+    o.fillStyle = '#E3D9C4'; o.beginPath(); o.ellipse(880, 545, 300, 62, 0, 0, Math.PI * 2); o.fill();
+    o.fillStyle = '#B7C7AB'; o.beginPath(); o.ellipse(880, 530, 300, 62, 0, 0, Math.PI * 2); o.fill();
+    const place = (c, x, groundY, h) => { const w = c.width * h / c.height; o.drawImage(c, x - w / 2, groundY - h, w, h); };
+    place(scenery.reeds(), 1110, 560, 230);
+    const goose = gooseSticker('honk', 1);
+    const gh = 440, gs = gh / GOOSE_FRAME.h;
+    o.drawImage(goose, 860 - GOOSE_FRAME.centerX * gs, 535 - GOOSE_FRAME.groundY * gs, GOOSE_FRAME.w * gs, gh);
+    place(scenery.flower(), 725, 560, 90); place(scenery.flower(PAL.orangeLight), 770, 560, 90); place(scenery.flower(), 1035, 560, 90);
+    const honk = scenery.honk(); o.drawImage(honk, 935, 75, 220, 220 * honk.height / honk.width);
+    log(`og-image.jpg -> ${await put('site/og-image.jpg', await blobOf(og, 'image/jpeg', 0.9))}`);
+    for (const c of [fallback, og]) { const img = new Image(); img.src = c.toDataURL(); document.body.appendChild(img); }
+  } catch (e) { log('error: ' + (e.stack || e)); }
+  window.done = true;
+</script>
+</body>
+</html>
