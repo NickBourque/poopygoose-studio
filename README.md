@@ -5,6 +5,8 @@ goose with a very bad habit. The page is a static site (HTML, CSS and JavaScript
 hero is a small paper diorama, made with [three.js](https://threejs.org), where Poopy Goose waddles about
 as a flat sticker, Paper Mario style.
 
+The look, motion and voice (for the site and the game) are written down in [DESIGN.md](DESIGN.md).
+
 ## Run it locally
 
 The site needs a web server; opening `index.html` straight from disk won't load its scripts. From the
