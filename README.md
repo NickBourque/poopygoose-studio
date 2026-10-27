@@ -43,8 +43,12 @@ or the cut changes, with the local server running:
 
 ## Sign-ups
 
-The "Join the flock" form posts to `SIGNUP_ENDPOINT` in `site/main.js`. While that's empty, it opens an
-email to hello@poopygoose.studio instead.
+The "Join the flock" form adds people to the mailing list on [Kit](https://kit.com). It posts to the Kit form
+whose ID is `KIT_FORM_ID` in `site/main.js` (the number in the form's embed code). Kit sends the
+confirmation email and keeps the list. While the ID is empty, the form opens an email to
+hello@poopygoose.studio instead.
+
+Studio mail (hello@poopygoose.studio) is on Google Workspace. The domain's DNS is managed at Squarespace.
 
 ## Large files
 
