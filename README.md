@@ -41,6 +41,12 @@ or the cut changes, with the local server running:
 
 `tools/paper-art-preview.html` shows every frame of the goose and every piece of scenery.
 
+## Publishing
+
+The site is hosted on GitHub Pages at <https://poopygoose.studio>. Any push to `main` that changes `site/`
+publishes it again (`.github/workflows/pages.yml`); it's live a minute or two later. The domain's DNS,
+at Squarespace, points to GitHub Pages.
+
 ## Sign-ups
 
 The "Join the flock" form adds people to the mailing list on [Kit](https://kit.com). It posts to the Kit form
