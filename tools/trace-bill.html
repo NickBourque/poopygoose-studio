@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trace Bill</title>
+<!--
+  Dev page: traces Bill the duck from the creator's drawing (source/bill/bill-sketch.jpg, his master, as
+  the logo is the goose's) into layered vector art, and saves source/bill/bill-34.svg through the local
+  preview server's PUT route (tools/serve.ps1). The grey backdrop and the white sticker border are left
+  out (the sticker border is added on export, as for the goose). Every other pixel is matched to the
+  nearest colour of his palette; each colour becomes smooth filled shapes, stacked back to front with the
+  ink on top, and fills grown a little under the ink so no seams show. Bill px: the drawing at half size.
+-->
+<style>body { font: 14px/1.5 system-ui; margin: 16px; background: #868686; } img, canvas { width: 46%; display: inline-block; margin: 8px 8px 0 0; vertical-align: top; }</style>
+</head>
+<body>
+<pre id="log">working…</pre>
+<script type="module">
+  const lines = [], log = s => { lines.push(s); document.getElementById('log').textContent = lines.join('\n'); };
+  const canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+
+  // His palette, from the drawing, back to front. [name, the drawing's colour, grow under the ink (px),
+  // simplify tolerance]. Each layer's fill is the average of the pixels matched to it.
+  const PALETTE = [
+    ['body', '#92877e', 2, 1.2],
+    ['bodyLight', '#b5aaa3', 1, 1],
+    ['wingShade', '#6e6262', 1, 1],
+    ['bellyShade', '#a6a4a7', 1, 1.2],
+    ['belly', '#c6c6c6', 1, 1.2],
+    ['maroon', '#50292a', 1, 1],
+    ['maroonLight', '#835b59', 1, 1],
+    ['green', '#2b6241', 2, 1.2],
+    ['greenDark', '#174533', 1, 1.2],
+    ['greenLight', '#4c865e', 1, 1],
+    ['bill', '#a96226', 2, 1],
+    ['billDark', '#6a3815', 1, 1],
+    ['feet', '#d8792d', 2, 1],
+    ['feetDark', '#b8601f', 1, 1],
+    ['ink', '#512c1e', 0, 0.7],
+  ];
+  const BACKDROP = [0x86, 0x86, 0x86];
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const REFS = PALETTE.map(([, h]) => hex(h));
+
+  // ---- the drawing, at half size ----
+  const img = new Image(); img.src = `../source/bill/bill-sketch.jpg?${Date.now()}`; await img.decode();
+  const W = Math.round(img.width / 2), H = Math.round(img.height / 2);
+  const src = canvas(W, H), sg = src.getContext('2d'); sg.drawImage(img, 0, 0, W, H);
+  const px = sg.getImageData(0, 0, W, H).data, N = W * H;
+
+  // ---- which colour each pixel is: none (backdrop or sticker border), or its nearest palette colour ----
+  const near = (a, b) => (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2;
+  const cls = new Int8Array(N).fill(-1);
+  for (let i = 0; i < N; i++) {
+    const c = [px[i * 4], px[i * 4 + 1], px[i * 4 + 2]];
+    if (near(c, BACKDROP) < 150 || Math.min(...c) > 236) continue;
+    let best = 0, bd = Infinity;
+    REFS.forEach((r, k) => { const dd = near(c, r); if (dd < bd) { bd = dd; best = k; } });
+    // the maroon patch and the ink are both dark browns: the maroon is the bluer one
+    const ink = PALETTE.length - 1, maroon = PALETTE.findIndex(p => p[0] === 'maroon');
+    if (best === maroon || best === ink) best = c[2] - c[1] > -6 ? maroon : ink;
+    cls[i] = best;
+  }
+
+  // the silhouette: everything inside the sticker border, holes filled
+  const inside = new Float32Array(N);
+  for (let i = 0; i < N; i++) inside[i] = cls[i] >= 0 ? 1 : 0;
+
+  // ---- tracing (as tools/trace-goose.html) ----
+  function morph(field, r) {
+    const out = new Float32Array(field.length), tmp = new Float32Array(field.length), R2 = Math.abs(r), pick = r > 0 ? Math.max : Math.min;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let v = field[y * W + x]; for (let k = -R2; k <= R2; k++) { const xx = x + k; if (xx >= 0 && xx < W) v = pick(v, field[y * W + xx]); else if (r < 0) v = 0; } tmp[y * W + x] = v; }
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let v = tmp[y * W + x]; for (let k = -R2; k <= R2; k++) { const yy = y + k; if (yy >= 0 && yy < H) v = pick(v, tmp[yy * W + x]); else if (r < 0) v = 0; } out[y * W + x] = v; }
+    return out;
+  }
+  function contours(field) {
+    const fw = W + 2, fh = H + 2, F = new Float32Array(fw * fh);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) F[(y + 1) * fw + x + 1] = field[y * W + x];
+    const at = (x, y) => F[y * fw + x], T = 0.5, links = new Map(), points = new Map();
+    const lerp = (a, b) => (T - a) / (b - a);
+    const edge = (x, y, side) => {
+      const key = side === 0 ? `h${x},${y}` : side === 2 ? `h${x},${y + 1}` : side === 3 ? `v${x},${y}` : `v${x + 1},${y}`;
+      if (!points.has(key)) {
+        const a = at(x, y), b = at(x + 1, y), c = at(x + 1, y + 1), d = at(x, y + 1);
+        const p = side === 0 ? [x + lerp(a, b), y] : side === 1 ? [x + 1, y + lerp(b, c)] : side === 2 ? [x + lerp(d, c), y + 1] : [x, y + lerp(a, d)];
+        points.set(key, [p[0] - 0.5, p[1] - 0.5]);
+      }
+      return key;
+    };
+    const link = (k1, k2) => { (links.get(k1) || links.set(k1, []).get(k1)).push(k2); (links.get(k2) || links.set(k2, []).get(k2)).push(k1); };
+    const SEG = { 1: [[3, 2]], 2: [[2, 1]], 3: [[3, 1]], 4: [[0, 1]], 6: [[0, 2]], 7: [[3, 0]], 8: [[3, 0]], 9: [[0, 2]], 11: [[0, 1]], 12: [[3, 1]], 13: [[2, 1]], 14: [[3, 2]] };
+    for (let y = 0; y < fh - 1; y++) for (let x = 0; x < fw - 1; x++) {
+      const a = at(x, y) > T, b = at(x + 1, y) > T, c = at(x + 1, y + 1) > T, d = at(x, y + 1) > T;
+      const idx = (a ? 8 : 0) | (b ? 4 : 0) | (c ? 2 : 0) | (d ? 1 : 0);
+      if (idx === 0 || idx === 15) continue;
+      let segs = SEG[idx];
+      if (idx === 5 || idx === 10) {
+        const centre = (at(x, y) + at(x + 1, y) + at(x + 1, y + 1) + at(x, y + 1)) / 4 > T;
+        segs = idx === 5 ? (centre ? [[3, 0], [2, 1]] : [[3, 2], [0, 1]]) : (centre ? [[0, 1], [3, 2]] : [[3, 0], [2, 1]]);
+      }
+      for (const [s1, s2] of segs) link(edge(x, y, s1), edge(x, y, s2));
+    }
+    const loops = [], seen = new Set();
+    for (const start of links.keys()) {
+      if (seen.has(start)) continue;
+      const loop = []; let prev = null, cur = start;
+      while (cur && !seen.has(cur)) { seen.add(cur); loop.push(points.get(cur)); const next = links.get(cur).find(k => k !== prev && !seen.has(k)); prev = cur; cur = next; }
+      if (loop.length > 2) loops.push(loop);
+    }
+    return loops;
+  }
+  const area = pts => { let s = 0; for (let i = 0; i < pts.length; i++) { const [x1, y1] = pts[i], [x2, y2] = pts[(i + 1) % pts.length]; s += x1 * y2 - x2 * y1; } return s / 2; };
+  function simplify(pts, tol) {
+    const rdp = (a, b) => {
+      let best = -1, bi = -1; const [x1, y1] = pts[a], [x2, y2] = pts[b % pts.length], dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+      for (let i = a + 1; i < b; i++) { const d = Math.abs(dy * pts[i][0] - dx * pts[i][1] + x2 * y1 - y2 * x1) / len; if (d > best) { best = d; bi = i; } }
+      return best > tol ? [...rdp(a, bi), ...rdp(bi, b)] : [pts[a]];
+    };
+    const half = Math.floor(pts.length / 2);
+    return [...rdp(0, half), ...rdp(half, pts.length)];
+  }
+  const r1 = v => Math.round(v * 10) / 10;
+  function smoothPath(pts) {
+    const n = pts.length, mid = i => [(pts[i % n][0] + pts[(i + 1) % n][0]) / 2, (pts[i % n][1] + pts[(i + 1) % n][1]) / 2];
+    let d = `M${r1(mid(0)[0])} ${r1(mid(0)[1])}`;
+    for (let i = 1; i <= n; i++) { const c = pts[i % n], m = mid(i); d += `Q${r1(c[0])} ${r1(c[1])} ${r1(m[0])} ${r1(m[1])}`; }
+    return d + 'Z';
+  }
+  const layerPath = (field, tol, minArea) => contours(field).filter(l => Math.abs(area(l)) >= minArea).map(l => smoothPath(simplify(l, tol))).join('');
+
+  try {
+    // the silhouette, holes closed, filled with his body colour under everything
+    const silhouette = morph(morph(inside, 2), -2);
+    const layers = [`  <path class="base" fill="${PALETTE[0][1]}" fill-rule="nonzero" d="${layerPath(silhouette, 1.2, 200)}"/>`];
+    PALETTE.forEach(([name, , grow, tol], k) => {
+      let field = new Float32Array(N), sum = [0, 0, 0], n = 0;
+      for (let i = 0; i < N; i++) if (cls[i] === k) { field[i] = 1; sum[0] += px[i * 4]; sum[1] += px[i * 4 + 1]; sum[2] += px[i * 4 + 2]; n++; }
+      if (!n) return;
+      const fill = '#' + sum.map(v => Math.round(v / n).toString(16).padStart(2, '0')).join('');
+      // drop the stray pixels JPEG noise scatters along colour edges, then tuck the fill under the ink
+      if (name !== 'ink') field = morph(morph(field, -1), 1);
+      else field = morph(morph(field, 1), -1);
+      if (grow) field = morph(field, grow);
+      const d = layerPath(field, tol, name === 'ink' ? 4 : 12);
+      if (d) layers.push(`  <path class="${name}" fill="${fill}" fill-rule="evenodd" d="${d}"/>`);
+    });
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+  <!-- Bill the duck, turned 3/4 to the right with his wings crossed: traced from the creator's drawing
+       (source/bill/bill-sketch.jpg) by tools/trace-bill.html. Bill px (the drawing at half size). His
+       colours, back to front, with the ink on top; the sticker border is added on export. -->
+${layers.join('\n')}
+</svg>
+`;
+    const status = (await fetch('/source/bill/bill-34.svg', { method: 'PUT', body: svg })).status;
+    log(`source/bill/bill-34.svg ${Math.round(svg.length / 1024)} KB, ${W} x ${H} -> ${status}`);
+    const out = new Image(); out.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); document.body.append(out);
+    src.style.width = '46%'; document.body.append(src);
+    window.result = 'ok';
+  } catch (e) { log('error: ' + (e.stack || e)); window.result = 'error: ' + e; }
+</script>
+</body>
+</html>

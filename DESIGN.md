@@ -295,6 +295,41 @@ These rules are fixed. Changing them needs the creator's sign-off.
 | Signature move | The Drop |
 | Stats | Honk 9 · Waddle 4 · Charm 10 · Aim ??? |
 
+### Bill (character rules)
+
+The goose's partner in co-op: a deadpan mallard, the straight man who has seen it all and is unimpressed by
+every bit of it, the goose most of all. These rules are fixed; changing them needs the creator's sign-off.
+
+- **He is traced from the creator's drawing, and it is his master.** `source/bill/bill-sketch.jpg` is to
+  Bill what the logo is to the goose: `tools/trace-bill.html` traces it into `source/bill/bill-34.svg`
+  exactly, and everything else is drawn to match it (`source/bill/rig.js`, `tools/bill-model-sheet.html`).
+  When unsure, match the drawing.
+- **The look.** A green mallard head (`#2B6241`, darker `#174533` on its far side and under the chin,
+  lighter `#4C865E` sheen on top) with a small tuft; a long grey-brown neck and body (`#92877E`, wing
+  shading `#6E6262`); a pale speckled belly (`#C6C6C6`, shade `#A6A4A7`); a dark maroon patch on his back
+  (`#50282A`); green tail curls; a flat orange bill (`#A96226`) and big orange webbed feet (`#D8792D`).
+  The goose's ink and outline weight, and his sticker border.
+- **The grump.** Thick, flat lids pulled low over half-round pupils, a flat bill with a frown at the corner
+  of the mouth, and, standing about, his wings crossed over his chest like folded arms. He never smiles.
+- **He stays turned 3/4,** his master's view, facing the way he's going; the paper flip turns him round.
+  (The goose stands face on; Bill doesn't need to: his side-long look is the point.)
+- **Poses.** Wings crossed (standing about) and wings folded at his sides (moving: a torso drawn to match
+  the master under its head, neck, tail and feet).
+- **Faces.** Grumpy (the master's), blink (the lids come down), The Stare (lids up, eyes open flat and wide
+  on pinprick pupils) and rolling his eyes (whites showing, pupils rolled up under the lids, for the Bread
+  Toss).
+- **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
+  short legs and big feet; his near wing beats, rises and falls as the goose's does, and tossing a crust he
+  flings it up over his head, rolling his eyes. He blinks only standing about. The game's frames are
+  exported from his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
+
+| | |
+| --- | --- |
+| Class | The straight man |
+| Home | The pond (he was here first) |
+| Likes | Quiet. Order. Not being honked at |
+| Signature move | The Stare |
+
 ---
 
 ## 9. Voice and copy
@@ -327,6 +362,7 @@ player, long paragraphs, exclamation marks on everything (one big one: "HONK!").
 | --- | --- |
 | `source/logo.jpg` | The master logo; the goose's model sheet is traced from it |
 | `source/goose/` | The goose's vector art: front (traced), 3/4 and side heads, front extras, and `rig.js`, which puts him together for any view and face |
+| `source/bill/` | Bill's master drawing (`bill-sketch.jpg`), its trace (`bill-34.svg`) and `rig.js`, which puts him together for a pose and face |
 | `site/assets/goose-sprite.png` | The goose cut-out plus his moving pieces (wing, blink, open bill) |
 | `site/assets/goose-head-sticker.png` | Head sticker, used as the brand mark and favicon |
 | `site/assets/logo-*.png/.webp` | The logo at web sizes |

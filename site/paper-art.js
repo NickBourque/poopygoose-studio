@@ -89,14 +89,19 @@ const AIR = {
   fall: { near: { dx: 44, lift: -50, rot: -0.35 }, far: { dx: 34, lift: -24, rot: -0.1 }, flap: 0.6 },
 };
 
-function legAndFoot(g, [hx, hy], ax, ay, rot, fill) {
+// Whose legs: where the hips and ankles are, how big the feet, the colours. The goose's by default; other
+// birds (Bill) pass their own to drawGooseLegs.
+export const GOOSE_LEGS = { hip: HIP, ankleY: ANKLE_Y, footScale: FOOT_SCALE, ink: LEG_INK, orange: ORANGE, width: [34, 15] };
+
+function legAndFoot(g, [hx, hy], ax, ay, rot, side, legs) {
+  const fill = legs.orange[side], s = legs.footScale;
   g.lineCap = 'round'; g.lineJoin = 'round';
-  g.strokeStyle = LEG_INK; g.lineWidth = 34; g.beginPath(); g.moveTo(hx, hy); g.lineTo(ax, ay); g.stroke();
-  g.strokeStyle = fill; g.lineWidth = 15; g.stroke();
-  g.save(); g.translate(ax, ay); g.rotate(rot); g.scale(FOOT_SCALE, FOOT_SCALE);
+  g.strokeStyle = legs.ink; g.lineWidth = legs.width[0]; g.beginPath(); g.moveTo(hx, hy); g.lineTo(ax, ay); g.stroke();
+  g.strokeStyle = fill; g.lineWidth = legs.width[1]; g.stroke();
+  g.save(); g.translate(ax, ay); g.rotate(rot); g.scale(s, s);
   g.fillStyle = fill; g.fill(FOOT);
-  g.save(); g.clip(FOOT); g.fillStyle = fill === ORANGE.far ? ORANGE.near : ORANGE.light; g.fill(FOOT_TOP); g.restore();
-  g.strokeStyle = LEG_INK; g.lineWidth = 17 / FOOT_SCALE; g.stroke(FOOT); g.lineWidth = 8 / FOOT_SCALE; g.stroke(TOE_LINES);
+  g.save(); g.clip(FOOT); g.fillStyle = side === 'far' ? legs.orange.near : legs.orange.light; g.fill(FOOT_TOP); g.restore();
+  g.strokeStyle = legs.ink; g.lineWidth = 17 / s; g.stroke(FOOT); g.lineWidth = 8 / s; g.stroke(TOE_LINES);
   g.restore();
 }
 
@@ -117,9 +122,10 @@ export const TO_FRAME = { s: 0.76, ox: 640, oy: 440, x: 45, y: 44 };
 
 /**
  * Draws his legs and feet for a pose (logo px) and returns how far his body is lifted above them. Shared
- * with other drawings of the goose (the game's vector rig) so they stand on the same legs.
+ * with other drawings of the goose (the game's vector rig) so they stand on the same legs, and with Bill,
+ * who walks the same gaits on his own legs (pass them as legs, in his own px).
  */
-export function drawGooseLegs(g, pose = {}) {
+export function drawGooseLegs(g, pose = {}, legs = GOOSE_LEGS) {
   const { walk, run, skid = false, air } = pose;
   const gait = run !== undefined ? GAITS.run : walk !== undefined ? GAITS.walk : null;
   const phase = run ?? walk;
@@ -127,8 +133,8 @@ export function drawGooseLegs(g, pose = {}) {
   const lift = gait ? gait.rise + gait.bob * Math.sin(2 * Math.PI * (phase + gait.bobAt)) ** 2 : skid ? SKID.rise : 0;
   for (const [side, offset] of [['far', 0.5], ['near', 0]]) {
     const p = gait ? legPose((phase + offset) % 1, gait) : air ? AIR[air][side] : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
-    const [hx, hy] = HIP[side];
-    legAndFoot(g, [hx, hy - lift], hx + p.dx, ANKLE_Y[side] - p.lift, p.rot, ORANGE[side]);
+    const [hx, hy] = legs.hip[side];
+    legAndFoot(g, [hx, hy - lift], hx + p.dx, legs.ankleY[side] - p.lift, p.rot, side, legs);
   }
   return lift;
 }
