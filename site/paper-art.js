@@ -81,6 +81,13 @@ const GAITS = {
 // bobAt shifts the bob: walking he's highest as a leg passes under him; running, in the hop between steps
 // Skidding to a stop: body sunk, both feet braced out in front with the toes up, the wing out.
 const SKID = { near: { dx: 78, lift: 12, rot: -0.38 }, far: { dx: 50, lift: 10, rot: -0.3 }, rise: -8, flap: 0.6 };
+// In the air (the game's jump): rising, legs trailing back from the push-off with the toes pointing down
+// and back, the wing a little up; falling, legs dangling well down and reaching forward, toes up ready to
+// land (the far foot higher and further ahead), and the wing half up. (A wingbeat lifts it all the way.)
+const AIR = {
+  rise: { near: { dx: -62, lift: 8, rot: 1.25 }, far: { dx: -48, lift: 22, rot: 1.15 }, flap: 0.3 },
+  fall: { near: { dx: 44, lift: -50, rot: -0.35 }, far: { dx: 34, lift: -24, rot: -0.1 }, flap: 0.6 },
+};
 
 function legAndFoot(g, [hx, hy], ax, ay, rot, fill) {
   g.lineCap = 'round'; g.lineJoin = 'round';
@@ -113,13 +120,13 @@ export const TO_FRAME = { s: 0.76, ox: 640, oy: 440, x: 45, y: 44 };
  * with other drawings of the goose (the game's vector rig) so they stand on the same legs.
  */
 export function drawGooseLegs(g, pose = {}) {
-  const { walk, run, skid = false } = pose;
+  const { walk, run, skid = false, air } = pose;
   const gait = run !== undefined ? GAITS.run : walk !== undefined ? GAITS.walk : null;
   const phase = run ?? walk;
   // body rises as each leg passes under him (twice a cycle), on top of the gait's lift
   const lift = gait ? gait.rise + gait.bob * Math.sin(2 * Math.PI * (phase + gait.bobAt)) ** 2 : skid ? SKID.rise : 0;
   for (const [side, offset] of [['far', 0.5], ['near', 0]]) {
-    const p = gait ? legPose((phase + offset) % 1, gait) : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
+    const p = gait ? legPose((phase + offset) % 1, gait) : air ? AIR[air][side] : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
     const [hx, hy] = HIP[side];
     legAndFoot(g, [hx, hy - lift], hx + p.dx, ANKLE_Y[side] - p.lift, p.rot, ORANGE[side]);
   }
@@ -131,7 +138,7 @@ export function drawGooseLegs(g, pose = {}) {
  * the top edge it shows when lifted.
  */
 export function drawGooseWing(g, pose, draw) {
-  const flap = pose.flap ?? (pose.skid ? SKID.flap : 0);
+  const flap = pose.flap ?? (pose.skid ? SKID.flap : pose.air ? AIR[pose.air].flap : 0);
   g.save();
   if (flap) { g.translate(...WING_PIVOT); g.rotate(flap * 0.45); g.translate(-WING_PIVOT[0], -WING_PIVOT[1]); }
   draw();
@@ -141,7 +148,8 @@ export function drawGooseWing(g, pose, draw) {
 
 /**
  * Draws one frame of the goose in logo pixels.
- * pose: { walk or run: phase 0-1 (or neither to stand), skid, blink, honk, flap (0-1), hop (logo px) }
+ * pose: { walk or run: phase 0-1 (or neither to stand), skid, air ('rise' or 'fall'), blink, honk, flap (0-1),
+ *   hop (logo px) }
  */
 export function drawGooseParts(g, pose = {}) {
   if (!gooseSprite) throw new Error('drawGoose: await loadGoose() first');

@@ -235,6 +235,11 @@ These rules are fixed. Changing them needs the creator's sign-off.
 - **Skid (game):** let go of a run, or push the other way, and he skids briefly to a stop before turning:
   still facing forwards, body sunk, both feet braced out in front with the toes up, the wing out, and the
   sheet leaning back about 8°. Never a moonwalk: he only turns once stopped.
+- **Jump (game):** a snappy arc: about 0.4s up to the top, quicker down, with a moment's hang at the
+  top while jump is held. He stretches 8% as he takes off with one wingbeat. Rising, his legs trail
+  back from the push-off with the toes pointed and the wing a little up; from near the top he falls
+  with his legs dangling and reaching forward, toes up, the wing half up. Landing, he squashes (up to
+  14%, less for small drops) and springs straight back.
 - **Idle:** blinks for 0.14s every 2–5 seconds. Pauses at the ends of a walk (0.8–2.2s), sometimes honks.
 - **Honk:** bill open for 0.65s with a slight squash-and-stretch (6%) and a "HONK!" speech bubble that
   pops in above his head on the side he faces, holds, then folds away (1.1s total). In the game it's
@@ -245,7 +250,9 @@ These rules are fixed. Changing them needs the creator's sign-off.
   6% rather than squashing.
 - **The Drop (plop):** tap him and he honks and leaves a plop behind him (opposite the way he faces).
   Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6).
-- **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s.
+- **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
+  it's a full wingbeat, five a second: up (about 51°), middle, down (about 18° below, with the body
+  pushed up a little), middle. A jump gets one beat, the mid-air flap three.
 - **Personality:** sweet face, zero manners. Round of belly, means well. Mostly.
 
 ### Character file (canon)
