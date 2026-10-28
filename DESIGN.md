@@ -171,6 +171,15 @@ Poopy Goose) are the template for the game's look.
 - **Lighting:** a soft warm hemisphere light (white sky, `#D8C8AE` ground) plus a warm key light
   (`#FFF6E8`) from upper left. Only the card edges really show it.
 - **Framing:** the edges of the stage fade out softly rather than cutting off hard.
+- **Paper that flips (game):** the goose's honk turns props over with the same paper flip he turns with
+  (half a turn in 0.34s, a small hop, darkening edge-on), rippling out from him, nearest first. A prop
+  with a back drawing (a gate shut and open, a sign with a hint on its back) swaps it in as the sheet
+  passes edge-on, so neither side is ever seen mirrored. A prop with nothing on the back turns edge-on
+  instead, stopping at about 80° so a darkened sliver still shows where it is. Hinged things (a gate)
+  swing about their hinge without the hop, and only the moving part turns: posts and fences stay put.
+  Something that blocks the path stands across it at an angle (a gate at about 60°), so the goose
+  visibly bumps into it, and opens flat against the scenery behind. Props are drawn at the goose's
+  density (300 px a metre in the game), so their outlines match his.
 
 ### Drawing new art (characters, props, scenery)
 
