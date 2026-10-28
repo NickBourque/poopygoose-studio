@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Goose model sheet</title>
 <!-- Dev page: Poopy Goose's model sheet, put together by source/goose/rig.js: each view whole, then each
-     view's faces (eyes open, blink, honk) close up. -->
+     view's faces (eyes open, blink, honk) close up, then eating bread in 3/4. -->
 <style>
   body { font: 14px/1.4 system-ui; margin: 16px; background: #F6F1E7; color: #482319; }
   .grid { display: grid; grid-template-columns: repeat(4, max-content); gap: 10px 14px; margin-bottom: 18px; }
@@ -15,6 +15,7 @@
 <body>
 <div class="grid" id="whole"></div>
 <div class="grid" id="faces"></div>
+<div class="grid" id="eating"></div>
 <script type="module">
   import { loadGooseRig, VIEWS } from '../source/goose/rig.js';
   const rig = await loadGooseRig(new URL('../source/goose/', location.href));
@@ -32,6 +33,14 @@
     for (const [label, face] of faces) add('faces', rig.svg(view, face, HEAD_BOX), `${NAMES[view]}: ${label}`, 190);
     for (let i = faces.length; i < 4; i++) document.getElementById('faces').append(document.createElement('div'));
   }
+  // eating bread, 3/4 only: gape, reaching down to the bread and biting it there, pulling back up with it,
+  // two chews, then the gulp going down his neck
+  const EAT_BOX = { x: 700, y: 400, w: 960, h: 880 };
+  const eating = [['gape', { eat: 'gape' }], ['reach', { eat: 'gape', lunge: 0.5 }], ['lunge', { eat: 'gape', lunge: 1 }],
+    ['bite it there', { eat: 'bite', lunge: 1 }], ['pull back', { eat: 'bite', lunge: 0.5 }], ['holding it', { eat: 'bite' }],
+    ['chew', { eat: 'chew-a' }], ['chew, teeth', { eat: 'chew-b' }],
+    ['gulp', { gulp: 1 }], ['gulp', { gulp: 2 }], ['gulp, eyes shut', { gulp: 3, blink: true }]];
+  for (const [label, face] of eating) add('eating', rig.svg('34', face, EAT_BOX), `${NAMES['34']}: ${label}`, 230);
   window.result = 'ok';
 </script>
 </body>

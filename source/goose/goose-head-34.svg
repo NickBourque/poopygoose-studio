@@ -41,7 +41,6 @@
     <path class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17" d="M1052 692C1090 690 1150 668 1250 662L1404 660L1398 758C1380 724 1356 706 1320 704L1250 706C1200 708 1170 750 1130 752C1090 752 1060 730 1052 692Z"/>
     <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18" d="M1072 548C1096 528 1142 528 1164 548C1190 572 1214 612 1250 620L1320 624C1356 626 1380 608 1398 570L1404 664L1250 664C1150 668 1090 690 1052 694C1010 690 990 664 1006 646C1020 630 1050 636 1062 618C1072 600 1060 568 1072 548Z"/>
     <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" d="M1094 552Q1120 542 1148 552Q1200 594 1250 610L1308 613"/>
-    <path class="ink" fill="none" stroke="#462418" stroke-width="9" d="M1316 630Q1322 666 1316 700"/>
     <path class="ink" fill="none" stroke="#462418" stroke-width="11" d="M1030 662C1016 666 1018 682 1032 686"/>
     <path class="ink" fill="#462418" d="M1094 596C1100 592 1106 596 1106 604C1104 612 1100 618 1096 624C1090 614 1088 602 1094 596Z"/>
     <path class="ink" fill="#462418" d="M1158 596C1163 592 1168 596 1167 603C1165 610 1162 616 1159 621C1154 612 1153 601 1158 596Z"/>
@@ -57,5 +56,84 @@
     <path class="ink" fill="none" stroke="#462418" stroke-width="11" d="M1030 662C1016 666 1018 682 1032 686"/>
     <path class="ink" fill="#462418" d="M1094 596C1100 592 1106 596 1106 604C1104 612 1100 618 1096 624C1090 614 1088 602 1094 596Z"/>
     <path class="ink" fill="#462418" d="M1158 596C1163 592 1168 596 1167 603C1165 610 1162 616 1159 621C1154 612 1153 601 1158 596Z"/>
+  </g>
+  <!-- eating bread (each replaces the bill): the gape, jaws thrown comically wide on a mouthful of big
+       square human teeth; the bite, clamped on a chunk of bread; and two chews, the lower jaw working
+       (the second showing the teeth clenched), with cheek-puff on his cheek -->
+  <defs>
+    <g id="tq-teeth-upper" stroke="#462418" stroke-width="6" stroke-linejoin="round">
+      <path fill="#ffffff" d="M1092 692L1092 724Q1092 734 1105 734Q1118 734 1118 724L1118 692Z"/>
+      <path fill="#ffffff" d="M1120 692L1120 726Q1120 737 1134 737Q1148 737 1148 726L1148 692Z"/>
+      <path fill="#ffffff" d="M1150 692L1150 727Q1150 738 1164 738Q1178 738 1178 727L1178 692Z"/>
+      <path fill="#ffffff" d="M1180 692L1180 726Q1180 737 1194 737Q1208 737 1208 726L1208 692Z"/>
+      <path fill="#ffffff" d="M1210 692L1210 722Q1210 732 1222 732Q1234 732 1234 722L1234 692Z"/>
+    </g>
+    <g id="tq-teeth-lower" stroke="#462418" stroke-width="6" stroke-linejoin="round">
+      <path fill="#ffffff" d="M1090 702L1090 676Q1090 666 1103 666Q1116 666 1116 676L1116 702Z"/>
+      <path fill="#ffffff" d="M1118 702L1118 673Q1118 663 1132 663Q1146 663 1146 673L1146 702Z"/>
+      <path fill="#ffffff" d="M1148 702L1148 672Q1148 662 1162 662Q1176 662 1176 672L1176 702Z"/>
+      <path fill="#ffffff" d="M1178 702L1178 674Q1178 664 1191 664Q1204 664 1204 674L1204 702Z"/>
+    </g>
+    <path id="tq-bill-upper-shape" d="M1072 548C1096 528 1142 528 1164 548C1182 566 1204 590 1236 610C1268 630 1286 660 1262 680C1240 696 1200 698 1150 698C1110 698 1080 698 1052 696C1010 692 990 664 1006 646C1020 630 1050 636 1062 618C1072 600 1060 568 1072 548Z"/>
+    <path id="tq-bill-lower-shape" d="M1066 696C1110 702 1170 704 1226 692C1218 722 1186 744 1146 744C1104 744 1074 724 1066 696Z"/>
+    <g id="tq-bill-upper-marks">
+      <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" stroke-linecap="round" d="M1094 552Q1120 542 1148 552"/>
+      <path class="ink" fill="none" stroke="#462418" stroke-width="11" stroke-linecap="round" d="M1030 662C1016 666 1018 682 1032 686"/>
+      <path class="ink" fill="#462418" d="M1094 596C1100 592 1106 596 1106 604C1104 612 1100 618 1096 624C1090 614 1088 602 1094 596Z"/>
+      <path class="ink" fill="#462418" d="M1158 596C1163 592 1168 596 1167 603C1165 610 1162 616 1159 621C1154 612 1153 601 1158 596Z"/>
+    </g>
+  </defs>
+  <g id="bill-gape" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- the inside of his mouth, held between the jaws: from the hinge along each jaw to its tip, the open
+         front curving in between the tips like a crescent, past the ends of the teeth, like the gape itself -->
+    <path class="mouth" fill="#5c1e18" stroke="#462418" stroke-width="16" d="M1050 694L1095 690L1184 649L1272 590C1290 632 1250 666 1222 692C1200 712 1192 730 1196 752C1200 780 1198 804 1176 816L1117 769L1064 709Z"/>
+    <ellipse class="tongue" fill="#e87068" cx="1128" cy="742" rx="44" ry="18" transform="rotate(48 1128 742)"/>
+    <g transform="rotate(46 1050 700)">
+      <use href="#tq-teeth-lower"/>
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <g transform="rotate(-26 1060 600)">
+      <use href="#tq-teeth-upper"/>
+      <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+      <use href="#tq-bill-upper-marks"/>
+    </g>
+  </g>
+  <g id="bill-bite" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- the chunk of bread, a corner of a slice with its crust, clamped in the bill and sticking out -->
+    <path class="crust" fill="#d9964f" stroke="#462418" stroke-width="14" d="M1170 650L1296 630C1322 626 1336 644 1332 668L1318 760L1180 742Z"/>
+    <path class="crumb" fill="#fbebc8" d="M1186 662L1288 648C1304 646 1314 656 1312 672L1302 742L1194 728Z"/>
+    <ellipse fill="#edd3a2" cx="1250" cy="700" rx="7" ry="4"/>
+    <ellipse fill="#edd3a2" cx="1282" cy="676" rx="5" ry="3"/>
+    <g transform="rotate(10 1060 700)">
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+    <use href="#tq-bill-upper-marks"/>
+    <!-- crumbs flying off -->
+    <circle fill="#fbebc8" stroke="#462418" stroke-width="4" cx="1352" cy="626" r="7"/>
+    <circle fill="#d9964f" stroke="#462418" stroke-width="4" cx="1366" cy="664" r="5"/>
+  </g>
+  <g id="bill-chew-a" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="rotate(4 1060 700) translate(-6 4)">
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+    <use href="#tq-bill-upper-marks"/>
+  </g>
+  <g id="bill-chew-b" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <path class="mouth" fill="#5c1e18" d="M1060 694L1240 686L1220 728L1080 724Z"/>
+    <g transform="rotate(13 1060 700) translate(8 0)">
+      <use href="#tq-teeth-lower"/>
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <use href="#tq-teeth-upper"/>
+    <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+    <use href="#tq-bill-upper-marks"/>
+  </g>
+  <!-- a cheek puffed out with bread, bulging the side of his head -->
+  <g id="cheek-puff" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <path class="shade" fill="#c3c8b6" d="M856 622C806 650 802 744 902 776L914 750C897 726 884 702 868 672C861 656 858 640 856 622Z"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="18" d="M856 622C806 650 802 744 902 776"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="9" d="M928 690Q944 708 934 728"/>
   </g>
 </svg>

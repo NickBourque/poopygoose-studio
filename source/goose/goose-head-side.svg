@@ -32,7 +32,6 @@
   <g id="bill-honk" display="none" stroke-linecap="round" stroke-linejoin="round">
     <path class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17" d="M1192 694C1230 690 1300 676 1420 672L1414 764C1398 738 1374 722 1340 722L1290 722C1240 726 1204 718 1192 694Z"/>
     <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18" d="M1164 546C1206 550 1236 590 1262 612L1340 618C1374 620 1396 604 1414 580L1420 672L1194 686C1180 656 1166 606 1164 546Z"/>
-    <path class="ink" fill="none" stroke="#462418" stroke-width="9" d="M1336 624Q1342 670 1336 716"/>
     <ellipse class="orange" fill="#f88b2d" stroke="#462418" stroke-width="15" cx="1420" cy="672" rx="16" ry="92"/>
     <ellipse class="mouth" fill="#5c1e18" cx="1422" cy="672" rx="8" ry="70"/>
     <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" d="M1184 566Q1218 572 1246 600Q1270 614 1326 616"/>

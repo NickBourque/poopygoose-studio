@@ -180,6 +180,12 @@ Poopy Goose) are the template for the game's look.
   Something that blocks the path stands across it at an angle (a gate at about 60°), so the goose
   visibly bumps into it, and opens flat against the scenery behind. Props are drawn at the goose's
   density (300 px a metre in the game), so their outlines match his.
+- **Things a switch works (game):** they look mechanical, so they don't read as honkable. A door a
+  pressure plate opens is a plank door banded with iron, standing across the path at the same angle as
+  a gate between two tall posts, and it lifts straight up on a pulley (0.6s) and drops back (0.5s): a
+  beam across the post tops carries two pulley wheels that turn as the rope runs, and a "1 TON"
+  counterweight sinks as the door rises. Clouds and other things to stand on are one-way: jump up
+  through them, land on top, drop down through them.
 
 ### Drawing new art (characters, props, scenery)
 
@@ -215,7 +221,8 @@ These rules are fixed. Changing them needs the creator's sign-off.
   front. Don't restyle him or drift from the logo: when unsure, match the front view. The site still
   uses the pixel cut-out (`site/assets/goose-sprite.png`, from `tools/make-goose-sprite.html`).
 - **Views and faces.** Front (face on), half turn (15°, the front's face bent round his head), 3/4 (30°)
-  and side, all facing right. Each has eyes open, blink and honk; the front also has the logo's wink.
+  and side, all facing right. Each has eyes open, blink and honk; the front also has the logo's wink,
+  and the 3/4 view has the eating faces (gape, bite, two chews and a gulp).
   His everyday face has both eyes open; the wink is an expression.
 - **Head turn (game).** Standing he faces us. On the move his head turns to the 3/4 view, passing
   through the half turn for a moment as he sets off and stops (about 0.12s each way).
@@ -255,13 +262,27 @@ These rules are fixed. Changing them needs the creator's sign-off.
   bigger: his neck stretches up (face on) or bends forward in a curve towards where he's pointing (turned,
   his head reaching well past his chest), his eyes widen (30%) and his brows
   lift, his bill stretches out into a trumpet (face on, a round open bell; turned, a long narrow pipe with
-  a band that flares into a bell, reaching about twice the bill's length), and the sheet stretches up
+  a flare into a bell, reaching about twice the bill's length), and the sheet stretches up
   6% rather than squashing.
 - **The Drop (plop):** tap him and he honks and leaves a plop behind him (opposite the way he faces).
-  Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6).
+  Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6). In the
+  game a plop is a standing cut-out (about 0.4 m tall) just behind his lane: it pops in at his tail, falls
+  to the ground, and stays 6 seconds (a small step to land on, a weight sitting on a switch; the birds
+  walk straight past it) before shrinking away. Up to 3 are out at once.
+- **Eating bread (game):** bread is a slice from a loaf (puffy top, crust `#D9964F`, crumb `#FBEBC8` with
+  a few air holes). Facing a slice and pressing Eat, he stops and turns his head to it (3/4) and gapes
+  comically wide, jaws thrown open on a mouthful of big, square, shiny white human teeth, the dark of
+  his mouth held between the jaws, eyes wide, shuffling to just the right spot
+  (0.3s). His neck shoots out and down like a swan's, stretching up, over and down so his head tips
+  forward onto the bread where it sits, leaning in (0.17s); he bites it there, a chunk in his bill and
+  crumbs flying (0.2s); and pulls back upright holding it (0.1s, then 0.3s held up). He chews twice with
+  his cheek puffed out, the second chew baring his teeth (0.72s), then gulps: a lump bulges down the
+  front of his neck in three steps, eyes shutting, satisfied, at the end (0.54s). About 2.4s in all.
+  Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
   it's a full wingbeat, five a second: up (about 51°), middle, down (about 18° below, with the body
-  pushed up a little), middle. A jump gets one beat, the mid-air flap three.
+  pushed up a little), middle. A jump gets one beat, the mid-air flap three, and holding on after the
+  flap keeps the wingbeat going as he glides down.
 - **Personality:** sweet face, zero manners. Round of belly, means well. Mostly.
 
 ### Character file (canon)
@@ -338,7 +359,8 @@ The game is built in Unity. How the pieces above map across:
   in the half turn. Then animate them with the timings in section 8. Keep the rule: he only moves in the
   direction he faces.
 - **Ground:** an extruded blob mesh: unlit grass texture on top, a simple lit material (`#F2E4CC`) on
-  the bevelled sides. Ground decals (pond, blanket, plops) are flat unlit quads just above it.
+  the bevelled sides. Ground decals (pond, blanket) are flat unlit quads just above it. Plops stand up
+  as cut-outs, since the birds can stand on them.
 - **Shadows:** blob-shadow decals (soft radial brown, 32–40% opacity), not real-time shadows.
 - **Lighting:** a warm ambient (sky white, ground `#D8C8AE`) and one warm directional light from upper left.
 - **Camera:** perspective, FOV 28 (close-ups 24), pitched about 18° down, following the goose
