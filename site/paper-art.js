@@ -70,12 +70,15 @@ const HIP = { near: [985, 1252], far: [1098, 1246] }, ANKLE_Y = { near: 1308, fa
 const FOOT_SCALE = 1.35;
 // Gaits: stride is how far each foot travels either side of its hip, stepH how high it lifts, bob how
 // far his body rises as each leg passes under him, rise how far the whole body is lifted off the hips
-// (the legs stretch to reach the ground). The walk is the site's stroll; the run (the game's) takes
-// long, high strides with his body up on his toes.
+// (the legs stretch to reach the ground). contact is the share of a stride a foot is planted; below 0.5
+// both feet leave the ground for a moment each step. push tips the toes down as the foot pushes off,
+// reach lifts them as it swings forward. The walk is the site's stroll; the run (the game's) is a
+// cartoon scamper: long reaching strides, high knees, a bouncing body and a hop between steps.
 const GAITS = {
-  walk: { stride: 40, stepH: 26, bob: 8, rise: 0 },
-  run: { stride: 110, stepH: 52, bob: 14, rise: 20 },
+  walk: { stride: 40, stepH: 26, bob: 8, bobAt: 0, rise: 0, contact: 0.5, push: 0.3, reach: 0.12, heel: 12 },
+  run: { stride: 180, stepH: 86, bob: 20, bobAt: 0.3, rise: 24, contact: 0.4, push: 0.75, reach: 0.45, heel: 24 },
 };
+// bobAt shifts the bob: walking he's highest as a leg passes under him; running, in the hop between steps
 // Skidding to a stop: body sunk, both feet braced out in front with the toes up, the wing out.
 const SKID = { near: { dx: 78, lift: 12, rot: -0.38 }, far: { dx: 50, lift: 10, rot: -0.3 }, rise: -8, flap: 0.6 };
 
@@ -90,20 +93,51 @@ function legAndFoot(g, [hx, hy], ax, ay, rot, fill) {
   g.restore();
 }
 
-// One leg at walk phase q (0-1): first half planted and sliding back as he moves forward, second half
-// lifted and swinging forward. rot > 0 tips the toes down.
-function legPose(q, { stride, stepH }) {
+// One leg at phase q (0-1): first planted and sliding back as he moves forward (the gait's contact share
+// of the stride), then lifted and swinging forward. rot > 0 tips the toes down.
+function legPose(q, { stride, stepH, contact, push, reach, heel }) {
   const ease = t => t * t * (3 - 2 * t);
-  if (q < 0.5) {
-    const s = q / 0.5, push = ease(Math.max(0, (s - 0.7) / 0.3));   // heel peels up at the end
-    return { dx: stride - 2 * stride * s, lift: push * 12, rot: push * 0.3 };
+  if (q < contact) {
+    const s = q / contact, peel = ease(Math.max(0, (s - 0.7) / 0.3));   // heel peels up at the end
+    return { dx: stride - 2 * stride * s, lift: peel * heel, rot: peel * push };
   }
-  const s = (q - 0.5) / 0.5;
-  return { dx: -stride + 2 * stride * ease(s), lift: Math.sin(Math.PI * s) * stepH, rot: 0.3 - 0.42 * s };
+  const s = (q - contact) / (1 - contact);
+  return { dx: -stride + 2 * stride * ease(s), lift: Math.sin(Math.PI * s) * stepH, rot: push - (push + reach) * s };
 }
 
 // logo px -> sprite frame: his box (x 640-1310, y 432-1368 with feet) scaled to fit the frame
 export const TO_FRAME = { s: 0.76, ox: 640, oy: 440, x: 45, y: 44 };
+
+/**
+ * Draws his legs and feet for a pose (logo px) and returns how far his body is lifted above them. Shared
+ * with other drawings of the goose (the game's vector rig) so they stand on the same legs.
+ */
+export function drawGooseLegs(g, pose = {}) {
+  const { walk, run, skid = false } = pose;
+  const gait = run !== undefined ? GAITS.run : walk !== undefined ? GAITS.walk : null;
+  const phase = run ?? walk;
+  // body rises as each leg passes under him (twice a cycle), on top of the gait's lift
+  const lift = gait ? gait.rise + gait.bob * Math.sin(2 * Math.PI * (phase + gait.bobAt)) ** 2 : skid ? SKID.rise : 0;
+  for (const [side, offset] of [['far', 0.5], ['near', 0]]) {
+    const p = gait ? legPose((phase + offset) % 1, gait) : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
+    const [hx, hy] = HIP[side];
+    legAndFoot(g, [hx, hy - lift], hx + p.dx, ANKLE_Y[side] - p.lift, p.rot, ORANGE[side]);
+  }
+  return lift;
+}
+
+/**
+ * Draws his near wing for a pose with draw(): lifted about the shoulder when flapping (or skidding), with
+ * the top edge it shows when lifted.
+ */
+export function drawGooseWing(g, pose, draw) {
+  const flap = pose.flap ?? (pose.skid ? SKID.flap : 0);
+  g.save();
+  if (flap) { g.translate(...WING_PIVOT); g.rotate(flap * 0.45); g.translate(-WING_PIVOT[0], -WING_PIVOT[1]); }
+  draw();
+  if (flap) { g.strokeStyle = INK; g.lineWidth = 18; g.lineCap = 'round'; g.stroke(path(WING_TOP)); }
+  g.restore();
+}
 
 /**
  * Draws one frame of the goose in logo pixels.
@@ -111,27 +145,13 @@ export const TO_FRAME = { s: 0.76, ox: 640, oy: 440, x: 45, y: 44 };
  */
 export function drawGooseParts(g, pose = {}) {
   if (!gooseSprite) throw new Error('drawGoose: await loadGoose() first');
-  const { walk, run, skid = false, blink = false, honk = false, hop = 0 } = pose;
-  const flap = pose.flap ?? (skid ? SKID.flap : 0);
+  const { blink = false, honk = false, hop = 0 } = pose;
   const layout = goosePartsLayout().parts;
   const part = name => { const r = GOOSE_PARTS[name], a = layout[name]; g.drawImage(gooseSprite, a.x, a.y, r.w, r.h, r.x, r.y, r.w, r.h); };
-  const gait = run !== undefined ? GAITS.run : walk !== undefined ? GAITS.walk : null;
-  const phase = run ?? walk;
-  // body rises as each leg passes under him (twice a cycle), on top of the gait's lift
-  const lift = gait ? gait.rise + gait.bob * Math.sin(2 * Math.PI * phase) ** 2 : skid ? SKID.rise : 0;
   g.save(); g.translate(0, -hop);
-  for (const [side, offset] of [['far', 0.5], ['near', 0]]) {
-    const p = gait ? legPose((phase + offset) % 1, gait) : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
-    const [hx, hy] = HIP[side];
-    legAndFoot(g, [hx, hy - lift], hx + p.dx, ANKLE_Y[side] - p.lift, p.rot, ORANGE[side]);
-  }
-  g.translate(0, -lift);
+  g.translate(0, -drawGooseLegs(g, pose));
   part('under');
-  g.save();
-  if (flap) { g.translate(...WING_PIVOT); g.rotate(flap * 0.45); g.translate(-WING_PIVOT[0], -WING_PIVOT[1]); }
-  part('wing');
-  if (flap) { g.strokeStyle = INK; g.lineWidth = 18; g.lineCap = 'round'; g.stroke(path(WING_TOP)); }
-  g.restore();
+  drawGooseWing(g, pose, () => part('wing'));
   if (blink) part('blink');
   if (honk) part('honk');
   g.restore();

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Goose model sheet</title>
+<!-- Dev page: Poopy Goose's model sheet, put together by source/goose/rig.js: each view whole, then each
+     view's faces (eyes open, blink, honk) close up. -->
+<style>
+  body { font: 14px/1.4 system-ui; margin: 16px; background: #F6F1E7; color: #482319; }
+  .grid { display: grid; grid-template-columns: repeat(4, max-content); gap: 10px 14px; margin-bottom: 18px; }
+  figure { margin: 0; text-align: center; }
+  img { display: block; background: #FFFDF8; border-radius: 14px; }
+</style>
+</head>
+<body>
+<div class="grid" id="whole"></div>
+<div class="grid" id="faces"></div>
+<script type="module">
+  import { loadGooseRig, VIEWS } from '../source/goose/rig.js';
+  const rig = await loadGooseRig(new URL('../source/goose/', location.href));
+  const NAMES = { front: 'Front (traced)', half: 'Half turn, 15°', '34': '3/4, 30°', side: 'Side' };
+  const HEAD_BOX = { x: 820, y: 340, w: 740, h: 520 };
+  const add = (where, svg, label, width) => {
+    const img = new Image(); img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); img.width = width;
+    const fig = document.createElement('figure'); fig.append(img, Object.assign(document.createElement('figcaption'), { textContent: label }));
+    document.getElementById(where).append(fig);
+  };
+  for (const view of VIEWS) add('whole', rig.svg(view), NAMES[view], 190);
+  for (const view of VIEWS) {
+    const faces = [['eyes open', {}], ['blink', { blink: true }], ['honk', { honk: true }]];
+    if (view === 'front') faces.push(['wink (the logo)', { wink: true }]);
+    for (const [label, face] of faces) add('faces', rig.svg(view, face, HEAD_BOX), `${NAMES[view]}: ${label}`, 190);
+    for (let i = faces.length; i < 4; i++) document.getElementById('faces').append(document.createElement('div'));
+  }
+  window.result = 'ok';
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="600 400 770 880" width="770" height="880">
+  <!-- Extras for the front view, drawn over goose-front.svg (which the tracer regenerates; logo px).
+       bill-honk: honking, his bill stretches out at us and flares into a trumpet bell, open at the end.
+       Laid over the traced bill. Paths only (M L Q C Z), so the half-turned view can bend them like the
+       traced face. -->
+  <g id="bill-honk" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="16" d="M949 706C949 664 983 630 1025 630C1067 630 1101 664 1101 706C1101 748 1067 782 1025 782C983 782 949 748 949 706Z"/>
+    <path class="mouth" fill="#5c1e18" d="M973 711C973 682.3 996.3 659 1025 659C1053.7 659 1077 682.3 1077 711C1077 739.7 1053.7 763 1025 763C996.3 763 973 739.7 973 711Z"/>
+    <path class="tongue" fill="#e87068" d="M999 742C999 734.8 1010.6 729 1025 729C1039.4 729 1051 734.8 1051 742C1051 749.2 1039.4 755 1025 755C1010.6 755 999 749.2 999 742Z"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="10" d="M973 711C973 682.3 996.3 659 1025 659C1053.7 659 1077 682.3 1077 711C1077 739.7 1053.7 763 1025 763C996.3 763 973 739.7 973 711Z"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="9" d="M966 688Q976 652 1014 644"/>
+  </g>
+</svg>

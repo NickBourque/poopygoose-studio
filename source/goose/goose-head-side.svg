@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="600 400 860 880" width="860" height="880">
+  <!-- Poopy Goose's head in profile, facing right (drawn to match goose-front.svg; logo px). Sits on the
+       body's neck, which it overlaps below y 790. Parts: head, eye-near, brow-near, bill-lower,
+       bill-upper. Shown by source/goose/rig.js as needed: eye-near-shut (blink), bill-honk (replaces bill-lower).
+       The head is round on top with full cheeks low at the back and a jowl under the bill; the upper
+       bill is tall at the face, slopes down, then levels out to a small tip. -->
+  <defs>
+    <path id="side-head-shape" d="M961 812C958 784 922 760 896 724C866 690 852 640 862 590C872 528 920 476 978 464C968 440 990 424 1016 430C1034 435 1044 446 1046 455C1108 452 1150 482 1164 532L1170 560L1188 726C1196 756 1158 774 1126 788C1110 795 1100 804 1097 812Z"/>
+    <clipPath id="side-head-clip"><use href="#side-head-shape"/></clipPath>
+  </defs>
+  <g id="head" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#side-head-shape" fill="#f4f5f4"/>
+    <path class="shade" fill="#c3c8b6" clip-path="url(#side-head-clip)" d="M850 640C878 738 1030 784 1210 736L1210 830L850 830Z"/>
+    <!-- the shadow under his chin carries on down the neck, between its outlines, ending in a curve -->
+    <path class="shade" fill="#c3c8b6" d="M972 790L1088 790L1088 820C1062 842 1002 844 972 826Z"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="18" d="M961 812C958 784 922 760 896 724C866 690 852 640 862 590C872 528 920 476 978 464C968 440 990 424 1016 430C1034 435 1044 446 1046 455C1108 452 1150 482 1164 532L1170 560M1188 712C1196 756 1158 774 1126 788C1110 795 1100 804 1097 812"/>
+  </g>
+  <g id="brow-near">
+    <path class="ink" fill="none" stroke="#462418" stroke-width="14" stroke-linecap="round" d="M1046 522Q1072 502 1102 514"/>
+  </g>
+  <g id="eye-near">
+    <ellipse class="ink" fill="#462418" cx="1076" cy="572" rx="13.5" ry="25" transform="rotate(-5 1076 572)"/>
+  </g>
+  <g id="eye-near-shut" display="none">
+    <path class="ink" fill="none" stroke="#462418" stroke-width="13" stroke-linecap="round" d="M1061 572Q1076 588 1092 570"/>
+  </g>
+  <g id="bill-lower" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17" d="M1190 690C1230 695 1270 696 1300 693C1294 716 1266 732 1230 734C1204 735 1188 722 1190 690Z"/>
+  </g>
+  <!-- honking: the bill stretches far out into a trumpet, a narrow pipe that flares into a bell open at
+       the end, seen edge on (replaces the bill) -->
+  <g id="bill-honk" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17" d="M1192 694C1230 690 1300 676 1420 672L1414 764C1398 738 1374 722 1340 722L1290 722C1240 726 1204 718 1192 694Z"/>
+    <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18" d="M1164 546C1206 550 1236 590 1262 612L1340 618C1374 620 1396 604 1414 580L1420 672L1194 686C1180 656 1166 606 1164 546Z"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="9" d="M1336 624Q1342 670 1336 716"/>
+    <ellipse class="orange" fill="#f88b2d" stroke="#462418" stroke-width="15" cx="1420" cy="672" rx="16" ry="92"/>
+    <ellipse class="mouth" fill="#5c1e18" cx="1422" cy="672" rx="8" ry="70"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" d="M1184 566Q1218 572 1246 600Q1270 614 1326 616"/>
+    <path class="ink" fill="#462418" d="M1220 604C1228 598 1238 600 1240 608C1234 611 1230 618 1228 626C1220 621 1216 610 1220 604Z"/>
+  </g>
+  <g id="bill-upper" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18" d="M1164 546C1206 550 1232 586 1258 616C1276 636 1298 644 1318 648C1334 651 1338 670 1326 680C1306 694 1252 694 1190 690C1176 660 1166 606 1164 546Z"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" d="M1184 566Q1218 572 1246 606"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="8" d="M1226 678Q1268 678 1306 678"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="11" d="M1206 672C1190 668 1184 684 1196 692"/>
+    <path class="ink" fill="#462418" d="M1220 604C1228 598 1238 600 1240 608C1234 611 1230 618 1228 626C1220 621 1216 610 1220 604Z"/>
+  </g>
+</svg>

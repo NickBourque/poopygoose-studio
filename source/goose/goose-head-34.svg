@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="600 400 860 880" width="860" height="880">
+  <!-- Poopy Goose's head turned 30° to the right, between the front view and the profile (drawn to match
+       goose-front.svg; logo px). Sits on the body's neck, which it overlaps below y 790. Parts: head,
+       eye-near, brow-near, eye-far, brow-far, bill-lower, bill-upper. Shown by source/goose/rig.js as needed:
+       eye-near-shut and eye-far-shut (blink), bill-honk (replaces bill-lower). -->
+  <defs>
+    <path id="tq-head-shape" d="M961 812C958 772 898 745 870 700C836 640 845 520 930 468C962 449 990 444 1008 442C1000 418 1020 408 1042 414C1060 420 1068 432 1068 442C1098 445 1120 455 1135 468C1188 502 1210 570 1206 640C1202 715 1145 765 1097 812Z"/>
+    <clipPath id="tq-head-clip"><use href="#tq-head-shape"/></clipPath>
+  </defs>
+  <g id="head" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#tq-head-shape" fill="#f4f5f4"/>
+    <path class="shade" fill="#c3c8b6" clip-path="url(#tq-head-clip)" d="M845 640C870 740 1030 776 1215 712L1215 830L845 830Z"/>
+    <!-- the shadow under his chin carries on down the neck, between its outlines, ending in a curve -->
+    <path class="shade" fill="#c3c8b6" d="M972 790L1088 790L1088 820C1062 842 1002 844 972 826Z"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="18" d="M961 812C958 772 898 745 870 700C836 640 845 520 930 468C962 449 990 444 1008 442C1000 418 1020 408 1042 414C1060 420 1068 432 1068 442C1098 445 1120 455 1135 468C1188 502 1210 570 1206 640C1202 715 1145 765 1097 812"/>
+  </g>
+  <g id="brow-far">
+    <path class="ink" fill="none" stroke="#462418" stroke-width="12" stroke-linecap="round" d="M1162 520Q1178 510 1192 518"/>
+  </g>
+  <g id="eye-far">
+    <ellipse class="ink" fill="#462418" cx="1180" cy="572" rx="8" ry="23"/>
+  </g>
+  <g id="eye-far-shut" display="none">
+    <path class="ink" fill="none" stroke="#462418" stroke-width="10" stroke-linecap="round" d="M1173 570Q1181 582 1189 568"/>
+  </g>
+  <g id="brow-near">
+    <path class="ink" fill="none" stroke="#462418" stroke-width="14" stroke-linecap="round" d="M988 526Q1014 506 1044 517"/>
+  </g>
+  <g id="eye-near">
+    <ellipse class="ink" fill="#462418" cx="1018" cy="577" rx="13.5" ry="25" transform="rotate(-4 1018 577)"/>
+  </g>
+  <g id="eye-near-shut" display="none">
+    <path class="ink" fill="none" stroke="#462418" stroke-width="13" stroke-linecap="round" d="M1002 575Q1018 591 1035 573"/>
+  </g>
+  <g id="bill-lower" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17" d="M1066 696C1110 702 1170 704 1226 692C1218 722 1186 744 1146 744C1104 744 1074 724 1066 696Z"/>
+  </g>
+  <!-- honking: the bill stretches far out into a trumpet, a narrow pipe that flares into a bell open at
+       the end (replaces the bill) -->
+  <g id="bill-honk" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17" d="M1052 692C1090 690 1150 668 1250 662L1404 660L1398 758C1380 724 1356 706 1320 704L1250 706C1200 708 1170 750 1130 752C1090 752 1060 730 1052 692Z"/>
+    <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18" d="M1072 548C1096 528 1142 528 1164 548C1190 572 1214 612 1250 620L1320 624C1356 626 1380 608 1398 570L1404 664L1250 664C1150 668 1090 690 1052 694C1010 690 990 664 1006 646C1020 630 1050 636 1062 618C1072 600 1060 568 1072 548Z"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" d="M1094 552Q1120 542 1148 552Q1200 594 1250 610L1308 613"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="9" d="M1316 630Q1322 666 1316 700"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="11" d="M1030 662C1016 666 1018 682 1032 686"/>
+    <path class="ink" fill="#462418" d="M1094 596C1100 592 1106 596 1106 604C1104 612 1100 618 1096 624C1090 614 1088 602 1094 596Z"/>
+    <path class="ink" fill="#462418" d="M1158 596C1163 592 1168 596 1167 603C1165 610 1162 616 1159 621C1154 612 1153 601 1158 596Z"/>
+    <ellipse class="orange" fill="#f88b2d" stroke="#462418" stroke-width="16" cx="1404" cy="664" rx="34" ry="98"/>
+    <ellipse class="mouth" fill="#5c1e18" stroke="#462418" stroke-width="9" cx="1406" cy="666" rx="21" ry="74"/>
+    <ellipse class="tongue" fill="#e87068" cx="1408" cy="708" rx="12" ry="16"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="8" d="M1380 612Q1384 588 1398 580"/>
+  </g>
+  <g id="bill-upper" stroke-linecap="round" stroke-linejoin="round">
+    <path class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18" d="M1072 548C1096 528 1142 528 1164 548C1182 566 1204 590 1236 610C1268 630 1286 660 1262 680C1240 696 1200 698 1150 698C1110 698 1080 698 1052 696C1010 692 990 664 1006 646C1020 630 1050 636 1062 618C1072 600 1060 568 1072 548Z"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="10" d="M1094 552Q1120 542 1148 552"/>
+    <path class="highlight" fill="none" stroke="#fec26f" stroke-width="8" d="M1090 676Q1150 666 1214 674"/>
+    <path class="ink" fill="none" stroke="#462418" stroke-width="11" d="M1030 662C1016 666 1018 682 1032 686"/>
+    <path class="ink" fill="#462418" d="M1094 596C1100 592 1106 596 1106 604C1104 612 1100 618 1096 624C1090 614 1088 602 1094 596Z"/>
+    <path class="ink" fill="#462418" d="M1158 596C1163 592 1168 596 1167 603C1165 610 1162 616 1159 621C1154 612 1153 601 1158 596Z"/>
+  </g>
+</svg>

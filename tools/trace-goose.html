@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trace goose</title>
+<!--
+  Dev page: traces the goose (as cut from the logo in site/assets/goose-sprite.png) into layered vector
+  art and saves source/goose/goose-front.svg through the local preview server's PUT route.
+  Each colour (ink, white, shading, sage, orange, highlight) becomes smooth filled shapes, grouped by
+  part: body, wing, bill, eyes and brows. Coordinates are logo pixels, like site/paper-art.js.
+  This is the front view, faithful to the logo; the other views are drawn to match it.
+-->
+<style>body { font: 14px/1.5 system-ui; margin: 16px; background: #9DB38F; } img, canvas { max-width: 48%; display: inline-block; margin: 8px 8px 0 0; background: #F6F1E7; }</style>
+</head>
+<body>
+<pre id="log">working…</pre>
+<script type="module">
+  import { GOOSE_SRC as R, GOOSE_PARTS, goosePartsLayout } from '../site/paper-art.js';
+  const lines = [], log = s => { lines.push(s); document.getElementById('log').textContent = lines.join('\n'); };
+  const canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+
+  // ---- the goose as pixels: the cut body ("under") and the near wing, each on its own ----
+  const sprite = await createImageBitmap(await (await fetch('../site/assets/goose-sprite.png?' + Date.now())).blob());
+  const L = goosePartsLayout().parts, W = R.w, H = R.h;
+  const layerOf = name => { const c = canvas(W, H), r = GOOSE_PARTS[name], a = L[name];
+    c.getContext('2d').drawImage(sprite, a.x, a.y, r.w, r.h, r.x - R.x, r.y - R.y, r.w, r.h); return c; };
+  const under = layerOf('under'), wing = layerOf('wing');
+
+  // ---- regions that split the face into parts (logo px) ----
+  const poly = pts => { const p = new Path2D(); pts.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; };
+  const REGIONS = {
+    bill: poly([[975, 533], [1075, 533], [1095, 560], [1090, 600], [1110, 621], [1142, 627], [1153, 650], [1150, 676], [1126, 692],
+      [1104, 702], [1096, 726], [1060, 748], [1000, 748], [966, 726], [954, 702], [930, 692], [904, 680], [896, 650], [908, 627],
+      [940, 621], [952, 600], [952, 560]]),
+    browNear: poly([[926, 508], [962, 508], [962, 545], [912, 545], [914, 532], [919, 522]]),
+    eyeNear: poly([[910, 545], [962, 545], [962, 612], [910, 612]]),
+    browFar: poly([[1082, 508], [1120, 508], [1127, 520], [1132, 530], [1136, 545], [1082, 545]]),
+    eyeFar: poly([[1082, 545], [1140, 545], [1150, 590], [1152, 616], [1082, 616]]),
+  };
+  const probe = canvas(1, 1).getContext('2d');
+  const partOf = (x, y) => { for (const [name, p] of Object.entries(REGIONS)) if (probe.isPointInPath(p, x, y)) return name; return 'body'; };
+
+  // ---- colour fields: 0-1 per pixel, traced at 0.5 ----
+  function fields(c) {
+    const d = c.getContext('2d').getImageData(0, 0, W, H).data, N = W * H;
+    const f = { base: new Float32Array(N), white: new Float32Array(N), shade: new Float32Array(N), sage: new Float32Array(N),
+      orange: new Float32Array(N), orangeDeep: new Float32Array(N), highlight: new Float32Array(N), ink: new Float32Array(N) };
+    const clamp = v => Math.max(0, Math.min(1, v));
+    for (let i = 0; i < N; i++) {
+      const o = i * 4, a = d[o + 3] / 255; if (!a) continue;
+      const r = d[o], g = d[o + 1], b = d[o + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b, sat = mx ? (mx - mn) / mx : 0;
+      // the ink is a dark, saturated brown too, so orange starts where it gets brighter
+      const orangeish = r > g && g > b && sat > 0.45 && r > 170;
+      f.base[i] = a;
+      f.white[i] = a > 0.99 && lum > 238 ? 1 : 0;
+      f.ink[i] = orangeish ? 0 : clamp((185 - lum) / 110) * a;
+      f.orange[i] = orangeish ? clamp((r - 170) / 30) * a : 0;
+      f.orangeDeep[i] = orangeish ? clamp((150 - lum) / 8) * clamp((r - 220) / 12) * a : 0;   // the lower bill
+      f.highlight[i] = orangeish ? clamp((lum - 175) / 20) * a : 0;
+      const greenish = g >= r && g >= b;
+      f.sage[i] = greenish ? clamp((sat - 0.13) / 0.05) * clamp((lum - 150) / 20) * a : 0;
+      f.shade[i] = !orangeish ? clamp((236 - lum) / 10) * clamp((lum - 150) / 20) * a : 0;
+    }
+    return f;
+  }
+  // average colour where a field is strong, for that layer's fill
+  function colourOf(c, field, minF = 0.9) {
+    const d = c.getContext('2d').getImageData(0, 0, W, H).data, s = [0, 0, 0]; let n = 0;
+    for (let i = 0; i < W * H; i++) if (field[i] >= minF) { for (let k = 0; k < 3; k++) s[k] += d[i * 4 + k]; n++; }
+    return n ? '#' + s.map(v => Math.round(v / n).toString(16).padStart(2, '0')).join('') : '#ff00ff';
+  }
+  // grow (r > 0) or shrink (r < 0) a field by r px (max / min filter), so fills tuck under the ink
+  function morph(field, r) {
+    const out = new Float32Array(field.length), tmp = new Float32Array(field.length), R2 = Math.abs(r), pick = r > 0 ? Math.max : Math.min;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let v = field[y * W + x]; for (let k = -R2; k <= R2; k++) { const xx = x + k; if (xx >= 0 && xx < W) v = pick(v, field[y * W + xx]); else if (r < 0) v = 0; } tmp[y * W + x] = v; }
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let v = tmp[y * W + x]; for (let k = -R2; k <= R2; k++) { const yy = y + k; if (yy >= 0 && yy < H) v = pick(v, tmp[yy * W + x]); else if (r < 0) v = 0; } out[y * W + x] = v; }
+    return out;
+  }
+
+  // ---- marching squares: closed loops at the 0.5 level, in logo px ----
+  function contours(field) {
+    const fw = W + 2, fh = H + 2, F = new Float32Array(fw * fh);   // padded with zeros so every loop closes
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) F[(y + 1) * fw + x + 1] = field[y * W + x];
+    const at = (x, y) => F[y * fw + x], T = 0.5, links = new Map(), points = new Map();
+    const lerp = (a, b) => (T - a) / (b - a);
+    const edge = (x, y, side) => {   // 0 top, 1 right, 2 bottom, 3 left of cell (x, y)
+      const key = side === 0 ? `h${x},${y}` : side === 2 ? `h${x},${y + 1}` : side === 3 ? `v${x},${y}` : `v${x + 1},${y}`;
+      if (!points.has(key)) {
+        const a = at(x, y), b = at(x + 1, y), c = at(x + 1, y + 1), d = at(x, y + 1);
+        const p = side === 0 ? [x + lerp(a, b), y] : side === 1 ? [x + 1, y + lerp(b, c)] : side === 2 ? [x + lerp(d, c), y + 1] : [x, y + lerp(a, d)];
+        points.set(key, [p[0] - 1 + 0.5 + R.x, p[1] - 1 + 0.5 + R.y]);
+      }
+      return key;
+    };
+    const link = (k1, k2) => { (links.get(k1) || links.set(k1, []).get(k1)).push(k2); (links.get(k2) || links.set(k2, []).get(k2)).push(k1); };
+    const SEG = { 1: [[3, 2]], 2: [[2, 1]], 3: [[3, 1]], 4: [[0, 1]], 6: [[0, 2]], 7: [[3, 0]], 8: [[3, 0]], 9: [[0, 2]], 11: [[0, 1]],
+      12: [[3, 1]], 13: [[2, 1]], 14: [[3, 2]] };
+    for (let y = 0; y < fh - 1; y++) for (let x = 0; x < fw - 1; x++) {
+      const a = at(x, y) > T, b = at(x + 1, y) > T, c = at(x + 1, y + 1) > T, d = at(x, y + 1) > T;
+      const idx = (a ? 8 : 0) | (b ? 4 : 0) | (c ? 2 : 0) | (d ? 1 : 0);
+      if (idx === 0 || idx === 15) continue;
+      let segs = SEG[idx];
+      if (idx === 5 || idx === 10) {
+        const centre = (at(x, y) + at(x + 1, y) + at(x + 1, y + 1) + at(x, y + 1)) / 4 > T;
+        segs = idx === 5 ? (centre ? [[3, 0], [2, 1]] : [[3, 2], [0, 1]]) : (centre ? [[0, 1], [3, 2]] : [[3, 0], [2, 1]]);
+      }
+      for (const [s1, s2] of segs) link(edge(x, y, s1), edge(x, y, s2));
+    }
+    const loops = [], seen = new Set();
+    for (const start of links.keys()) {
+      if (seen.has(start)) continue;
+      const loop = []; let prev = null, cur = start;
+      while (cur && !seen.has(cur)) { seen.add(cur); loop.push(points.get(cur)); const next = links.get(cur).find(k => k !== prev && !seen.has(k)); prev = cur; cur = next; }
+      if (loop.length > 2) loops.push(loop);
+    }
+    return loops;
+  }
+  const area = pts => { let s = 0; for (let i = 0; i < pts.length; i++) { const [x1, y1] = pts[i], [x2, y2] = pts[(i + 1) % pts.length]; s += x1 * y2 - x2 * y1; } return s / 2; };
+  const centroid = pts => { let x = 0, y = 0; for (const p of pts) { x += p[0]; y += p[1]; } return [x / pts.length, y / pts.length]; };
+  // Ramer-Douglas-Peucker on a closed loop
+  function simplify(pts, tol) {
+    const rdp = (a, b) => {
+      let best = -1, bi = -1; const [x1, y1] = pts[a], [x2, y2] = pts[b % pts.length], dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+      for (let i = a + 1; i < b; i++) { const d = Math.abs(dy * pts[i][0] - dx * pts[i][1] + x2 * y1 - y2 * x1) / len; if (d > best) { best = d; bi = i; } }
+      return best > tol ? [...rdp(a, bi), ...rdp(bi, b)] : [pts[a]];
+    };
+    const half = Math.floor(pts.length / 2);
+    return [...rdp(0, half), ...rdp(half, pts.length)];
+  }
+  // smooth closed path through the midpoints, each vertex a quadratic control point
+  const r1 = v => Math.round(v * 10) / 10;
+  function smoothPath(pts) {
+    const n = pts.length, mid = i => [(pts[i % n][0] + pts[(i + 1) % n][0]) / 2, (pts[i % n][1] + pts[(i + 1) % n][1]) / 2];
+    let d = `M${r1(mid(0)[0])} ${r1(mid(0)[1])}`;
+    for (let i = 1; i <= n; i++) { const c = pts[i % n], m = mid(i); d += `Q${r1(c[0])} ${r1(c[1])} ${r1(m[0])} ${r1(m[1])}`; }
+    return d + 'Z';
+  }
+
+  // ---- trace one source into layers, split into parts ----
+  const LAYERS = [   // drawn in this order; fills grow under the ink so no seams show
+    ['base', -1, 1.2], ['shade', 1, 1.5], ['sage', 1, 1.2], ['orange', 2, 1], ['orangeDeep', 1, 1], ['highlight', 0, 0.8],
+    ['ink', 0, 0.7],
+  ];
+  function trace(c, splitFace) {
+    const f = fields(c), parts = {};
+    for (const [name, grow, tol] of LAYERS) {
+      let field = f[name];
+      if (name === 'shade' || name === 'sage' || name === 'orangeDeep') field = morph(morph(field, -2), 2);   // drop thin slivers next to the ink
+      if (grow) field = morph(field, grow);
+      const fill = colourOf(c, name === 'base' ? f.white : f[name]);
+      for (const loop of contours(field)) {
+        if (Math.abs(area(loop)) < (name === 'ink' ? 6 : 30)) continue;
+        const [cx, cy] = centroid(loop), part = splitFace && name !== 'base' && name !== 'shade' ? partOf(cx, cy) : 'body';
+        ((parts[part] ??= {})[name] ??= { fill, d: [] }).d.push(smoothPath(simplify(loop, tol)));
+      }
+    }
+    return parts;
+  }
+  const svgGroup = (id, layers) => `  <g id="${id}">\n` + LAYERS.filter(([n]) => layers[n]).map(([n]) =>
+    `    <path class="${n}" fill="${layers[n].fill}" fill-rule="evenodd" d="${layers[n].d.join('')}"/>`).join('\n') + '\n  </g>';
+
+  try {
+    const body = trace(under, true), wingParts = trace(wing, false);
+    const order = ['body', 'bill', 'browNear', 'eyeNear', 'browFar', 'eyeFar'];
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${R.x} ${R.y} ${W} ${H}" width="${W}" height="${H}">
+  <!-- Poopy Goose, front view: traced from the logo by tools/trace-goose.html. Logo px. Legs are drawn by
+       site/paper-art.js. Parts: body (head, neck, body, tail), bill, near and far eye and brow, wing. -->
+${order.filter(p => body[p]).map(p => svgGroup(p.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), body[p])).join('\n')}
+${svgGroup('wing', wingParts.body)}
+</svg>
+`;
+    const status = (await fetch('/source/goose/goose-front.svg', { method: 'PUT', body: svg })).status;
+    log(`source/goose/goose-front.svg ${Math.round(svg.length / 1024)} KB -> ${status}`);
+    const img = new Image(); img.src = 'data:image/svg+xml,' + encodeURIComponent(svg); document.body.append(img);
+    const ref = canvas(W, H); ref.getContext('2d').drawImage(under, 0, 0); ref.getContext('2d').drawImage(wing, 0, 0); document.body.append(ref);
+    window.result = 'ok';
+  } catch (e) { log('error: ' + (e.stack || e)); window.result = 'error: ' + e; }
+</script>
+</body>
+</html>

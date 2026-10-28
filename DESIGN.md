@@ -199,11 +199,17 @@ Poopy Goose) are the template for the game's look.
 
 These rules are fixed. Changing them needs the creator's sign-off.
 
-- **He is cut from the logo, not redrawn.** Head, cheeks, beak, eyes, neck, body, tail and wings come
-  from the logo's pixels (`source/logo.jpg`), so he matches it exactly. Do not repaint, restyle,
-  "clean up" or approximate him. New poses are made by moving the cut pieces (wing, eyes, bill), not by
-  drawing a new goose. (`tools/make-goose-sprite.html` does the cutting; `tools/paper-compare.html`
-  checks the match pixel by pixel.)
+- **He is drawn to his model sheet, and the logo is its master.** His vector art lives in
+  `source/goose/`: the front view is traced from the logo (`tools/trace-goose.html`), so it matches it
+  exactly; the 3/4 and side heads are drawn to match it (same outline weight, colours and shading). New
+  views, faces and poses are drawn to the sheet (`tools/goose-model-sheet.html`) and checked against the
+  front. Don't restyle him or drift from the logo: when unsure, match the front view. The site still
+  uses the pixel cut-out (`site/assets/goose-sprite.png`, from `tools/make-goose-sprite.html`).
+- **Views and faces.** Front (face on), half turn (15°, the front's face bent round his head), 3/4 (30°)
+  and side, all facing right. Each has eyes open, blink and honk; the front also has the logo's wink.
+  His everyday face has both eyes open; the wink is an expression.
+- **Head turn (game).** Standing he faces us. On the move his head turns to the 3/4 view, passing
+  through the half turn for a moment as he sets off and stops (about 0.12s each way).
 - **Legs and feet are the exception.** They are drawn in the logo's style (thick outline, orange, lighter
   top, toe lines, the far leg a shade darker) so he can walk. They should match in style, not exactly.
 - **He is a flat paper sticker.** He never becomes a 3D model.
@@ -217,15 +223,26 @@ These rules are fixed. Changing them needs the creator's sign-off.
   under him and rocks slightly foot to foot. Move him at the speed his feet travel, so planted feet
   don't slide (about 0.34 of his height per second at the site's stroll; in the game the legs cycle
   faster as he speeds up, still at the ground's pace).
-- **Run (game):** the same 8-frame cycle with long, high strides (each foot travels 110 logo px either
-  side of its hip, lifting 52) and his body up on his toes (lifted 20 px, bobbing 14). Holding a
-  direction, he waddles off and breaks into a run after about 0.4s. Paced to the ground like the walk.
+- **Run (game):** a cartoon scamper in the same 8-frame cycle: long reaching strides (each foot travels
+  180 logo px either side of its hip) with high knees (lifting 86), toes pointing down as a foot pushes
+  off and lifting as it reaches forward, and a hop between steps where both feet are off the ground
+  (each foot is planted for 40% of a stride). His body rides up on his toes (lifted 24 px), lowest as a
+  foot lands and highest in the hop (bobbing 20). On top of the frames he leans into the run (about 6°),
+  squashes about 5% as each foot lands and stretches in the hop: lively, but still a paper sticker.
+  Holding a direction, he waddles off and breaks into a run after about 0.4s, with a cartoon scramble:
+  his legs churn at 6 strides a second, far ahead of how fast he's going, and settle to the ground's
+  pace over 0.5s. After that it's paced to the ground like the walk.
 - **Skid (game):** let go of a run, or push the other way, and he skids briefly to a stop before turning:
   still facing forwards, body sunk, both feet braced out in front with the toes up, the wing out, and the
   sheet leaning back about 8°. Never a moonwalk: he only turns once stopped.
 - **Idle:** blinks for 0.14s every 2–5 seconds. Pauses at the ends of a walk (0.8–2.2s), sometimes honks.
 - **Honk:** bill open for 0.65s with a slight squash-and-stretch (6%) and a "HONK!" speech bubble that
-  pops in above his head on the side he faces, holds, then folds away (1.1s total).
+  pops in above his head on the side he faces, holds, then folds away (1.1s total). In the game it's
+  bigger: his neck stretches up (face on) or bends forward in a curve towards where he's pointing (turned,
+  his head reaching well past his chest), his eyes widen (30%) and his brows
+  lift, his bill stretches out into a trumpet (face on, a round open bell; turned, a long narrow pipe with
+  a band that flares into a bell, reaching about twice the bill's length), and the sheet stretches up
+  6% rather than squashing.
 - **The Drop (plop):** tap him and he honks and leaves a plop behind him (opposite the way he faces).
   Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6).
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s.
@@ -271,7 +288,8 @@ player, long paragraphs, exclamation marks on everything (one big one: "HONK!").
 
 | File | What |
 | --- | --- |
-| `source/logo.jpg` | The master logo; the goose is cut from it |
+| `source/logo.jpg` | The master logo; the goose's model sheet is traced from it |
+| `source/goose/` | The goose's vector art: front (traced), 3/4 and side heads, front extras, and `rig.js`, which puts him together for any view and face |
 | `site/assets/goose-sprite.png` | The goose cut-out plus his moving pieces (wing, blink, open bill) |
 | `site/assets/goose-head-sticker.png` | Head sticker, used as the brand mark and favicon |
 | `site/assets/logo-*.png/.webp` | The logo at web sizes |
@@ -297,10 +315,12 @@ The game is built in Unity. How the pieces above map across:
 - **The flip:** rotate the goose's Y by 180° over 0.34s with smoothstep, add the hop
   (sin(π·t) × 0.088 × his height), and multiply the material colour by 1 − 0.28·|sin(Y rotation)|.
   A two-sided sprite shows the mirrored drawing from behind, which is exactly the facing-left look.
-- **Frames:** the game exports the goose's frames from `site/paper-art.js` with its own page
-  (`Tools/ArtExport/goose-frames.html` in the game repo): idle, blink, honk, flap, the walk and run
-  cycles (each also with the bill open, for honking on the move) and the skid. Then animate them with
-  the timings in section 8. Keep the rule: he only moves in the direction he faces.
+- **Frames:** the game exports the goose's frames with its own page (`Tools/ArtExport/goose-frames.html`
+  in the game repo): the vector art from `source/goose/rig.js` on the legs from `site/paper-art.js`, with
+  the sticker border added. Idle, blink, honk and flap face on; the walk and run cycles (each also
+  honking), the skid, and idle, flap and honk for moving through the air in the 3/4 view; idle and honk
+  in the half turn. Then animate them with the timings in section 8. Keep the rule: he only moves in the
+  direction he faces.
 - **Ground:** an extruded blob mesh: unlit grass texture on top, a simple lit material (`#F2E4CC`) on
   the bevelled sides. Ground decals (pond, blanket, plops) are flat unlit quads just above it.
 - **Shadows:** blob-shadow decals (soft radial brown, 32–40% opacity), not real-time shadows.
