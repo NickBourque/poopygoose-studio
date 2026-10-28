@@ -67,7 +67,17 @@ const FOOT_TOP = path('M -30 -30 L 100 -30 L 100 4 C 70 2 30 4 -30 10 Z');   // 
 const TOE_LINES = path('M 82 20 C 72 18 63 16 55 15 M 75 35 C 66 31 57 28 48 27');
 // hips sit up inside his body (which covers the top of each leg); ankles rest above the ground
 const HIP = { near: [985, 1252], far: [1098, 1246] }, ANKLE_Y = { near: 1308, far: 1302 };
-const FOOT_SCALE = 1.35, STRIDE = 40, STEP_H = 26;     // foot size; travel either side of the hip; lift
+const FOOT_SCALE = 1.35;
+// Gaits: stride is how far each foot travels either side of its hip, stepH how high it lifts, bob how
+// far his body rises as each leg passes under him, rise how far the whole body is lifted off the hips
+// (the legs stretch to reach the ground). The walk is the site's stroll; the run (the game's) takes
+// long, high strides with his body up on his toes.
+const GAITS = {
+  walk: { stride: 40, stepH: 26, bob: 8, rise: 0 },
+  run: { stride: 110, stepH: 52, bob: 14, rise: 20 },
+};
+// Skidding to a stop: body sunk, both feet braced out in front with the toes up, the wing out.
+const SKID = { near: { dx: 78, lift: 12, rot: -0.38 }, far: { dx: 50, lift: 10, rot: -0.3 }, rise: -8, flap: 0.6 };
 
 function legAndFoot(g, [hx, hy], ax, ay, rot, fill) {
   g.lineCap = 'round'; g.lineJoin = 'round';
@@ -82,14 +92,14 @@ function legAndFoot(g, [hx, hy], ax, ay, rot, fill) {
 
 // One leg at walk phase q (0-1): first half planted and sliding back as he moves forward, second half
 // lifted and swinging forward. rot > 0 tips the toes down.
-function legPose(q) {
+function legPose(q, { stride, stepH }) {
   const ease = t => t * t * (3 - 2 * t);
   if (q < 0.5) {
     const s = q / 0.5, push = ease(Math.max(0, (s - 0.7) / 0.3));   // heel peels up at the end
-    return { dx: STRIDE - 2 * STRIDE * s, lift: push * 12, rot: push * 0.3 };
+    return { dx: stride - 2 * stride * s, lift: push * 12, rot: push * 0.3 };
   }
   const s = (q - 0.5) / 0.5;
-  return { dx: -STRIDE + 2 * STRIDE * ease(s), lift: Math.sin(Math.PI * s) * STEP_H, rot: 0.3 - 0.42 * s };
+  return { dx: -stride + 2 * stride * ease(s), lift: Math.sin(Math.PI * s) * stepH, rot: 0.3 - 0.42 * s };
 }
 
 // logo px -> sprite frame: his box (x 640-1310, y 432-1368 with feet) scaled to fit the frame
@@ -97,23 +107,25 @@ export const TO_FRAME = { s: 0.76, ox: 640, oy: 440, x: 45, y: 44 };
 
 /**
  * Draws one frame of the goose in logo pixels.
- * pose: { walk: phase 0-1 (or none to stand), blink, honk, flap (0-1), hop (logo px) }
+ * pose: { walk or run: phase 0-1 (or neither to stand), skid, blink, honk, flap (0-1), hop (logo px) }
  */
 export function drawGooseParts(g, pose = {}) {
   if (!gooseSprite) throw new Error('drawGoose: await loadGoose() first');
-  const { walk, blink = false, honk = false, flap = 0, hop = 0 } = pose;
+  const { walk, run, skid = false, blink = false, honk = false, hop = 0 } = pose;
+  const flap = pose.flap ?? (skid ? SKID.flap : 0);
   const layout = goosePartsLayout().parts;
   const part = name => { const r = GOOSE_PARTS[name], a = layout[name]; g.drawImage(gooseSprite, a.x, a.y, r.w, r.h, r.x, r.y, r.w, r.h); };
-  const walking = walk !== undefined;
-  // body rises as each leg passes under him (twice a cycle)
-  const bob = walking ? 8 * Math.sin(2 * Math.PI * walk) ** 2 : 0;
+  const gait = run !== undefined ? GAITS.run : walk !== undefined ? GAITS.walk : null;
+  const phase = run ?? walk;
+  // body rises as each leg passes under him (twice a cycle), on top of the gait's lift
+  const lift = gait ? gait.rise + gait.bob * Math.sin(2 * Math.PI * phase) ** 2 : skid ? SKID.rise : 0;
   g.save(); g.translate(0, -hop);
-  for (const [side, phase] of [['far', 0.5], ['near', 0]]) {
-    const p = walking ? legPose((walk + phase) % 1) : { dx: 0, lift: 0, rot: 0 };
+  for (const [side, offset] of [['far', 0.5], ['near', 0]]) {
+    const p = gait ? legPose((phase + offset) % 1, gait) : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
     const [hx, hy] = HIP[side];
-    legAndFoot(g, [hx, hy - bob], hx + p.dx, ANKLE_Y[side] - p.lift, p.rot, ORANGE[side]);
+    legAndFoot(g, [hx, hy - lift], hx + p.dx, ANKLE_Y[side] - p.lift, p.rot, ORANGE[side]);
   }
-  g.translate(0, -bob);
+  g.translate(0, -lift);
   part('under');
   g.save();
   if (flap) { g.translate(...WING_PIVOT); g.rotate(flap * 0.45); g.translate(-WING_PIVOT[0], -WING_PIVOT[1]); }

@@ -215,7 +215,14 @@ These rules are fixed. Changing them needs the creator's sign-off.
 - **Walk cycle:** 8 frames per stride. Each leg is planted and slides back while the other swings
   forward with a lift; the heel peels up at the end of the push. His body bobs up as each leg passes
   under him and rocks slightly foot to foot. Move him at the speed his feet travel, so planted feet
-  don't slide (about 0.34 of his height per second).
+  don't slide (about 0.34 of his height per second at the site's stroll; in the game the legs cycle
+  faster as he speeds up, still at the ground's pace).
+- **Run (game):** the same 8-frame cycle with long, high strides (each foot travels 110 logo px either
+  side of its hip, lifting 52) and his body up on his toes (lifted 20 px, bobbing 14). Holding a
+  direction, he waddles off and breaks into a run after about 0.4s. Paced to the ground like the walk.
+- **Skid (game):** let go of a run, or push the other way, and he skids briefly to a stop before turning:
+  still facing forwards, body sunk, both feet braced out in front with the toes up, the wing out, and the
+  sheet leaning back about 8°. Never a moonwalk: he only turns once stopped.
 - **Idle:** blinks for 0.14s every 2–5 seconds. Pauses at the ends of a walk (0.8–2.2s), sometimes honks.
 - **Honk:** bill open for 0.65s with a slight squash-and-stretch (6%) and a "HONK!" speech bubble that
   pops in above his head on the side he faces, holds, then folds away (1.1s total).
@@ -290,9 +297,10 @@ The game is built in Unity. How the pieces above map across:
 - **The flip:** rotate the goose's Y by 180° over 0.34s with smoothstep, add the hop
   (sin(π·t) × 0.088 × his height), and multiply the material colour by 1 − 0.28·|sin(Y rotation)|.
   A two-sided sprite shows the mirrored drawing from behind, which is exactly the facing-left look.
-- **Walk and idle:** the 8-frame walk, idle, blink, honk and flap frames can be exported from the site's
-  goose atlas (`gooseAtlas()` in `site/paper-art.js`) as a sprite sheet. Then animate them with the
-  timings in section 8. Keep the rule: he only moves in the direction he faces.
+- **Frames:** the game exports the goose's frames from `site/paper-art.js` with its own page
+  (`Tools/ArtExport/goose-frames.html` in the game repo): idle, blink, honk, flap, the walk and run
+  cycles (each also with the bill open, for honking on the move) and the skid. Then animate them with
+  the timings in section 8. Keep the rule: he only moves in the direction he faces.
 - **Ground:** an extruded blob mesh: unlit grass texture on top, a simple lit material (`#F2E4CC`) on
   the bevelled sides. Ground decals (pond, blanket, plops) are flat unlit quads just above it.
 - **Shadows:** blob-shadow decals (soft radial brown, 32–40% opacity), not real-time shadows.
