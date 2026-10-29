@@ -6,15 +6,17 @@
 // turns him round. Poses: 'crossed' (wings folded across his chest, the master: standing about) and
 // 'free' (wings folded at his sides, for moving: a torso drawn to match the master, under its head, neck,
 // tail and feet). Faces: 'grumpy' (the master's: lids low over his pupils), 'blink', 'stare' (The Stare:
-// eyes opened flat on pinprick pupils) and 'roll' (rolling his eyes, for the Bread Toss). New faces are
-// drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op bubble with
-// the tip of his bill): his neck stretches up and forward.
+// eyes opened flat on pinprick pupils), 'roll' (rolling his eyes, for the Bread Toss) and 'cough' (in the
+// goose's stink: eyes popped wide and round, his bill dropped open on his tongue and swinging uvula). New
+// faces are drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op
+// bubble with the tip of his bill): his neck stretches up and forward. Coughing, his near wing comes up in a
+// fist in front of his bill, as a proper duck's does: fist().
 
 import { mapPathPoints } from '../goose/rig.js';
 
 export const VIEWBOX = { x: 0, y: 0, w: 671, h: 1000 };
 export const POSES = ['crossed', 'free'];
-export const FACES = ['grumpy', 'blink', 'stare', 'roll'];
+export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough'];
 // Where he stands: his feet's soles (Bill px), and his body's middle, over them.
 export const GROUND_Y = 980, CENTRE_X = 400;
 // His legs, for site/paper-art.js's drawGooseLegs (he walks the goose's gaits): hips up inside his body,
@@ -66,9 +68,10 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
      * Markup for Bill in a pose with a face. feet: false leaves his feet off (legs drawn separately); wing:
      * false leaves the free pose's near wing off (drawn separately, to turn: wing()); peck (free only)
      * stretches his neck, raising his head by up to PECK_STRETCH (above the VIEWBOX: draw into a taller box).
+     * uvula (the cough face) swings his uvula this far, in radians (+ swings it forward).
      */
-    figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true, peck = false } = {}) {
-      const eyes = face === 'grumpy' ? '' : drawEyes(face);
+    figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true, peck = false, uvula = 0 } = {}) {
+      const eyes = (face === 'grumpy' ? '' : drawEyes(face)) + (face === 'cough' ? coughMouth(uvula) : '');
       if (pose === 'crossed') {
         return (feet ? master : clipped('bill-no-feet', box(0, 0, VIEWBOX.w, FEET_Y), master)) + eyes;
       }
@@ -90,6 +93,8 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
     },
     /** The free pose's near wing on its own, for turning about WING_PIVOT. */
     wing: () => wingMarkup(),
+    /** Coughing, his near wing raised in a fist a short way in front of his bill (in place of wing()). */
+    fist: () => fistMarkup(),
   };
 }
 
@@ -120,6 +125,12 @@ function drawEyes(face) {
       out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${r + 3}"/>`);
       out.push(`<circle fill="${INK}" cx="${px + 2}" cy="${cy + 2}" r="${r * 0.42}"/>`);
       out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 -4)" d="M${x0 + 5} ${y0}`));
+    } else if (face === 'cough') {
+      // coughing: lids shot up, eyes popped wide and round on small pupils
+      const rx = (x1 - x0) / 2 - 2, ry = side === 'near' ? 21 : 16, cx = (x0 + x1) / 2, cy = y1 + 2;
+      out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`);
+      out.push(`<circle fill="${INK}" cx="${px + 3}" cy="${cy}" r="${r * 0.5}"/>`);
+      out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 ${cy - ry - 4 - y1})" d="M${x0 + 5} ${y0}`));
     } else if (face === 'roll') {
       // rolling his eyes: whites showing, the pupils rolled up under the lids
       const rx = (x1 - x0) / 2 - 6, cx = (x0 + x1) / 2, cy = y1 + 3;
@@ -129,6 +140,37 @@ function drawEyes(face) {
     }
   }
   return out.join('');
+}
+
+// His bill dropped open for a cough, over the master's: the lower half (redrawn from the master's) turned down
+// about its hinge at the back of his bill, his mouth showing behind it, his tongue on it, and his uvula hanging
+// from the roof of his mouth, swung by swing (radians, + forward).
+const BILL_HINGE = [364, 302], JAW_DROP = 25, UVULA = [446, 300];
+const MOUTH = '#b83a2e', THROAT = '#7a2420', TONGUE = '#f07c70', BILL = '#a76228';
+function coughMouth(swing) {
+  const [hx, hy] = BILL_HINGE, turn = a => `rotate(${a} ${hx} ${hy})`;
+  const deg = swing * 180 / Math.PI;
+  return `<g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round">
+      <path fill="${MOUTH}" stroke-width="7" d="M${hx - 4} ${hy}L566 301L558 314L505 368L${hx} ${hy + 8}Z"/>
+      <ellipse fill="${THROAT}" stroke="none" cx="400" cy="314" rx="26" ry="11" transform="${turn(JAW_DROP * 0.5)}"/>
+      <path fill="${TONGUE}" stroke-width="5" transform="rotate(${deg} ${UVULA[0]} ${UVULA[1]})"
+        d="M${UVULA[0] - 7} ${UVULA[1]}C${UVULA[0] - 8} ${UVULA[1] + 14} ${UVULA[0] - 10} ${UVULA[1] + 24} ${UVULA[0]} ${UVULA[1] + 28}C${UVULA[0] + 10} ${UVULA[1] + 24} ${UVULA[0] + 8} ${UVULA[1] + 14} ${UVULA[0] + 7} ${UVULA[1]}Z"/>
+      <g transform="${turn(JAW_DROP)}">
+        <path fill="${TONGUE}" stroke-width="5" d="M392 304C420 290 470 288 506 298L506 306L392 306Z"/>
+        <path fill="${BILL}" stroke-width="8" d="M358 302L520 302C528 306 530 318 522 326C490 338 430 338 392 330C372 324 362 314 358 302Z"/>
+      </g></g>`;
+}
+
+// Coughing, his near wing comes up from his shoulder, bent at the elbow, its feathers hanging off the inside of
+// his forearm, to a fist held a short way in front of his bill: its feather tips curled towards his mouth, a
+// thumb feather over the top.
+function fistMarkup() {
+  return `<g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round">
+      <path fill="${WING}" stroke-width="15" d="M492 566C540 560 614 566 640 602C662 560 662 470 648 392L606 392C604 416 600 430 592 442C580 440 572 450 576 462C564 466 560 478 564 490C552 494 548 506 552 518C538 526 532 540 536 554C522 560 506 562 492 566Z"/>
+      <path fill="none" stroke="${WING_SHADE}" stroke-width="10" d="M616 588C636 540 640 470 630 404"/>
+      <path fill="none" stroke-width="7" d="M590 470Q600 462 612 466M576 500Q588 492 600 496M562 530Q574 522 586 526"/>
+      <path fill="${WING}" stroke-width="14" d="M606 402C584 394 576 368 580 346C584 320 606 304 634 304C662 304 682 324 682 352C682 380 662 402 634 404Z"/>
+      <path fill="none" stroke-width="9" d="M604 324Q584 328 586 344Q592 354 606 348M600 352Q580 356 582 372Q588 382 602 376M604 380Q588 386 594 398M620 312Q650 304 672 328"/></g>`;
 }
 
 // The free pose's near wing, folded at his side.

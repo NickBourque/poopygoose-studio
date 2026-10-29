@@ -295,7 +295,12 @@ These rules are fixed. Changing them needs the creator's sign-off.
   Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6). In the
   game a plop is a standing cut-out (about 0.4 m tall) just behind his lane: it pops in at his tail, falls
   to the ground, and stays 6 seconds (a small step to land on, a weight sitting on a switch; the birds
-  walk straight past it) before shrinking away. Up to 3 are out at once.
+  walk straight past it) before shrinking away. Up to 3 are out at once. With nothing in him (game) he
+  toots instead: eyes squeezed shut, tail up, and green stink (`#B5C26A`, shade `#9DAE52`, lines between its
+  billows `#7F8F3C`) shoots straight back from his tail in a narrow jet and balloons into a little mushroom
+  cloud lying on its side, its cap rolling over on itself, rising and bending its stem up, before it pinches
+  off, spreads and fades (about 2.6s). It's drawn as one cut-out with the usual ink and sticker border, and
+  it's the one cut-out that fades: it's a cloud. Still cute, never gross: no stink lines, no brown.
 - **Eating bread (game):** bread is a slice from a loaf (puffy top, crust `#D9964F`, crumb `#FBEBC8` with
   a few air holes). Facing a slice and pressing Eat, he stops and turns his head to it (3/4) and gapes
   comically wide, jaws thrown open on a mouthful of big, square, shiny white human teeth, the dark of
@@ -343,12 +348,15 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
 - **Poses.** Wings crossed (standing about) and wings folded at his sides (moving: a torso drawn to match
   the master under its head, neck, tail and feet).
 - **Faces.** Grumpy (the master's), blink (the lids come down), The Stare (lids up, eyes open flat and wide
-  on pinprick pupils) and rolling his eyes (whites showing, pupils rolled up under the lids, for the Bread
-  Toss).
+  on pinprick pupils), rolling his eyes (whites showing, pupils rolled up under the lids, for the Bread
+  Toss) and coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
+  mouth `#B83A2E`, tongue and uvula `#F07C70`).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
   short legs and big feet; his near wing beats, rises and falls as the goose's does, and tossing a crust he
-  flings it up over his head, rolling his eyes. He blinks only standing about. The game's frames are
-  exported from his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
+  flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
+  he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
+  open bill, and his uvula swings back at each hack and forward again. The game's frames are exported from
+  his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
 
 | | |
 | --- | --- |
