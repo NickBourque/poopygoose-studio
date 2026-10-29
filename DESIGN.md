@@ -125,6 +125,7 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Brand mark | Goose-head sticker + "Poopy Goose" (Baloo 2) over "STUDIO" (Nunito, tracked, navy). On hover the head tips -10° and grows 8%, with a bounce. |
 | Focus | 3px orange outline, 3px offset. Always visible for keyboard use. |
 | Decorative blob | Sage at ~55%, wobbling shape and slow 12° rotation over 12s. |
+| Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill naming the button to press ("Jump to go again"). No sticker border: it's UI, not a cut-out in the world. |
 
 **Layout:** content 1080–1240px wide; side gutters 16–48px; sections breathe (48–104px vertical);
 two-column sections stack below 900px; buttons go full width below 560px.
@@ -212,6 +213,11 @@ Poopy Goose) are the template for the game's look.
   grumpy) and jab, lunging forward 14° and stretching 10%. The pop hits hard: everything holds still for
   0.07s, the bubble swells 25% and bursts, and a "POP!" sticker (a jagged white burst, the word in orange
   Baloo 2 with an ink outline, tilted a little) pops up where it was.
+- **The end of a level (game):** a woven nest of straw (`#D9B27C`, short wood-brown strokes leaning
+  alternately for the weave) with a few twigs poking up at the back, a dark wood-brown hollow, and an
+  orange bow on its front rim, the touch of orange that says "this is where you're going". It's two
+  cut-outs sharing one pivot, its back behind the birds and its front rim in front, so they're seen
+  standing in it. Reaching it, the goose honks and Bill stares, and the results card pops up (section 5).
 
 ### Drawing new art (characters, props, scenery)
 
@@ -385,6 +391,9 @@ light; one per line at most. Cozy chaos, never mean, never gross.
   bit scrambled. Try again?", failure "Something went sideways." followed by what to do next, a check
   "to make sure you're not a robot goose."
 - Footer-style asides: "Made with bread crumbs and questionable decisions." "No spam, just goose."
+- In the game, deaths are **mishaps**, counted proudly, never as a scolding. The results card's line
+  under them is a deadpan aside that gets drier as they pile up: "Not a feather out of place." (none),
+  "Only a little worse for wear.", "Bill has notes.", "Means well. Mostly." (lots).
 
 **Avoid:** crude words for poop (it's "the Drop", "a plop", "leave your mark"), sarcasm aimed at the
 player, long paragraphs, exclamation marks on everything (one big one: "HONK!").
