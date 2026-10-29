@@ -186,6 +186,18 @@ Poopy Goose) are the template for the game's look.
   beam across the post tops carries two pulley wheels that turn as the rope runs, and a "1 TON"
   counterweight sinks as the door rises. Clouds and other things to stand on are one-way: jump up
   through them, land on top, drop down through them.
+- **Dying and coming back (game):** things that hurt are prickly, never gory: brambles are wood-brown
+  arching canes with ink thorns, sage leaves and berries (ink when ripe, red when not), standing just
+  behind the path. A bird that dies shrinks away like a cut-out leaving and spins back in at the last
+  checkpoint. A checkpoint is a flag on a wooden pole set back from the path: a plain paper pennant
+  hanging limp until a bird passes, when it paper-flips over to its back, an orange pennant flying out
+  with a paper stripe. In co-op a bird waits in a bubble: a ring of water blue between ink outlines,
+  with a white shine at the top left and see-through in the middle, so the bird shows inside. It pops in
+  and pops in like any cut-out. Its partner pops it with an aggressive peck: jumping into it, they crane
+  their neck far up and forward (the goose's bill shut and eyes wide; Bill's green neck lengthening, still
+  grumpy) and jab, lunging forward 14° and stretching 10%. The pop hits hard: everything holds still for
+  0.07s, the bubble swells 25% and bursts, and a "POP!" sticker (a jagged white burst, the word in orange
+  Baloo 2 with an ink outline, tilted a little) pops up where it was.
 
 ### Drawing new art (characters, props, scenery)
 
@@ -222,7 +234,8 @@ These rules are fixed. Changing them needs the creator's sign-off.
   uses the pixel cut-out (`site/assets/goose-sprite.png`, from `tools/make-goose-sprite.html`).
 - **Views and faces.** Front (face on), half turn (15°, the front's face bent round his head), 3/4 (30°)
   and side, all facing right. Each has eyes open, blink and honk; the front also has the logo's wink,
-  and the 3/4 view has the eating faces (gape, bite, two chews and a gulp).
+  and the 3/4 view has the eating faces (gape, bite, two chews and a gulp) and the peck (neck craned far
+  up and forward, bill shut, eyes wide).
   His everyday face has both eyes open; the wink is an expression.
 - **Head turn (game).** Standing he faces us. On the move his head turns to the 3/4 view, passing
   through the half turn for a moment as he sets off and stops (about 0.12s each way).

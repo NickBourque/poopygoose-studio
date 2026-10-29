@@ -7,7 +7,10 @@
 // 'free' (wings folded at his sides, for moving: a torso drawn to match the master, under its head, neck,
 // tail and feet). Faces: 'grumpy' (the master's: lids low over his pupils), 'blink', 'stare' (The Stare:
 // eyes opened flat on pinprick pupils) and 'roll' (rolling his eyes, for the Bread Toss). New faces are
-// drawn over his eyes, on patches of his head's green.
+// drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op bubble with
+// the tip of his bill): his neck stretches up and forward.
+
+import { mapPathPoints } from '../goose/rig.js';
 
 export const VIEWBOX = { x: 0, y: 0, w: 671, h: 1000 };
 export const POSES = ['crossed', 'free'];
@@ -36,6 +39,9 @@ const EYES = {
 // and the tail inside TAIL: its green curls and pale underside, cut along the ink line where its
 // underside meets his body, down to his belly.
 const NECK_Y = 521, FEET_Y = 866;
+// Pecking, everything above HEAD_Y (his head) moves by PECK_STRETCH [dx, up] (Bill px), and his green neck
+// between there and NECK_Y stretches, easing into it, so its outlines keep one smooth curve.
+const HEAD_Y = 380, PECK_STRETCH = [110, 90];
 const TAIL = [[0, 520], [176, 520], [176, 580], [160, 600], [150, 640], [142, 660], [112, 676], [152, 690],
   [160, 705], [130, 720], [148, 735], [196, 750], [244, 765], [250, 792], [0, 792]];
 
@@ -58,23 +64,43 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
   return {
     /**
      * Markup for Bill in a pose with a face. feet: false leaves his feet off (legs drawn separately); wing:
-     * false leaves the free pose's near wing off (drawn separately, to turn: wing()).
+     * false leaves the free pose's near wing off (drawn separately, to turn: wing()); peck (free only)
+     * stretches his neck, raising his head by up to PECK_STRETCH (above the VIEWBOX: draw into a taller box).
      */
-    figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true } = {}) {
+    figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true, peck = false } = {}) {
       const eyes = face === 'grumpy' ? '' : drawEyes(face);
       if (pose === 'crossed') {
         return (feet ? master : clipped('bill-no-feet', box(0, 0, VIEWBOX.w, FEET_Y), master)) + eyes;
       }
       // free: the drawn torso, then the master's tail, head and neck (and feet) over it
+      const [dx, up] = peck ? PECK_STRETCH : [0, 0];
       return torso(wing)
         + clipped('bill-tail', 'M' + TAIL.map(p => p.join(' ')).join('L') + 'Z', master)
-        + clipped('bill-head', box(0, 0, VIEWBOX.w, NECK_Y), master)
+        + clipped('bill-head', box(0, -up, VIEWBOX.w + dx, NECK_Y), peck ? stretchNeck(master) : master)
         + (feet ? clipped('bill-feet', box(0, FEET_Y, VIEWBOX.w, VIEWBOX.h), master) : '')
-        + eyes;
+        + (peck && eyes ? `<g transform="translate(${dx} ${-up})">${eyes}</g>` : eyes);
+    },
+    /** Where the tip of his bill is (Bill px) pecking: his head's furthest point forward, carried by the stretch. */
+    peckTip() {
+      let tip = [-Infinity, 0];
+      for (const [, d] of master.matchAll(/ d="([^"]*)"/g)) {
+        mapPathPoints(d, (x, y) => { if (y < HEAD_Y && x > tip[0]) tip = [x, y]; return [x, y]; });
+      }
+      return [tip[0] + PECK_STRETCH[0], tip[1] - PECK_STRETCH[1]];
     },
     /** The free pose's near wing on its own, for turning about WING_PIVOT. */
     wing: () => wingMarkup(),
   };
+}
+
+// Stretches his neck for a peck (every point of the master's paths: the head clip keeps only the head and neck).
+function stretchNeck(markup) {
+  const [dx, up] = PECK_STRETCH, ease = t => t * t * (3 - 2 * t);
+  const warp = (x, y) => {
+    const t = ease(Math.max(0, Math.min(1, (NECK_Y - y) / (NECK_Y - HEAD_Y))));
+    return [x + dx * t, y - up * t];
+  };
+  return markup.replace(/ d="([^"]*)"/g, (_, d) => ` d="${mapPathPoints(d, warp)}"`);
 }
 
 // A new pair of eyes over the master's: his head's green over the old ones, then the face.

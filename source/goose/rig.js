@@ -4,8 +4,9 @@
 // Views: 'front' (traced from the logo), 'half' (the front turned 15°, made by bending the front's face
 // round his head), '34' (turned 30°) and 'side' (profile). All face right. Faces: open eyes, blink, honk,
 // in front only the logo's wink, and in 3/4 only eating bread (eat: 'gape', 'bite', 'chew-a' or 'chew-b';
-// gulp: 1-3, the lump on its way down his neck; lunge: 0.5 or 1, his neck bent down to reach bread). Legs
-// aren't here: site/paper-art.js draws them.
+// gulp: 1-3, the lump on its way down his neck; lunge: 0.5 or 1, his neck bent down to reach bread; peck,
+// his neck stretched up and forward to pop a bubble with his bill). Legs aren't here: site/paper-art.js
+// draws them.
 
 // the logo's goose box, widened on the right for the side view's bill, the honk's reach and the lunge, and
 // raised for the honk's neck
@@ -32,6 +33,9 @@ const BITE_POINT = [1255, 695];
 const HONK_STRETCH = { front: [0, 46], half: [16, 46], '34': [84, 38], side: [96, 32] };
 const HONK_EYES = 1.3, HONK_BROWS = 10;
 const NECK_BASE = 915;
+// Pecking (3/4: popping a co-op bubble with the tip of his bill), his neck stretches up and forward like the
+// honk's, [dx, up] (logo px), his bill shut and his eyes wide on what he's aiming at.
+const PECK_STRETCH = [150, 95];
 
 const FILES = { front: 'goose-front.svg', extras: 'goose-front-extras.svg', '34': 'goose-head-34.svg', side: 'goose-head-side.svg' };
 
@@ -79,7 +83,7 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
   // A drawn head (3/4 or side) with its layers switched for the expression. Eating (3/4 only) swaps the
   // bill for the gape, bite or a chew, and chewing puffs his cheek; the gape, the bite and a gulp in
   // progress widen his eyes like a honk.
-  function drawnHead(doc, view, { blink, honk, eat, gulp }) {
+  function drawnHead(doc, view, { blink, honk, eat, gulp, peck }) {
     const copy = doc.cloneNode(true);
     const get = id => copy.querySelector(`g#${id}`);
     const show = (id, on) => { const g = get(id); if (!g) return; if (on) g.removeAttribute('display'); else g.remove(); };
@@ -87,7 +91,7 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
     show('bill-lower', !honk && !eat); show('bill-upper', !honk && !eat); show('bill-honk', honk);
     for (const id of EAT_FACES) show(`bill-${id}`, eat === id);
     show('cheek-puff', eat === 'chew-a' || eat === 'chew-b');
-    const wide = !blink && (honk || eat === 'gape' || eat === 'bite' || gulp > 0);
+    const wide = !blink && (honk || peck || eat === 'gape' || eat === 'bite' || gulp > 0);
     if (wide) {
       for (const [id, [cx, cy]] of Object.entries(DRAWN_EYES[view])) get(id)?.setAttribute('transform', widen(cx, cy));
       for (const id of ['brow-near', 'brow-far']) get(id)?.setAttribute('transform', `translate(0 ${-HONK_BROWS})`);
@@ -148,11 +152,12 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
   }
 
   return {
-    /** Markup for his body and head in a view, with a face: { blink, honk, wink, eat, gulp, lunge }. */
+    /** Markup for his body and head in a view, with a face: { blink, honk, wink, eat, gulp, lunge, peck }. */
     figure(view, face = {}) {
       const front = view === 'front' || view === 'half';
-      const [dx, up] = face.honk ? HONK_STRETCH[view] : [0, 0];
-      const stretch = markup => (face.honk ? stretchNeck(markup, dx, up) : markup);
+      const peck = face.peck && view === '34';
+      const [dx, up] = face.honk ? HONK_STRETCH[view] : peck ? PECK_STRETCH : [0, 0];
+      const stretch = markup => (face.honk || peck ? stretchNeck(markup, dx, up) : markup);
       const head = view === 'front' ? frontFace(face)
         : view === 'half' ? frontFace({ ...face, wink: false }, HALF_TURN)
         : drawnHead(docs[view], view, face);
@@ -164,6 +169,14 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
     wing: () => wingGroup,
     /** Where the bread in his bill is (logo px) when he's reached for it (lunge 0.5 or 1). */
     bitePoint: amount => neckBend(...LUNGE[amount]).rigid(...BITE_POINT),
+    /** Where the tip of his bill is (logo px) pecking: the shut bill's furthest point, carried by the stretch. */
+    peckTip() {
+      let tip = [-Infinity, 0];
+      for (const p of docs['34'].querySelectorAll('g#bill-upper path')) {
+        mapPathPoints(p.getAttribute('d'), (x, y) => { if (x > tip[0]) tip = [x, y]; return [x, y]; });
+      }
+      return [tip[0] + PECK_STRETCH[0], tip[1] - PECK_STRETCH[1]];
+    },
     /** The whole goose (no legs) as one SVG document. */
     svg(view, face = {}, viewBox = VIEWBOX) {
       return svgDoc(this.figure(view, face) + this.wing(), viewBox);
