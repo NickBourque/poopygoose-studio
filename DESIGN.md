@@ -186,6 +186,20 @@ Poopy Goose) are the template for the game's look.
   beam across the post tops carries two pulley wheels that turn as the rope runs, and a "1 TON"
   counterweight sinks as the door rises. Clouds and other things to stand on are one-way: jump up
   through them, land on top, drop down through them.
+- **Water (game):** a pond in the stage is a dip filled like a toy theatre's sea: a flat water-blue top,
+  with rows of paper waves standing across it, each bobbing round a small loop out of step with the
+  others. The waves are flat water-blue (light for the back row, deep for the rows in front), with
+  scalloped crests outlined in ink, a soft white highlight under the crest and a few white ripple arcs;
+  only the crest line gets a sticker border, so the strips tile seamlessly. The birds float between the
+  rows, their lower halves hidden, and rock gently as they paddle. Things landing in the water throw up a
+  splash: a crown of water with white droplets, popping up and shrinking away.
+- **The koi (game):** the pond's critter is a fat orange koi from the side, with cream patches, a darker
+  orange fin and belly fin, a few orange scale arcs, whiskers in ink and a goofy gaping mouth (a round red
+  "O") with a big round eye; after a gulp, its mouth shuts with a crumb at its lips and its eye squeezes
+  smug. Under the water it shows only as its shadow lying on the surface: the koi seen from above in a
+  darker water-blue, with no ink and no sticker border (it's in the water, not on it). Before it leaps the
+  shadow swells and white ripple rings spread over the spot. It turns with the paper flip like the birds,
+  tilting nose-first along its leap.
 - **Dying and coming back (game):** things that hurt are prickly, never gory: brambles are wood-brown
   arching canes with ink thorns, sage leaves and berries (ink when ripe, red when not), standing just
   behind the path. A bird that dies shrinks away like a cut-out leaving and spins back in at the last
