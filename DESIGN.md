@@ -126,6 +126,7 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Focus | 3px orange outline, 3px offset. Always visible for keyboard use. |
 | Decorative blob | Sage at ~55%, wobbling shape and slow 12° rotation over 12s. |
 | Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill naming the button to press ("Jump to go again"). No sticker border: it's UI, not a cut-out in the world. |
+| Button glyph (game) | Printed on signs and cards, no sticker border, with the press-me look: a 7px ink border at prop scale and a hard ink shadow straight down. Xbox face buttons are round, the letter in Baloo 2 (white with an ink outline; ink on the Y), on muted A green `#6FA350`, B red `#D45A48`, X blue `#4F86C2`, Y yellow `#E9B83E`; its other buttons are `cream-deep`, the D-pad's arm to press in orange. Keys are `paper` keycaps, a letter in Baloo 2 or a word in Nunito 800. |
 
 **Layout:** content 1080–1240px wide; side gutters 16–48px; sections breathe (48–104px vertical);
 two-column sections stack below 900px; buttons go full width below 560px.
@@ -394,6 +395,8 @@ light; one per line at most. Cozy chaos, never mean, never gross.
 - In the game, deaths are **mishaps**, counted proudly, never as a scolding. The results card's line
   under them is a deadpan aside that gets drier as they pile up: "Not a feather out of place." (none),
   "Only a little worse for wear.", "Bill has notes.", "Means well. Mostly." (lots).
+- Button prompts in the game put the glyph first and never say "press", "click" or "tap", so they read right
+  on any device: "[X] Honk at paper.", "[A] to jump".
 
 **Avoid:** crude words for poop (it's "the Drop", "a plop", "leave your mark"), sarcasm aimed at the
 player, long paragraphs, exclamation marks on everything (one big one: "HONK!").
