@@ -397,9 +397,13 @@ light; one per line at most. Cozy chaos, never mean, never gross.
   "Only a little worse for wear.", "Bill has notes.", "Means well. Mostly." (lots).
 - Button prompts in the game put the glyph first and never say "press", "click" or "tap", so they read right
   on any device: "[X] Honk at paper.", "[A] to jump".
+- **Signs in the game** are deadpan, with a dash of sarcasm or goofiness: a plain statement, then a
+  sideways look. "Nothing here. What were you expecting?" They can tease the player a little, the way a
+  friend would; never mean, never scolding.
 
-**Avoid:** crude words for poop (it's "the Drop", "a plop", "leave your mark"), sarcasm aimed at the
-player, long paragraphs, exclamation marks on everything (one big one: "HONK!").
+**Avoid:** crude words for poop (it's "the Drop", "a plop", "leave your mark"), sarcasm with a sting (a
+sign's light tease is fine; mocking the player for failing isn't), long paragraphs, exclamation marks on
+everything (one big one: "HONK!").
 
 ---
 
@@ -451,3 +455,24 @@ The game is built in Unity. How the pieces above map across:
 - **Fonts:** Baloo 2 and Nunito as TextMeshPro font assets (both are OFL).
 - **UI:** pill buttons with 3px ink borders and hard ink drop shadows (9-sliced sprites), the press and
   hover offsets from section 5, cream and paper panels, orange for the primary action.
+
+---
+
+## 12. Sound
+
+The world is made of paper, and it sounds like it. Nick sources the game's sounds and music; the list of
+everything needed, with where each came from, is `AUDIO.md` in the game repo.
+
+- **Music: plucky and acoustic.** A small, warm ensemble: ukulele, acoustic guitar, pizzicato strings,
+  glockenspiel or celesta, a woodwind or two, and hand percussion (woodblock, shaker). Bouncy, never
+  frantic, with room for a comic beat. Cozy chaos with grown-up wit: it could be a clever indie film's
+  score, not a toddler's TV show.
+- **Sound effects are paper or a real honk.** Everything physical is card and paper: footsteps are soft
+  paper pats, turning is a card swish, flips are crisp card flips, landings are pats, menus are paper
+  ticks and page turns. The one exception is the honk: a real goose, cleaned up and comic.
+- **Cute and implied:** the plop is a soft "plop" and the toot short and squeaky, never gross (section 1).
+- **Bill is deadpan in sound too:** dry and minimal, a flat "hmm" at most. His cough is three proper
+  little hacks.
+- **Warnings cut through:** a sound a player relies on (the koi's tell, a frozen thing about to thaw) is
+  clear over the music, and always has a visual tell as well, so the game plays with the sound off.
+- **Night and weather** keep the same instruments, softer and sparser.
