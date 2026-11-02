@@ -431,7 +431,10 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   Coughing and tossing a slice he keeps his head turned aside. The paper flip still turns him round. His body
   stays as traced.
 - **Poses.** Wings crossed (standing about) and wings folded at his sides (moving: a torso drawn to match
-  the master under its head, neck, tail and feet).
+  the master under its head, neck, tail and feet). Walking, running and skidding, his near wing is an arm
+  like any bloke's out for a jog: his crossed pose's hefty bicep, hung from high on his chest right under his
+  neck (melting into it, no seam), bent at the elbow to a thick feathered forearm and a mitten fist (feather
+  tips curled under as knuckles, a thumb feather over the top).
 - **Faces.** Grumpy (the master's), blink (the lids come down), The Stare (lids up, eyes open flat and wide
   on pinprick pupils), rolling his eyes (whites showing, pupils rolled up under the lids, for the Bread
   Toss), scared (game: dying and in a co-op bubble, face on: his tuft standing on end in three spikes, his lids
@@ -441,8 +444,9 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   side under his scowl, his face turned partway after them) and brows up, cross (both lids lifted and scowling
   harder over open round eyes).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
-  short legs and big feet; his near wing beats, rises and falls as the goose's does (running, it swings
-  like an arm, about 20° either way from his side: a stiff, grumpy march), and tossing a slice he
+  short legs and big feet, pumping his arm against his near leg from the shoulder (about 13° either way
+  walking, 29° running, so breaking into a run it just pumps harder) and throwing it forward for balance as
+  he skids to a stop. In the air his near wing beats, rises and falls as the goose's does, and tossing a slice he
   flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
   he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
   open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s

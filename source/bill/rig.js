@@ -14,7 +14,8 @@
 // over open round eyes). New
 // faces are drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op
 // bubble with the tip of his bill): his neck stretches up and forward. Coughing, his near wing comes up in a
-// fist in front of his bill, as a proper duck's does: fist().
+// fist in front of his bill, as a proper duck's does: fist(). On the move, it's bent at the elbow to a little fist
+// and pumps like any bloke jogging: runArm().
 
 import { mapPathPoints } from '../goose/rig.js';
 
@@ -33,8 +34,12 @@ export const LEGS = {
   hip: { near: [520, 848], far: [385, 844] }, ankleY: { near: 936, far: 930 }, footScale: 1.1, ink: '#512c1e',
   orange: { near: '#d8792d', far: '#b8601f', light: '#ec9a55' }, width: [30, 14],
 };
-// His near wing (the free pose's) turns about his shoulder to flap and to toss a crust.
+// His near wing (the free pose's) turns about his shoulder to flap and to toss a crust; on the move, his arm
+// (runArm) pumps about its shoulder, high on his chest right under his neck. ARM_BACK and ARM_UP are how far
+// back and up from his crossed pose's arm (where it's drawn) it hangs, to sit there.
 export const WING_PIVOT = [540, 600];
+const ARM_BACK = 130, ARM_UP = 25;
+export const ARM_PIVOT = [528 - ARM_BACK, 520 - ARM_UP];
 
 const INK = '#512c1e', GREEN = '#2b6141', WHITE = '#f2f2ee';
 const BODY = '#92877e', BODY_LIGHT = '#b5aaa3', WING = '#8b8079', WING_SHADE = '#6e6262';
@@ -108,6 +113,8 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
     wing: () => wingMarkup(),
     /** Coughing, his near wing raised in a fist a short way in front of his bill (in place of wing()). */
     fist: () => fistMarkup(),
+    /** On the move, his near wing bent at the elbow to a little fist, for pumping about ARM_PIVOT (in place of wing()). */
+    runArm: () => runArmMarkup(),
   };
 }
 
@@ -288,6 +295,33 @@ function coughMouth(swing) {
         <path fill="${TONGUE}" stroke-width="5" d="M392 304C420 290 470 288 506 298L506 306L392 306Z"/>
         <path fill="${BILL}" stroke-width="8" d="M358 302L520 302C528 306 530 318 522 326C490 338 430 338 392 330C372 324 362 314 358 302Z"/>
       </g></g>`;
+}
+
+// On the move, like any bloke out for a jog: his arm hangs from his shoulder (ARM_PIVOT) to his elbow,
+// bent there, the forearm forward to a fist out in front. The game turns it about his shoulder to pump it.
+function runArmMarkup() {
+  // The upper arm is his crossed pose's: a hefty bicep hung from high on his chest at the base of his neck,
+  // swelling to a fat round bulge in front and rounding off at the elbow, his body's grey with a shade down
+  // its back, a crease where it bunches over the elbow and the master's speckles. Its top reaches up into his
+  // chest and melts into it: its outline only starts below his shoulder, front and back.
+  const bicep = 'M490 514C510 504 550 504 572 516C612 540 642 596 642 660C642 706 622 738 596 750' +
+    'C568 762 530 758 512 738C496 700 486 600 490 514Z';
+  const bicepEdge = 'M600 548C626 580 642 620 642 660C642 706 622 738 596 750C568 762 530 758 512 738' +
+    'C500 712 494 672 494 630';
+  // The forearm is as thick as his crossed pose's, a band of wing feathers forward from the elbow, swelling
+  // into a fist: a rounded mitten of feathers, their tips curled under as knuckles, a thumb feather over the
+  // top; feather tips hang off its underside.
+  const forearm = 'M586 688L664 680C700 666 734 688 734 716C734 746 704 760 674 756L596 758Z';
+  return `<g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${-ARM_BACK} ${-ARM_UP})">
+      <path fill="${BODY}" stroke-width="14" d="${forearm}"/>
+      <path fill="none" stroke="${WING_SHADE}" stroke-width="10" d="M604 746L664 744"/>
+      <path fill="none" stroke-width="7" d="M616 758Q622 774 634 758M640 758Q646 774 658 758"/>
+      <path fill="none" stroke-width="7" d="M716 690Q732 694 730 708M722 710Q736 714 732 728M716 730Q728 736 722 748M672 684Q696 688 706 704"/>
+      <path fill="${BODY}" stroke="none" d="${bicep}"/>
+      <path fill="none" stroke="${WING_SHADE}" stroke-width="12" d="M512 600C506 640 506 690 522 728"/>
+      <g fill="${SPECKLE}" stroke="none"><ellipse cx="604" cy="628" rx="9" ry="6"/><ellipse cx="620" cy="652" rx="6" ry="4"/></g>
+      <path fill="none" stroke-width="7" d="M574 722Q596 714 612 694"/>
+      <path fill="none" stroke-width="15" d="${bicepEdge}"/></g>`;
 }
 
 // Coughing, his near wing comes up from his shoulder, bent at the elbow, its feathers hanging off the inside of
