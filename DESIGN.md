@@ -67,8 +67,7 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Card edge | `#F2E4CC` | Sides of the island (the thickness of the card) |
 | Sunny yellow | `#FFC56B` | Sun, flower centres, yellow flowers |
 | Sign board | `#E9C79A` | Wooden sign face |
-| Bread (site) | `#E7B47A` | The site's picnic loaf (the game's bread is below; to be brought into line) |
-| Bread crust / crumb (game) | `#D9964F` / `#FBEBC8` | Breadcrumbs, the slice of bread, the chunk in his bill |
+| Bread crust / crumb | `#D9964F` / `#FBEBC8` | Breadcrumbs, the slice of bread (the site's picnic too), the chunk in his bill |
 | Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
 | Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD; only there |
 | Plop | `#7A4A32` | The poop (always with white googly eyes) |
@@ -208,7 +207,9 @@ Poopy Goose) are the template for the game's look.
 - **Dying and coming back (game):** things that hurt are prickly, never gory: brambles are wood-brown
   arching canes with ink thorns, sage leaves and berries (ink when ripe, red when not), standing just
   behind the path. A bird that dies shrinks away like a cut-out leaving and spins back in at the last
-  checkpoint. A checkpoint is a flag on a wooden pole set back from the path: a plain paper pennant
+  checkpoint. Dying, the goose first freezes for a beat (0.35s) with a scared face: face on, eyes wide and
+  white on small pupils, his brows tipped up at the middle, and a bead of sweat (water blue, ink-outlined)
+  on the side of his head. A checkpoint is a flag on a wooden pole set back from the path: a plain paper pennant
   hanging limp until a bird passes, when it paper-flips over to its back, an orange pennant flying out
   with a paper stripe. In co-op a bird waits in a bubble: a ring of water blue between ink outlines,
   with a white shine at the top left and see-through in the middle, so the bird shows inside. It pops in
@@ -217,11 +218,14 @@ Poopy Goose) are the template for the game's look.
   grumpy) and jab, lunging forward 14° and stretching 10%. The pop hits hard: everything holds still for
   0.07s, the bubble swells 25% and bursts, and a "POP!" sticker (a jagged white burst, the word in orange
   Baloo 2 with an ink outline, tilted a little) pops up where it was.
-- **The end of a level (game):** a woven nest of straw (`#D9B27C`, short wood-brown strokes leaning
-  alternately for the weave) with a few twigs poking up at the back, a dark wood-brown hollow, and an
-  orange bow on its front rim, the touch of orange that says "this is where you're going". It's two
-  cut-outs sharing one pivot, its back behind the birds and its front rim in front, so they're seen
-  standing in it. Reaching it, the goose honks and Bill stares, and the results card pops up (section 5).
+- **The end of a level (game):** a twig nest, reading as a nest at a glance from its silhouette: a thick
+  ring of crisscrossed sticks in four wood browns (`#9A6A4A`, `#B9824F`, `#7E5538`, `#A87650`, each outlined
+  in ink) over a darker body (`#8A5E40`), their ends poking out all round; a dark hollow (`#5E3E2A`); and
+  puffs of white goose down (overlapping blobs with one ink outline and a little shade) round the hollow's
+  edge, the touch that says it's a goose's. An orange bow on its front is the touch of orange that says
+  "this is where you're going". It's two cut-outs sharing one pivot, its back behind the birds and its
+  front in front, kept lined up from wherever the camera is, so they're seen standing in it. Reaching it,
+  the goose honks and Bill stares, and the results card pops up (section 5).
 - **The golden loaf (game):** one a level, the optional prize. A whole tin loaf, its dome scored three
   times, in sunny gold (`#FFC56B`, its top crust `#F0A43A`) with a bright shine. **Gold means "a prize"**,
   kept apart from orange ("use this"). It **shimmers, sparkles and glows**: every 1.8s a slanted band of
@@ -248,6 +252,23 @@ Poopy Goose) are the template for the game's look.
   the golden loaf got, the bay's plops pop out, the loaf sits swaying in the stomach, a gold infinity sign
   (Baloo 2, gold fading to its deep gold, an ink outline and a sticker border) pops on over the bay and a
   plop slides down every 1.2s.
+- **The Pond (game):** level 1's world, the site's diorama grown into a side-scroller, on the same bright
+  morning: a cream sky with the site's sun and clouds hanging in it, the site's round and tall trees and bushes
+  behind the lane, its reeds (with cattails) and white and yellow flowers along it. Those are the site's own
+  drawings, exported as they are, so the game's pond is the site's pond. Its own pieces, drawn to match:
+  **rocks** in a warm pale grey (`#D4CCBF`, shaded `#B9AFA0`) with a crack or two and a sage tuft of moss,
+  in three sizes (a pebble, a step to hop, a wall to jump); a plank **jetty** on wood-brown posts, its boards'
+  seams in ink; **lily pads** in sage with a notch and ink-soft veins, some with a white water lily round a
+  sunny middle; the **mossy stump** the first nest sits on (bark in wood brown with grain strokes, a pale cut
+  top with its rings, moss draped over the rim); and an **overhanging branch** with leafy clumps in the
+  trees' "v"-tufted style. Ground and banks are the usual card with grass tops.
+- **The sleeping heron (game):** The Pond's critter to honk, a tall heron in pale blue-grey (`#CBD4DA`, its
+  wing `#9EAEB9`) with a white neck and head, a black crest stripe trailing a plume, and an orange beak and
+  legs (orange: you can use it). Facing left. Asleep it's a hunched lump on one leg, head tucked down on its
+  chest, eyes shut in a curve, two ink-soft Baloo 2 "z"s floating up. Honked, it paper-flips to awake: bolt
+  upright on both legs, neck straight up, beak in the air, a flat lid over a pale yellow eye (offended, never
+  angry), about 3 m tall. In its last second awake it shows its drowsy frame (lids nearly shut, beak sunk
+  level) and wobbles, then flips back to asleep.
 
 ### Drawing new art (characters, props, scenery)
 
@@ -283,7 +304,8 @@ These rules are fixed. Changing them needs the creator's sign-off.
   front. Don't restyle him or drift from the logo: when unsure, match the front view. The site still
   uses the pixel cut-out (`site/assets/goose-sprite.png`, from `tools/make-goose-sprite.html`).
 - **Views and faces.** Front (face on), half turn (15°, the front's face bent round his head), 3/4 (30°)
-  and side, all facing right. Each has eyes open, blink and honk; the front also has the logo's wink,
+  and side, all facing right. Each has eyes open, blink and honk; the front also has the logo's wink and
+  scared (dying, in the game),
   and the 3/4 view has the eating faces (gape, bite, two chews and a gulp) and the peck (neck craned far
   up and forward, bill shut, eyes wide).
   His everyday face has both eyes open; the wink is an expression.
@@ -386,13 +408,22 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   The goose's ink and outline weight, and his sticker border.
 - **The grump.** Thick, flat lids pulled low over half-round pupils, a flat bill with a frown at the corner
   of the mouth, and, standing about, his wings crossed over his chest like folded arms. He never smiles.
-- **He stays turned 3/4,** his master's view, facing the way he's going; the paper flip turns him round.
-  (The goose stands face on; Bill doesn't need to: his side-long look is the point.)
+- **Head turn (game), like the goose's.** Standing about he faces us: his head keeps exactly its shape from
+  his master, and only his features turn to face us: his lids low and scowling (tipped down at their inner
+  ends) over half-round pupils either side, his bill seen end on between them (his own bill turned to face us:
+  a round dome where it meets his face, flaring out and down to a wide round end, the groove along its top,
+  two slanted nostrils, a lip of his lower bill under its
+  mouth's line, set in a frown), a darker green under his chin. On the move his head turns to his
+  master's 3/4, passing through a halfway frame (his eyes and bill slid towards the way he's turning).
+  Coughing and tossing a slice he keeps his head turned aside. The paper flip still turns him round. His body
+  stays as traced.
 - **Poses.** Wings crossed (standing about) and wings folded at his sides (moving: a torso drawn to match
   the master under its head, neck, tail and feet).
 - **Faces.** Grumpy (the master's), blink (the lids come down), The Stare (lids up, eyes open flat and wide
   on pinprick pupils), rolling his eyes (whites showing, pupils rolled up under the lids, for the Bread
-  Toss) and coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
+  Toss), scared (game: dying and in a co-op bubble, face on: his tuft standing on end in three spikes, his lids
+  shot right up and tipped worried, his eyes popped round on pinprick pupils, a wobbly line along his bill: not
+  the goose's sweat, his own) and coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
   mouth `#B83A2E`, tongue and uvula `#F07C70`).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
   short legs and big feet; his near wing beats, rises and falls as the goose's does, and tossing a slice he

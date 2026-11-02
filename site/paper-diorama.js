@@ -153,10 +153,10 @@ export async function mountPaperGoose(container, opts = {}) {
     add(standee(scenery.bush(), 1.15), -6.3, 0.9, { rotY: 0.25 });
     add(standee(scenery.bush(), 1.0), 6.3, 1.1, { rotY: -0.3 });
     add(standee(scenery.sign(), 1.7), -5.0, 2.2, { rotY: 0.35, sway: 0.008 });
-    // picnic blanket with a loaf of bread: the goose's natural target
+    // picnic blanket with a slice of bread on it: the goose's natural target
     const blanket = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 1.5), new THREE.MeshBasicMaterial({ map: gingham() }));
     blanket.rotation.set(-Math.PI / 2, 0, 0.12); blanket.position.set(-1.9, 0.03, -1.7); scene.add(blanket);
-    add(standee(scenery.bread(), 0.7), -1.9, -1.6, { rotY: 0.1, sway: 0 });
+    add(standee(scenery.slice(), 0.62), -1.9, -1.6, { rotY: 0.1, sway: 0 });
     for (const [x, z, c, h] of [[-3.0, 2.9, PAL.white, 0.65], [-0.6, 3.1, '#FFC56B', 0.55], [1.5, 2.8, PAL.white, 0.7], [4.7, 2.6, '#FFC56B', 0.6], [-6.4, -0.5, PAL.white, 0.62], [6.7, -0.1, PAL.white, 0.55]]) {
       add(standee(scenery.flower(c), h, { shadow: 0.4 }), x, z, { rotY: (Math.random() - 0.5) * 0.4, sway: 0.04 });
     }

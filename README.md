@@ -53,7 +53,7 @@ change here reaches the game the next time its art is exported.
 | Lives here (the game reads it) | Lives in the game (documented here) |
 | --- | --- |
 | `DESIGN.md`: how everything looks, moves and sounds, the site and the game | `GAME.md`: how the game plays (moves, rules, numbers, story) |
-| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle | The props' drawings (`Tools/ArtExport/props.html`), the results card, the plop HUD and the button glyphs |
+| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle; the plop and the bread (breadcrumbs, the slice, the golden loaf and its glints) and the cloud, which its props use; and the scenery (trees, bush, reeds, flowers, sun), which The Pond exports as it is | The other props' drawings (`Tools/ArtExport/props.html`), The Pond's own scenery and the heron (`scenery.html`), the results card, the plop HUD and the button glyphs |
 | `source/goose/`, `source/bill/`: both characters' vector art and rigs | The exported sheets in `Assets/Art/`, and everything Unity |
 
 Keeping them in step:
@@ -67,10 +67,6 @@ Keeping them in step:
   plops.
 - **The site's copy follows the game's facts**: the character file, the moves and the loop
   (Honk ✦ Waddle ✦ Plop ✦ Repeat) shouldn't promise anything GAME.md doesn't.
-
-Known drift to fix: `scenery.plop()` here and the game's plop are two copies of one drawing, and
-`scenery.bread()` here is a whole loaf in `#E7B47A`, while the game has breadcrumbs, a slice and the golden
-loaf in its own crust colours (DESIGN.md's palette still lists the site's loaf as "Bread").
 
 ## Publishing
 

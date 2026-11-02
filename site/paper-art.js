@@ -270,12 +270,7 @@ export const scenery = {
       g.restore();
     }
   }),
-  cloud: () => canvasOf(480, 240, g => {
-    const c = path('M 70 190 C 20 190 20 120 70 116 C 70 60 150 40 190 80 C 220 30 320 30 340 90 C 400 70 450 120 420 170 C 440 200 400 214 370 200 Z');
-    fillStroke(g, c, PAL.white, 11);
-    clipFill(g, c, () => { g.fillStyle = '#EEF1EE'; g.beginPath(); g.ellipse(240, 230, 220, 50, 0, 0, Math.PI * 2); g.fill(); });
-    g.lineWidth = 11; g.strokeStyle = INK; g.stroke(c);
-  }),
+  cloud: () => canvasOf(480, 240, g => drawCloud(g)),
   sun: () => canvasOf(300, 300, g => {
     g.strokeStyle = INK; g.lineWidth = 10;
     for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; g.beginPath(); g.moveTo(150 + Math.cos(a) * 92, 150 + Math.sin(a) * 92); g.lineTo(150 + Math.cos(a) * 128, 150 + Math.sin(a) * 128); g.stroke(); }
@@ -295,20 +290,121 @@ export const scenery = {
     for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2; fillStroke(g, path(`M ${60 + Math.cos(a) * 26} ${60 + Math.sin(a) * 26} m -16 0 a 16 16 0 1 0 32 0 a 16 16 0 1 0 -32 0`), color, 6); }
     fillStroke(g, path('M 60 60 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0'), '#FFC56B', 6);
   }, 10),
-  bread: () => canvasOf(260, 180, g => {
-    const loaf = path('M 30 150 C 20 90 60 40 130 40 C 200 40 240 90 230 150 Z');
-    fillStroke(g, loaf, '#E7B47A', 11);
-    g.strokeStyle = INK; g.lineWidth = 8; for (const x of [90, 130, 170]) { g.beginPath(); g.moveTo(x - 14, 70); g.lineTo(x + 8, 100); g.stroke(); }
-  }),
+  slice: () => canvasOf(200, 210, g => drawSlice(g)),
+  breadcrumb: (shape = 0) => canvasOf(128, 124, g => drawBreadcrumb(g, BREADCRUMB_SHAPES[shape])),
   honk: () => canvasOf(360, 230, g => {
     const bubble = path('M 40 30 L 320 22 C 344 22 350 40 348 60 L 340 150 C 338 170 322 178 300 178 L 150 180 L 90 222 L 104 180 L 50 180 C 28 180 18 166 20 146 L 20 52 C 20 36 28 30 40 30 Z');
     fillStroke(g, bubble, PAL.white, 11);
     g.fillStyle = INK; g.textAlign = 'center'; g.font = '800 92px "Baloo 2", system-ui'; g.fillText('HONK!', 184, 136);
   }, 12),
-  plop: () => canvasOf(160, 140, g => {
-    const p = path('M 80 18 C 92 34 86 44 76 50 C 104 46 118 64 110 80 C 136 82 146 106 128 122 L 32 124 C 12 108 22 84 46 82 C 38 62 52 46 72 46 C 76 36 80 28 80 18 Z');
-    fillStroke(g, p, '#7A4A32', 9);
-    g.fillStyle = PAL.white; g.beginPath(); g.arc(66, 98, 7, 0, Math.PI * 2); g.arc(96, 98, 7, 0, Math.PI * 2); g.fill();
-    g.fillStyle = INK; g.beginPath(); g.arc(68, 99, 3.5, 0, Math.PI * 2); g.arc(98, 99, 3.5, 0, Math.PI * 2); g.fill();
-  }, 10),
+  plop: () => canvasOf(160, 140, g => drawPlop(g), 10),
 };
+
+// ---------- bread and plops (shared with the game) ----------
+// Drawn once here: the site's scenery above and the game's art export (poopygoose-game's
+// Tools/ArtExport/props.html) both use these, so the two never drift. Each draws into its own box (given
+// with it) without a sticker border; the caller adds the border and any scale. lw is the ink line's width.
+
+// A plop with googly eyes, sitting on its bottom (y 124), in a 160 x 140 box.
+export function drawPlop(g, lw = 9) {
+  const p = path('M 80 18 C 92 34 86 44 76 50 C 104 46 118 64 110 80 C 136 82 146 106 128 122 L 32 124 C 12 108 22 84 46 82 C 38 62 52 46 72 46 C 76 36 80 28 80 18 Z');
+  fillStroke(g, p, '#7A4A32', lw);
+  g.fillStyle = PAL.white; g.beginPath(); g.arc(66, 98, 7, 0, Math.PI * 2); g.arc(96, 98, 7, 0, Math.PI * 2); g.fill();
+  g.fillStyle = INK; g.beginPath(); g.arc(68, 99, 3.5, 0, Math.PI * 2); g.arc(98, 99, 3.5, 0, Math.PI * 2); g.fill();
+}
+
+// Bread's colours, shared with the chunk in the goose's bill (source/goose/goose-head-34.svg).
+export const BREAD = { crust: '#D9964F', crumb: '#FBEBC8', pore: '#EDD3A2' };
+
+// Breadcrumbs: torn chunks with crust on an edge or two, like the chunk in his bill when he bites. Several
+// shapes, so a row of them never looks stamped out: a corner, a strip of the crust's edge, a round nugget and
+// a wedge torn across. Each sits on y 104, its middle at x 64, in a 128 x 124 box.
+export const BREADCRUMB_SHAPES = [
+  { // a corner, crust along the top and right
+    outline: 'M 24 40 L 86 28 C 102 26 110 36 108 52 L 102 100 L 90 94 L 80 102 L 66 95 L 54 103 L 42 96 L 28 100 L 31 86 L 21 76 L 29 64 L 19 52 Z',
+    crust: 'M 24 40 L 86 28 C 102 26 110 36 108 52 L 102 100 L 90 94 L 95 54 C 96 45 92 41 84 42 L 26 54 Z',
+    pores: [[50, 66, 5, 3], [72, 60, 4, 3], [62, 82, 6, 4], [40, 84, 4, 3]], shine: [44, 36, 64, 30, 82, 30],
+  },
+  { // a long strip off the crust's edge
+    outline: 'M 12 60 L 102 50 C 114 49 120 58 116 68 L 112 98 L 100 91 L 88 100 L 74 93 L 60 101 L 46 94 L 32 101 L 20 93 L 10 99 L 14 84 L 8 72 Z',
+    crust: 'M 12 60 L 102 50 C 114 49 120 58 116 68 L 113 80 L 104 74 C 104 67 101 64 95 64 L 11 74 Z',
+    pores: [[34, 84, 5, 3], [62, 80, 6, 4], [90, 84, 4, 3]], shine: [26, 56, 52, 52, 82, 50],
+  },
+  { // a round nugget, crust capping its top
+    outline: 'M 40 46 C 58 34 84 36 94 50 C 104 62 100 80 96 98 L 84 91 L 72 101 L 60 93 L 46 101 L 36 91 C 26 80 26 58 40 46 Z',
+    crust: 'M 40 46 C 58 34 84 36 94 50 C 98 56 99 62 98 68 C 90 56 70 50 46 58 C 40 60 34 64 32 70 C 32 60 34 52 40 46 Z',
+    pores: [[56, 76, 5, 3], [78, 72, 4, 3], [66, 88, 4, 3]], shine: [50, 46, 62, 40, 78, 41],
+  },
+  { // a wedge torn across from corner to corner, crust along the top and right
+    outline: 'M 18 46 L 94 34 C 106 33 110 42 108 52 L 104 100 L 92 95 L 84 100 L 78 88 L 66 87 L 60 76 L 46 73 L 40 63 L 26 62 L 22 54 Z',
+    crust: 'M 18 46 L 94 34 C 106 33 110 42 108 52 L 104 100 L 92 95 L 96 58 C 97 51 93 48 87 49 L 22 58 Z',
+    pores: [[60, 64, 5, 3], [80, 70, 5, 3], [86, 86, 4, 3]], shine: [36, 42, 60, 36, 80, 36],
+  },
+];
+export function drawBreadcrumb(g, shape, lw = 9) {
+  const outline = path(shape.outline);
+  g.fillStyle = BREAD.crumb; g.fill(outline);
+  g.fillStyle = BREAD.crust; g.fill(path(shape.crust));
+  g.fillStyle = BREAD.pore;
+  for (const [x, y, rx, ry] of shape.pores) { g.beginPath(); g.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); g.fill(); }
+  g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.stroke(outline);
+  const [x0, y0, cx, cy, x1, y1] = shape.shine;
+  g.strokeStyle = 'rgba(255,255,255,0.45)'; g.lineWidth = 4; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(x0, y0); g.quadraticCurveTo(cx, cy, x1, y1); g.stroke();
+}
+
+// A whole slice of bread from a loaf: a puffy top, square sides, a flat bottom (y 190) and crust all round,
+// its middle at x 100, in a 200 x 210 box. The goose's bread in the story; Bill tosses them in the game.
+export function drawSlice(g, lw = 9) {
+  fillStroke(g, path('M 40 190 L 40 84 C 10 74 10 24 50 22 C 70 10 130 10 150 22 C 190 24 190 74 160 84 L 160 190 Z'), BREAD.crust, lw);
+  g.fillStyle = BREAD.crumb; g.fill(path('M 56 176 L 56 74 C 32 66 32 36 60 35 C 78 25 122 25 140 35 C 168 36 168 66 144 74 L 144 176 Z'));
+  // air holes in the crumb, and a little shine on the crust
+  g.fillStyle = BREAD.pore;
+  for (const [x, y, rx, ry] of [[80, 70, 6, 4], [118, 58, 5, 3], [100, 104, 7, 4], [74, 132, 5, 4], [124, 140, 6, 4], [96, 158, 4, 3], [130, 96, 4, 3]]) {
+    g.beginPath(); g.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); g.fill();
+  }
+  g.strokeStyle = 'rgba(255,255,255,0.45)'; g.lineWidth = 5; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(64, 27); g.quadraticCurveTo(82, 20, 104, 20); g.stroke();
+}
+
+// The golden loaf, the game's prize: a whole tin loaf in sunny gold (gold means "a prize", never "use this"),
+// sitting on y 234, its middle at x 160, in a 320 x 260 box. shimmer 0 is the plain loaf; 1 to steps is a band
+// of light sweeping across it, left to right.
+export const GOLD = { gold: '#FFC56B', deep: '#F0A43A' };
+export function drawGoldenLoaf(g, shimmer = 0, steps = 6, lw = 9) {
+  const outline = path('M 44 222 L 44 140 C 44 82 96 58 160 58 C 224 58 276 82 276 140 L 276 222 Q 276 234 264 234 L 56 234 Q 44 234 44 222 Z');
+  g.fillStyle = GOLD.gold; g.fill(outline);
+  // the domed top crust, baked darker
+  g.fillStyle = GOLD.deep; g.fill(path('M 44 140 C 44 82 96 58 160 58 C 224 58 276 82 276 140 C 214 124 106 124 44 140 Z'));
+  if (shimmer > 0) {
+    // the band of light, slanted, clipped to the loaf
+    const x = shimmer * 300 / (steps + 1) + 10;
+    g.save(); g.clip(outline);
+    g.fillStyle = 'rgba(255,255,255,0.65)';
+    g.fill(path(`M ${x + 30} 40 L ${x + 76} 40 L ${x - 6} 250 L ${x - 52} 250 Z`));
+    g.restore();
+  }
+  // the baker's scores, a shine on the dome and down the side, and the ink outline over it all
+  g.strokeStyle = INK; g.lineWidth = 7; g.lineCap = 'round';
+  for (const [x, y] of [[104, 86], [152, 76], [200, 82]]) { g.beginPath(); g.moveTo(x, y); g.lineTo(x + 18, y + 28); g.stroke(); }
+  g.strokeStyle = 'rgba(255,255,255,0.75)'; g.lineWidth = 8;
+  g.beginPath(); g.moveTo(68, 116); g.quadraticCurveTo(82, 82, 120, 70); g.stroke();
+  g.beginPath(); g.moveTo(66, 156); g.lineTo(66, 208); g.stroke();
+  g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.stroke(outline);
+}
+
+// A four-pointed glint that twinkles around the golden loaf, its middle at (40, 40) in an 80 x 80 box.
+export function drawGlint(g) {
+  fillStroke(g, path('M 40 10 Q 40 40 70 40 Q 40 40 40 70 Q 40 40 10 40 Q 40 40 40 10 Z'), PAL.white, 5);
+  g.fillStyle = GOLD.gold; g.beginPath(); g.arc(40, 40, 5, 0, Math.PI * 2); g.fill();
+}
+
+// ---------- clouds (shared with the game) ----------
+// A puffy white cloud with a soft grey belly, sitting on y 214, its middle at x 240, in a 480 x 240 box. The
+// site hangs them in the sky; the game's honkable cloud (props.html) and its sky are this drawing too.
+export function drawCloud(g, lw = 11) {
+  const c = path('M 70 190 C 20 190 20 120 70 116 C 70 60 150 40 190 80 C 220 30 320 30 340 90 C 400 70 450 120 420 170 C 440 200 400 214 370 200 Z');
+  fillStroke(g, c, PAL.white, lw);
+  clipFill(g, c, () => { g.fillStyle = '#EEF1EE'; g.beginPath(); g.ellipse(240, 230, 220, 50, 0, 0, Math.PI * 2); g.fill(); });
+  g.lineWidth = lw; g.strokeStyle = INK; g.stroke(c);
+}

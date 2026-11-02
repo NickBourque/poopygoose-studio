@@ -2,8 +2,9 @@
 // drawing bill-sketch.jpg by tools/trace-bill.html) for a pose and a face. Used by tools/bill-model-sheet.html
 // and, later, the game's frame exporter. Coordinates are Bill px (his drawing at half size), facing right.
 //
-// He stays turned 3/4 (his master's view): his grumpy side-long look is his character, and the paper flip
-// turns him round. Poses: 'crossed' (wings folded across his chest, the master: standing about) and
+// His body stays turned 3/4 (his master's view) and the paper flip turns him round; his head can also turn to
+// face us ('front', drawn to match the master: standing about, like the goose) or halfway ('half'). Poses:
+// 'crossed' (wings folded across his chest, the master: standing about) and
 // 'free' (wings folded at his sides, for moving: a torso drawn to match the master, under its head, neck,
 // tail and feet). Faces: 'grumpy' (the master's: lids low over his pupils), 'blink', 'stare' (The Stare:
 // eyes opened flat on pinprick pupils), 'roll' (rolling his eyes, for the Bread Toss) and 'cough' (in the
@@ -16,7 +17,7 @@ import { mapPathPoints } from '../goose/rig.js';
 
 export const VIEWBOX = { x: 0, y: 0, w: 671, h: 1000 };
 export const POSES = ['crossed', 'free'];
-export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough'];
+export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough', 'scared'];
 // Where he stands: his feet's soles (Bill px), and his body's middle, over them.
 export const GROUND_Y = 980, CENTRE_X = 400;
 // His legs, for site/paper-art.js's drawGooseLegs (he walks the goose's gaits): hips up inside his body,
@@ -68,20 +69,25 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
      * Markup for Bill in a pose with a face. feet: false leaves his feet off (legs drawn separately); wing:
      * false leaves the free pose's near wing off (drawn separately, to turn: wing()); peck (free only)
      * stretches his neck, raising his head by up to PECK_STRETCH (above the VIEWBOX: draw into a taller box).
-     * uvula (the cough face) swings his uvula this far, in radians (+ swings it forward).
+     * uvula (the cough face) swings his uvula this far, in radians (+ swings it forward). view: '34' (the
+     * master's head), 'front' (his head turned to face us: standing about) or 'half' (halfway between, as it
+     * turns); face on, his faces are grumpy, blink and stare.
      */
-    figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true, peck = false, uvula = 0 } = {}) {
-      const eyes = (face === 'grumpy' ? '' : drawEyes(face)) + (face === 'cough' ? coughMouth(uvula) : '');
+    figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true, peck = false, uvula = 0, view = '34' } = {}) {
+      const turned = view !== '34' && !peck;
+      const eyes = turned ? '' : (face === 'grumpy' ? '' : drawEyes(face)) + (face === 'cough' ? coughMouth(uvula) : '');
+      // face on, the master's head is cut away above HEAD_CUT and his drawn one stands on his neck
+      const top = turned ? HEAD_CUT : 0, head = turned ? frontHead(face, view === 'half') : '';
       if (pose === 'crossed') {
-        return (feet ? master : clipped('bill-no-feet', box(0, 0, VIEWBOX.w, FEET_Y), master)) + eyes;
+        return clipped('bill-crossed', box(0, top, VIEWBOX.w, feet ? VIEWBOX.h : FEET_Y), master) + eyes + head;
       }
       // free: the drawn torso, then the master's tail, head and neck (and feet) over it
       const [dx, up] = peck ? PECK_STRETCH : [0, 0];
       return torso(wing)
         + clipped('bill-tail', 'M' + TAIL.map(p => p.join(' ')).join('L') + 'Z', master)
-        + clipped('bill-head', box(0, -up, VIEWBOX.w + dx, NECK_Y), peck ? stretchNeck(master) : master)
+        + clipped('bill-head', box(0, turned ? top : -up, VIEWBOX.w + dx, NECK_Y), peck ? stretchNeck(master) : master)
         + (feet ? clipped('bill-feet', box(0, FEET_Y, VIEWBOX.w, VIEWBOX.h), master) : '')
-        + (peck && eyes ? `<g transform="translate(${dx} ${-up})">${eyes}</g>` : eyes);
+        + (peck && eyes ? `<g transform="translate(${dx} ${-up})">${eyes}</g>` : eyes) + head;
     },
     /** Where the tip of his bill is (Bill px) pecking: his head's furthest point forward, carried by the stretch. */
     peckTip() {
@@ -108,14 +114,109 @@ function stretchNeck(markup) {
   return markup.replace(/ d="([^"]*)"/g, (_, d) => ` d="${mapPathPoints(d, warp)}"`);
 }
 
-// A new pair of eyes over the master's: his head's green over the old ones, then the face.
-function drawEyes(face) {
+// His head turned to face us (standing about): his head is the master's, exactly its shape (MASTER_HEAD), and
+// only his features turn to face us: his lids low over half-round pupils either side, tipped down at their inner
+// ends (a scowl), and his bill seen end on between them (his master's bill turned to face us: a round dome flaring
+// to a wide round end, its mouth set in a frown); a darker green under his chin. Halfway round, his eyes and
+// bill slide towards the way he's turning,
+// the far side squeezed. Scared (dying, or waiting in a co-op bubble), his tuft stands on end, his lids shoot up
+// and tip the other way, his eyes pop round on pinprick pupils, and his bill's edges wobble.
+const HEAD_CUT = 405;
+const GREEN_LIGHT = '#4f8660', GREEN_DEEP = '#184533', BILL_LIP = '#8e5221';
+// How his face-on head is drawn (Bill px, x as offsets from cx): its outline (the master's), his eyes (centred
+// eyeX either side of cx, the lids' top at eyeY), and his bill (its dome billTop either side of its middle where
+// it meets his face at billY, flaring to billWide either side at its end, billLong below). Exported so a tool can
+// try other proportions.
+// His head's outline in the master (the centre of its ink line), measured off it row by row, with the stretch
+// where his bill pokes out filled in along the line of his head: face on, his head keeps exactly this shape,
+// only his eyes and bill turn to face us.
+const MASTER_HEAD = [[405, 72], [458, 77], [500, 92], [527, 113], [540, 140], [549, 180], [553, 210], [557, 240],
+  [559, 268], [556, 296], [548, 322], [538, 340], [511, 360], [490, 380], [491, 400], [347, 400], [342, 380],
+  [313, 360], [296, 350], [273, 330], [259, 310], [252, 290], [249, 270], [248, 250], [250, 230], [254, 200],
+  [263, 160], [279, 120], [294, 100], [307, 90], [327, 80], [356, 77]];
+export const FRONT = {
+  cx: 403, neck: [347, 491], scowl: 9,
+  head: MASTER_HEAD.map(([x, y]) => [x - 403, y]),
+  eyeX: 62, eyeY: 200, lid: [82, 14], pupil: 13,
+  billY: 244, billTop: 28, billWide: 96, billLong: 96,
+};
+function frontHead(face, half) {
+  const { cx, neck: [n0, n1], scowl, eyeX, eyeY, lid: [lw, lh], pupil, billY, billTop, billWide, billLong } = FRONT;
+  const scared = face === 'scared';
+  // halfway round: the near eye and the bill slide further than the far eye, which tucks in, and the bill's far
+  // side widens as its near side squeezes
+  const near = cx - eyeX + (half ? 34 : 0), far = cx + eyeX + (half ? 16 : 0), bx = cx + (half ? 34 : 0);
+  const squeeze = half ? 0.82 : 1, grow = half ? 1.1 : 1;
+  const head = smooth(FRONT.head.map(([x, y]) => [cx + x, y]));
+  const tuft = scared
+    // standing on end: three spikes
+    ? [[-34, -40, -18], [0, -58, 0], [34, -40, 18]].map(([dx, up, lean]) =>
+      `<path fill="${GREEN_LIGHT}" stroke-width="10" d="M${cx + dx - 14} 84L${cx + dx + lean} ${70 + up}L${cx + dx + 14} 84Z"/>`).join('')
+    : `<path fill="${GREEN_LIGHT}" stroke-width="10" d="M${cx - 4} 82C${cx - 14} 44 ${cx} 22 ${cx + 18} 30C${cx + 12} 48 ${cx + 18} 64 ${cx + 26} 80Z"/>
+       <path fill="${GREEN_LIGHT}" stroke-width="10" d="M${cx + 18} 80C${cx + 28} 42 ${cx + 50} 32 ${cx + 62} 44C${cx + 50} 54 ${cx + 44} 68 ${cx + 40} 84Z"/>`;
+  // His bill, his master's turned to face us: a round dome where it meets his face between his eyes, flaring out
+  // and down to a wide round end; the groove along its top curving down either side, two slanted nostrils, his
+  // mouth's line across its lower part (turned down at its corners) and a lip of his lower bill under it.
+  const [tl, tr] = [billTop * squeeze, billTop * grow], [wl, wr] = [billWide * squeeze, billWide * grow];
+  const bottom = billY + billLong, edge = bottom - 18;
+  const billPath = `M${bx} ${billY - 6}` +
+    // the dome, then on round into the flare without a corner (the flare starts the way the dome is heading),
+    // out to the end's widest, and round the end
+    `C${bx + tr * 0.9} ${billY - 6} ${bx + tr * 1.2} ${billY + 10} ${bx + tr * 1.35} ${billY + 28}` +
+    `C${bx + tr * 1.5} ${billY + 46} ${bx + wr} ${billY + 40} ${bx + wr} ${edge - 4}` +
+    `C${bx + wr} ${bottom - 2} ${bx + wr * 0.75} ${bottom + 3} ${bx} ${bottom + 3}` +
+    `C${bx - wl * 0.75} ${bottom + 3} ${bx - wl} ${bottom - 2} ${bx - wl} ${edge - 4}` +
+    `C${bx - wl} ${billY + 40} ${bx - tl * 1.5} ${billY + 46} ${bx - tl * 1.35} ${billY + 28}` +
+    `C${bx - tl * 1.2} ${billY + 10} ${bx - tl * 0.9} ${billY - 6} ${bx} ${billY - 6}Z`;
+  const lip = `M${bx - wl + 8} ${edge + 2}Q${bx} ${edge - 6} ${bx + wr - 8} ${edge + 2}` +
+    `C${bx + wr * 0.6} ${bottom + 4} ${bx - wl * 0.6} ${bottom + 4} ${bx - wl + 8} ${edge + 2}Z`;
+  const groove = `M${bx - tl * 1.35} ${billY + 30}Q${bx - wl * 0.72} ${billY + 48} ${bx - wl + 10} ${billY + 66}` +
+    `M${bx + tr * 1.35} ${billY + 30}Q${bx + wr * 0.72} ${billY + 48} ${bx + wr - 10} ${billY + 66}`;
+  const mouth = scared
+    // wobbling: a wavy line across his bill
+    ? `M${bx - wl + 4} ${edge}` + Array.from({ length: 6 }, (_, i) => `Q${bx - wl + 4 + (wl + wr - 8) * (i + 0.5) / 6} ${edge + (i % 2 ? 9 : -9)} ${bx - wl + 4 + (wl + wr - 8) * (i + 1) / 6} ${edge}`).join('')
+    : `M${bx - wl + 2} ${edge + 8}Q${bx - wl + 10} ${edge - 2} ${bx - wl + 26} ${edge - 2}Q${bx} ${edge - 8} ${bx + wr - 26} ${edge - 2}` +
+      `Q${bx + wr - 10} ${edge - 2} ${bx + wr - 2} ${edge + 8}`;
+  const nostril = (x, turn) => `<ellipse fill="${INK}" stroke="none" cx="${x}" cy="${billY + 22}" rx="4.5" ry="8.5" transform="rotate(${turn} ${x} ${billY + 22})"/>`;
+  const eyeDefs = Object.fromEntries([['near', near], ['far', far]].map(([side, ex]) =>
+    [side, { lid: [ex - lw / 2, eyeY, ex + lw / 2, eyeY + lh], pupil: [ex + (half ? 4 : 0), eyeY + lh, pupil] }]));
+  return `<defs><clipPath id="bill-front-head"><path d="${head}"/></clipPath></defs>
+    <g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round">
+      ${tuft}
+      <path fill="${GREEN}" stroke-width="15" d="${head}"/>
+      <g clip-path="url(#bill-front-head)" stroke="none">
+        <ellipse fill="${GREEN_DEEP}" cx="${cx}" cy="400" rx="150" ry="58"/>
+        <path fill="none" stroke="${GREEN_LIGHT}" stroke-width="14" d="M${cx - 120} 190C${cx - 116} 140 ${cx - 84} 100 ${cx - 40} 90"/>
+      </g>
+      <path fill="${GREEN}" stroke="none" d="M${n0 + 7} 372L${n1 - 7} 372L${n1 - 7} ${HEAD_CUT + 8}L${n0 + 7} ${HEAD_CUT + 8}Z"/>
+      <path fill="${GREEN_DEEP}" stroke="none" d="M${n0 + 7} 372L${n1 - 7} 372L${n1 - 7} 384Q${cx} 396 ${n0 + 7} 384Z"/>
+      <path fill="none" stroke-width="15" d="M${n0} 386L${n0} ${HEAD_CUT + 8}M${n1} 386L${n1} ${HEAD_CUT + 8}"/>
+      <path fill="${BILL}" stroke-width="12" d="${billPath}"/>
+      <path fill="${BILL_LIP}" stroke="none" d="${lip}"/>
+      <path fill="none" stroke-width="6" d="${groove}"/>
+      ${nostril(bx - 16, 22)}${nostril(bx + 16, -22)}
+      <path fill="none" stroke-width="9" d="${mouth}"/>
+      <path fill="none" stroke-width="12" d="${billPath}"/>
+    </g>` + drawEyes(face, eyeDefs, false, face === 'grumpy' || face === 'blink' ? scowl : scared ? -scowl : 0);
+}
+
+// A new pair of eyes, over the master's (his head's green patched over the old ones) or wherever eyes says (face
+// on), then the face. tilt (degrees) tips each lid down at its inner end (+, a scowl) or up (-, worried).
+function drawEyes(face, eyes = EYES, patch = true, tilt = 0) {
   const out = [];
   for (const side of ['near', 'far']) {
-    const { lid: [x0, y0, x1, y1], pupil: [px, py, r], patch: [a, b, c, d] } = EYES[side];
+    const { lid: [x0, y0, x1, y1], pupil: [px, py, r] } = eyes[side];
     const lidBar = `<path fill="${INK}" d="M${x0 + 5} ${y0}L${x1 - 5} ${y0}Q${x1} ${y0} ${x1} ${(y0 + y1) / 2}Q${x1} ${y1} ${x1 - 5} ${y1}L${x0 + 5} ${y1}Q${x0} ${y1} ${x0} ${(y0 + y1) / 2}Q${x0} ${y0} ${x0 + 5} ${y0}Z"/>`;
-    out.push(`<rect fill="${GREEN}" x="${a}" y="${b}" width="${c - a}" height="${d - b}" rx="10"/>`);
-    if (face === 'blink') {
+    if (patch) {
+      const [a, b, c, d] = eyes[side].patch;
+      out.push(`<rect fill="${GREEN}" x="${a}" y="${b}" width="${c - a}" height="${d - b}" rx="10"/>`);
+    }
+    const start = out.length;
+    if (face === 'grumpy') {
+      // the master's look: the lid low over a half-round pupil
+      out.push(lidBar);
+      out.push(`<path fill="${INK}" d="M${px - r} ${y1}A${r} ${r} 0 0 0 ${px + r} ${y1}Z"/>`);
+    } else if (face === 'blink') {
       // shut: the lid comes down, a little crease under it
       out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 6)" d="M${x0 + 5} ${y0}`));
       out.push(`<path fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" d="M${x0 + 10} ${y1 + 10}Q${px} ${y1 + 15} ${x1 - 10} ${y1 + 9}"/>`);
@@ -131,12 +232,22 @@ function drawEyes(face) {
       out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`);
       out.push(`<circle fill="${INK}" cx="${px + 3}" cy="${cy}" r="${r * 0.5}"/>`);
       out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 ${cy - ry - 4 - y1})" d="M${x0 + 5} ${y0}`));
+    } else if (face === 'scared') {
+      // scared (face on): lids shot right up, eyes popped round on pinprick pupils
+      const rx = (x1 - x0) / 2 - 8, ry = 24, cx = (x0 + x1) / 2, cy = y1 + 8;
+      out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`);
+      out.push(`<circle fill="${INK}" cx="${cx}" cy="${cy + 2}" r="${r * 0.35}"/>`);
+      out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 ${cy - ry - 8 - y1})" d="M${x0 + 5} ${y0}`));
     } else if (face === 'roll') {
       // rolling his eyes: whites showing, the pupils rolled up under the lids
       const rx = (x1 - x0) / 2 - 6, cx = (x0 + x1) / 2, cy = y1 + 3;
       out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${r}"/>`);
       out.push(`<circle fill="${INK}" cx="${px + 4}" cy="${y1}" r="${r * 0.7}"/>`);
       out.push(lidBar);
+    }
+    if (tilt) {
+      const turn = side === 'near' ? tilt : -tilt, [cx, cy] = [(x0 + x1) / 2, (y0 + y1) / 2];
+      out.push(`<g transform="rotate(${turn} ${cx} ${cy})">${out.splice(start).join('')}</g>`);
     }
   }
   return out.join('');

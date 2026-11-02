@@ -3,7 +3,7 @@
 //
 // Views: 'front' (traced from the logo), 'half' (the front turned 15°, made by bending the front's face
 // round his head), '34' (turned 30°) and 'side' (profile). All face right. Faces: open eyes, blink, honk,
-// in front only the logo's wink, and in 3/4 only eating bread (eat: 'gape', 'bite', 'chew-a' or 'chew-b';
+// in front only the logo's wink and scared (wide eyes, worried brows, a bead of sweat), and in 3/4 only eating bread (eat: 'gape', 'bite', 'chew-a' or 'chew-b';
 // gulp: 1-3, the lump on its way down his neck; lunge: 0.5 or 1, his neck bent down to reach bread; peck,
 // his neck stretched up and forward to pop a bubble with his bill). Legs aren't here: site/paper-art.js
 // draws them.
@@ -65,16 +65,30 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
   // eyes and brows bend round the head and the bill round its own front.
   // The logo winks with its far eye: open eyes mirror the near one across the bill, and a blink puts the
   // wink on both.
-  function frontFace({ blink, honk, wink }, turn = 0) {
+  function frontFace({ blink, honk, wink, scared }, turn = 0) {
     const eyeFx = turn ? bendEye(turn) : same, billFx = turn ? bendBill(turn) : same;
     const open = frontPiece('eye-near'), winking = frontPiece('eye-far');
     const near = blink ? mapGroup(winking, x => eyeFx(mirror(x))) : mapGroup(open, eyeFx);
-    const far = blink || wink ? mapGroup(winking, eyeFx) : mapGroup(open, x => eyeFx(mirror(x)));
-    const brows = mapGroup(frontPiece('brow-near'), eyeFx) + mapGroup(frontPiece('brow-far'), eyeFx);
+    const far = blink || wink && !scared ? mapGroup(winking, eyeFx) : mapGroup(open, x => eyeFx(mirror(x)));
+    const browNear = mapGroup(frontPiece('brow-near'), eyeFx), browFar = mapGroup(frontPiece('brow-far'), eyeFx);
+    const brows = browNear + browFar;
     const [ex, ey] = FRONT_EYE;
+    const wideEyes = `<g transform="${widen(eyeFx(ex), ey)}">${near}</g><g transform="${widen(eyeFx(mirror(ex)), ey)}">${far}</g>`;
+    if (scared) {
+      // Scared: shocked eyes (white, ringed in ink, with small pupils), the brows lifted and tipped steeply up at
+      // their inner ends (worried), and a bead of sweat on the side of his head. His bill stays shut.
+      const [bx, by] = SCARED_BROW, [fx, fy] = [mirror(bx), by];
+      return [
+        `<g transform="translate(0 ${-SCARED_BROWS}) rotate(${-SCARED_TILT} ${eyeFx(bx)} ${by})">${browNear}</g>`,
+        `<g transform="translate(0 ${-SCARED_BROWS}) rotate(${SCARED_TILT} ${eyeFx(fx)} ${fy})">${browFar}</g>`,
+        shockedEye(eyeFx(ex), ey) + shockedEye(eyeFx(mirror(ex)), ey),
+        mapGroup(frontPiece('bill'), billFx),
+        SWEAT_DROP,
+      ].join('\n');
+    }
     return [
       honk ? `<g transform="translate(0 ${-HONK_BROWS})">${brows}</g>` : brows,
-      honk ? `<g transform="${widen(eyeFx(ex), ey)}">${near}</g><g transform="${widen(eyeFx(mirror(ex)), ey)}">${far}</g>` : near + far,
+      honk ? wideEyes : near + far,
       mapGroup(frontPiece('bill'), billFx),
       honk ? mapGroup(frontPiece('bill-honk'), billFx) : '',
     ].join('\n');
@@ -152,7 +166,7 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
   }
 
   return {
-    /** Markup for his body and head in a view, with a face: { blink, honk, wink, eat, gulp, lunge, peck }. */
+    /** Markup for his body and head in a view, with a face: { blink, honk, wink, scared, eat, gulp, lunge, peck }. */
     figure(view, face = {}) {
       const front = view === 'front' || view === 'half';
       const peck = face.peck && view === '34';
@@ -242,6 +256,13 @@ export async function svgImage(svg) {
 
 // eye centres, for widening them about their middles
 const FRONT_EYE = [939, 578];            // the near eye; the far one is its mirror
+// Scared (dying, in the game): the brows lift this far (logo px) and tip this many degrees about the near
+// brow's middle (the far one's is its mirror); his eyes are drawn shocked; a bead of sweat sits on his head.
+const SCARED_BROW = [938, 525], SCARED_BROWS = 22, SCARED_TILT = 24;
+const shockedEye = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="22" ry="28" fill="#FFFFFF" stroke="#472418" stroke-width="8"/>` +
+  `<circle cx="${x}" cy="${y + 4}" r="7" fill="#472418"/>`;
+const SWEAT_DROP = '<path d="M 866 490 C 856 512 846 527 846 539 C 846 552 855 561 866 561 C 877 561 886 552 886 539 C 886 527 876 512 866 490 Z" fill="#A9D3D8" stroke="#472418" stroke-width="8" stroke-linejoin="round"/>' +
+  '<path d="M 857 538 Q 857 526 864 516" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>';
 const DRAWN_EYES = { '34': { 'eye-near': [1018, 577], 'eye-far': [1180, 572] }, side: { 'eye-near': [1076, 572] } };
 const widen = (cx, cy) => `translate(${cx} ${cy}) scale(${HONK_EYES}) translate(${-cx} ${-cy})`;
 
