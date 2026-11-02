@@ -8,7 +8,10 @@
 // 'free' (wings folded at his sides, for moving: a torso drawn to match the master, under its head, neck,
 // tail and feet). Faces: 'grumpy' (the master's: lids low over his pupils), 'blink', 'stare' (The Stare:
 // eyes opened flat on pinprick pupils), 'roll' (rolling his eyes, for the Bread Toss) and 'cough' (in the
-// goose's stink: eyes popped wide and round, his bill dropped open on his tongue and swinging uvula). New
+// goose's stink: eyes popped wide and round, his bill dropped open on his tongue and swinging uvula),
+// 'glance-left' and 'glance-right' (shifty: his pupils slid to one side under his scowl and, face on, his face
+// turned partway after them, looking about) and 'brow' (brows up, cross: both lids lifted and scowling harder
+// over open round eyes). New
 // faces are drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op
 // bubble with the tip of his bill): his neck stretches up and forward. Coughing, his near wing comes up in a
 // fist in front of his bill, as a proper duck's does: fist().
@@ -17,7 +20,11 @@ import { mapPathPoints } from '../goose/rig.js';
 
 export const VIEWBOX = { x: 0, y: 0, w: 671, h: 1000 };
 export const POSES = ['crossed', 'free'];
-export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough', 'scared'];
+export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough', 'scared', 'glance-left', 'glance-right', 'brow'];
+// Glancing, his pupils slide this far either way under his lids (Bill px) and, face on, his face turns this far
+// towards where he's looking (as a share of turning halfway round); raising his brows, both lids lift this far
+// and scowl this many times as hard, over open round eyes.
+const GLANCE = 24, GLANCE_TURN = 0.7, BROW_LIFT = 16, BROW_SCOWL = 1.8;
 // Where he stands: his feet's soles (Bill px), and his body's middle, over them.
 export const GROUND_Y = 980, CENTRE_X = 400;
 // His legs, for site/paper-art.js's drawGooseLegs (he walks the goose's gaits): hips up inside his body,
@@ -143,10 +150,13 @@ export const FRONT = {
 function frontHead(face, half) {
   const { cx, neck: [n0, n1], scowl, eyeX, eyeY, lid: [lw, lh], pupil, billY, billTop, billWide, billLong } = FRONT;
   const scared = face === 'scared';
-  // halfway round: the near eye and the bill slide further than the far eye, which tucks in, and the bill's far
-  // side widens as its near side squeezes
-  const near = cx - eyeX + (half ? 34 : 0), far = cx + eyeX + (half ? 16 : 0), bx = cx + (half ? 34 : 0);
-  const squeeze = half ? 0.82 : 1, grow = half ? 1.1 : 1;
+  // Turning (1 halfway round to his right, -1 to his left; glancing, partway): the eye he turns from and the bill
+  // slide further than the eye he turns towards, which tucks in, and the bill's side he turns towards widens as
+  // the other squeezes.
+  const turn = half ? 1 : face === 'glance-left' ? -GLANCE_TURN : face === 'glance-right' ? GLANCE_TURN : 0;
+  const right = Math.max(0, turn), left = Math.max(0, -turn);
+  const near = cx - eyeX + 34 * right - 16 * left, far = cx + eyeX + 16 * right - 34 * left, bx = cx + 34 * turn;
+  const squeeze = 1 - 0.18 * right + 0.1 * left, grow = 1 + 0.1 * right - 0.18 * left;
   const head = smooth(FRONT.head.map(([x, y]) => [cx + x, y]));
   const tuft = scared
     // standing on end: three spikes
@@ -179,7 +189,7 @@ function frontHead(face, half) {
       `Q${bx + wr - 10} ${edge - 2} ${bx + wr - 2} ${edge + 8}`;
   const nostril = (x, turn) => `<ellipse fill="${INK}" stroke="none" cx="${x}" cy="${billY + 22}" rx="4.5" ry="8.5" transform="rotate(${turn} ${x} ${billY + 22})"/>`;
   const eyeDefs = Object.fromEntries([['near', near], ['far', far]].map(([side, ex]) =>
-    [side, { lid: [ex - lw / 2, eyeY, ex + lw / 2, eyeY + lh], pupil: [ex + (half ? 4 : 0), eyeY + lh, pupil] }]));
+    [side, { lid: [ex - lw / 2, eyeY, ex + lw / 2, eyeY + lh], pupil: [ex + 4 * turn, eyeY + lh, pupil] }]));
   return `<defs><clipPath id="bill-front-head"><path d="${head}"/></clipPath></defs>
     <g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round">
       ${tuft}
@@ -197,7 +207,8 @@ function frontHead(face, half) {
       ${nostril(bx - 16, 22)}${nostril(bx + 16, -22)}
       <path fill="none" stroke-width="9" d="${mouth}"/>
       <path fill="none" stroke-width="12" d="${billPath}"/>
-    </g>` + drawEyes(face, eyeDefs, false, face === 'grumpy' || face === 'blink' ? scowl : scared ? -scowl : 0);
+    </g>` + drawEyes(face, eyeDefs, false,
+    ['grumpy', 'blink', 'glance-left', 'glance-right', 'brow'].includes(face) ? scowl : scared ? -scowl : 0);
 }
 
 // A new pair of eyes, over the master's (his head's green patched over the old ones) or wherever eyes says (face
@@ -212,10 +223,17 @@ function drawEyes(face, eyes = EYES, patch = true, tilt = 0) {
       out.push(`<rect fill="${GREEN}" x="${a}" y="${b}" width="${c - a}" height="${d - b}" rx="10"/>`);
     }
     const start = out.length;
-    if (face === 'grumpy') {
-      // the master's look: the lid low over a half-round pupil
+    let turnBy = side === 'near' ? tilt : -tilt;
+    if (face === 'grumpy' || face === 'glance-left' || face === 'glance-right') {
+      // the master's look: the lid low over a half-round pupil (glancing, slid to one side under it)
+      const gx = px + (face === 'glance-left' ? -GLANCE : face === 'glance-right' ? GLANCE : 0);
       out.push(lidBar);
-      out.push(`<path fill="${INK}" d="M${px - r} ${y1}A${r} ${r} 0 0 0 ${px + r} ${y1}Z"/>`);
+      out.push(`<path fill="${INK}" d="M${gx - r} ${y1}A${r} ${r} 0 0 0 ${gx + r} ${y1}Z"/>`);
+    } else if (face === 'brow') {
+      // brows up, cross: both lids lifted and scowling harder over open round eyes
+      out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 ${-BROW_LIFT})" d="M${x0 + 5} ${y0}`));
+      out.push(`<circle fill="${INK}" cx="${px}" cy="${y1 + 2}" r="${r}"/>`);
+      turnBy *= BROW_SCOWL;
     } else if (face === 'blink') {
       // shut: the lid comes down, a little crease under it
       out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 6)" d="M${x0 + 5} ${y0}`));
@@ -245,9 +263,9 @@ function drawEyes(face, eyes = EYES, patch = true, tilt = 0) {
       out.push(`<circle fill="${INK}" cx="${px + 4}" cy="${y1}" r="${r * 0.7}"/>`);
       out.push(lidBar);
     }
-    if (tilt) {
-      const turn = side === 'near' ? tilt : -tilt, [cx, cy] = [(x0 + x1) / 2, (y0 + y1) / 2];
-      out.push(`<g transform="rotate(${turn} ${cx} ${cy})">${out.splice(start).join('')}</g>`);
+    if (turnBy) {
+      const [cx, cy] = [(x0 + x1) / 2, (y0 + y1) / 2];
+      out.push(`<g transform="rotate(${turnBy} ${cx} ${cy})">${out.splice(start).join('')}</g>`);
     }
   }
   return out.join('');

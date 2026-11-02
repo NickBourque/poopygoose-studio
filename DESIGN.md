@@ -436,14 +436,18 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   on pinprick pupils), rolling his eyes (whites showing, pupils rolled up under the lids, for the Bread
   Toss), scared (game: dying and in a co-op bubble, face on: his tuft standing on end in three spikes, his lids
   shot right up and tipped worried, his eyes popped round on pinprick pupils, a wobbly line along his bill: not
-  the goose's sweat, his own) and coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
-  mouth `#B83A2E`, tongue and uvula `#F07C70`).
+  the goose's sweat, his own), coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
+  mouth `#B83A2E`, tongue and uvula `#F07C70`), shifty glances left and right (face on: his pupils slid to one
+  side under his scowl, his face turned partway after them) and brows up, cross (both lids lifted and scowling
+  harder over open round eyes).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
   short legs and big feet; his near wing beats, rises and falls as the goose's does (running, it swings
   like an arm, about 20° either way from his side: a stiff, grumpy march), and tossing a slice he
   flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
   he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
-  open bill, and his uvula swings back at each hack and forward again. The game's frames are exported from
+  open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s
+  he either looks about, paranoid (a darting glance one way, then the other, each held a moment, his body
+  jolting about 2° after each), or puts his brows up, cross, for 1.3s; never both at once. The game's frames are exported from
   his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
 
 | | |
