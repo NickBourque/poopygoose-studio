@@ -337,6 +337,12 @@ These rules are fixed. Changing them needs the creator's sign-off.
   Holding a direction, he waddles off and breaks into a run after about 0.4s, with a cartoon scramble:
   his legs churn at 6 strides a second, far ahead of how fast he's going, and settle to the ground's
   pace over 0.5s. After that it's paced to the ground like the walk.
+- **Neck wobble (game):** always, standing about or on the move, his neck wobbles gently like a tall
+  jelly on a plate slid from side to side. Its base leads and each bit higher up lags behind (the top
+  0.3 of a sway behind the base), so the sway travels up his neck as a wave; his head is carried along
+  as one piece, fixed to the top of his neck, and tips about its middle back against the pull (2.5°).
+  It sways about 2 cm either way, one back and forth every 3.3s, and settles while he eats or pecks.
+  It's done live, by bending his paper across his neck, not drawn into the frames, so it stays smooth.
 - **Skid (game):** let go of a run, or push the other way, and he skids briefly to a stop before turning:
   still facing forwards, body sunk, both feet braced out in front with the toes up, the wing out, and the
   sheet leaning back about 8°. Never a moonwalk: he only turns once stopped.
