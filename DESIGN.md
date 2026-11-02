@@ -343,6 +343,9 @@ These rules are fixed. Changing them needs the creator's sign-off.
   as one piece, fixed to the top of his neck, and tips about its middle back against the pull (2.5°).
   It sways about 2 cm either way, one back and forth every 3.3s, and settles while he eats or pecks.
   It's done live, by bending his paper across his neck, not drawn into the frames, so it stays smooth.
+- **Tail shake (game):** standing about facing us, every 4–9s he gives his pointed tail (behind his
+  wing's tip) a quick little shake: three flicks up and down about its base in 0.45s, swelling and
+  settling, up to 4°. Bent live across his paper like the neck wobble. Doing anything else, it waits.
 - **Skid (game):** let go of a run, or push the other way, and he skids briefly to a stop before turning:
   still facing forwards, body sunk, both feet braced out in front with the toes up, the wing out, and the
   sheet leaning back about 8°. Never a moonwalk: he only turns once stopped.
