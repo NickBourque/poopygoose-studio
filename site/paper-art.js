@@ -76,7 +76,7 @@ const FOOT_SCALE = 1.35;
 // cartoon scamper: long reaching strides, high knees, a bouncing body and a hop between steps.
 const GAITS = {
   walk: { stride: 40, stepH: 26, bob: 8, bobAt: 0, rise: 0, contact: 0.5, push: 0.3, reach: 0.12, heel: 12 },
-  run: { stride: 180, stepH: 86, bob: 20, bobAt: 0.3, rise: 24, contact: 0.4, push: 0.75, reach: 0.45, heel: 24 },
+  run: { stride: 180, stepH: 86, bob: 8, bobAt: 0.3, rise: 24, contact: 0.4, push: 0.75, reach: 0.45, heel: 24 },
 };
 // bobAt shifts the bob: walking he's highest as a leg passes under him; running, in the hop between steps
 // Skidding to a stop: body sunk, both feet braced out in front with the toes up, the wing out.

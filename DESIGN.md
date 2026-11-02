@@ -328,8 +328,12 @@ These rules are fixed. Changing them needs the creator's sign-off.
   180 logo px either side of its hip) with high knees (lifting 86), toes pointing down as a foot pushes
   off and lifting as it reaches forward, and a hop between steps where both feet are off the ground
   (each foot is planted for 40% of a stride). His body rides up on his toes (lifted 24 px), lowest as a
-  foot lands and highest in the hop (bobbing 20). On top of the frames he leans into the run (about 6°),
-  squashes about 5% as each foot lands and stretches in the hop: lively, but still a paper sticker.
+  foot lands and highest in the hop (bobbing just 8: more reads as jumpy at a run's pace). His near wing
+  swings like an arm against his near leg, hanging a little down from the shoulder and swinging about
+  18° either way: back as that foot lands in front, forward as it pushes off. The game plays the run at
+  16 poses a stride (the 8 frames and an in-between halfway between each), so it stays smooth at speed.
+  On top of the frames he leans into the run (about 6°), squashes about 1.5% as each foot lands and
+  stretches in the hop: lively, but calm enough to read as a run, not a jitter.
   Holding a direction, he waddles off and breaks into a run after about 0.4s, with a cartoon scramble:
   his legs churn at 6 strides a second, far ahead of how fast he's going, and settle to the ground's
   pace over 0.5s. After that it's paced to the ground like the walk.
@@ -426,7 +430,8 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   the goose's sweat, his own) and coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
   mouth `#B83A2E`, tongue and uvula `#F07C70`).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
-  short legs and big feet; his near wing beats, rises and falls as the goose's does, and tossing a slice he
+  short legs and big feet; his near wing beats, rises and falls as the goose's does (running, it swings
+  like an arm, about 20° either way from his side: a stiff, grumpy march), and tossing a slice he
   flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
   he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
   open bill, and his uvula swings back at each hack and forward again. The game's frames are exported from
