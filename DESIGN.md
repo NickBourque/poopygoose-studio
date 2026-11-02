@@ -67,7 +67,10 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Card edge | `#F2E4CC` | Sides of the island (the thickness of the card) |
 | Sunny yellow | `#FFC56B` | Sun, flower centres, yellow flowers |
 | Sign board | `#E9C79A` | Wooden sign face |
-| Bread | `#E7B47A` | Loaf |
+| Bread (site) | `#E7B47A` | The site's picnic loaf (the game's bread is below; to be brought into line) |
+| Bread crust / crumb (game) | `#D9964F` / `#FBEBC8` | Breadcrumbs, the slice of bread, the chunk in his bill |
+| Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
+| Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD; only there |
 | Plop | `#7A4A32` | The poop (always with white googly eyes) |
 | Gingham | `#FFF6EA` + orange at 45% | Picnic blanket, with an ink border |
 | Shadow | `rgba(60,40,25, .32–.40)` | Soft blob shadows on the ground |
@@ -219,6 +222,32 @@ Poopy Goose) are the template for the game's look.
   orange bow on its front rim, the touch of orange that says "this is where you're going". It's two
   cut-outs sharing one pivot, its back behind the birds and its front rim in front, so they're seen
   standing in it. Reaching it, the goose honks and Bill stares, and the results card pops up (section 5).
+- **The golden loaf (game):** one a level, the optional prize. A whole tin loaf, its dome scored three
+  times, in sunny gold (`#FFC56B`, its top crust `#F0A43A`) with a bright shine. **Gold means "a prize"**,
+  kept apart from orange ("use this"). It **shimmers, sparkles and glows**: every 1.8s a slanted band of
+  white light sweeps across it (0.3s, drawn as frames of its sheet); three white four-pointed glints with
+  gold middles twinkle around it in turn, each popping up turning and shrinking away in 0.45s somewhere new
+  each time; and a soft gold halo (`#FFD978`, about half opaque) breathes behind it. The glow is the one
+  soft-edged thing in the paper world besides blob shadows, so keep it mild. It hangs in the air bobbing
+  and swaying a little, with no shadow; taken, it shrinks to 55% and trails behind the bird's head,
+  still sparkling, until it's kept, then pops away. On the results card it's a sticker slapped on the top right
+  corner, tilted and hanging over the edge.
+- **The plop HUD (game):** the game's one always-on piece of HUD, in the top left corner: the goose's
+  insides as a cute diagram, never gross (no colours of real insides beyond a soft pink, nothing wet). A
+  paper panel drawn like the site's cards (paper `#FFFDF8`, 7px ink border at 600 px a metre, round
+  corners, a hard ink shadow straight down), with no words on it. From the left: his gullet comes down from
+  the top edge into his stomach, a fat pink bean (`#F5B4A0`, deeper `#E99A86` inside its curl, a white
+  shine on its belly); an intestine (a pink tube `#F9CDBE`, 26px wide with a 5px ink edge and a dashed
+  white shine) wiggles across, two waves; and at its end is the plop bay, his big bowel: a fat pouchy tube in the
+  stomach's pink, ink-edged, bunched into a round pouch for each plop he can carry (4), an ink crease at each
+  pinch, a shine on each pouch and a pale pink slot (`#FCE3D8`) ringed in dashed ink-soft in each. The things on it
+  are the world's own cut-outs, shrunk: the bread he's digesting sits in his stomach, rocking (8°) as the
+  stomach churns (4%), and dissolves as it turns into plops (a crumb in 1s, a slice a quarter at a time
+  over 4s). Each plop squeezes out from behind the stomach, slides down the intestine wiggling (12°) as it's
+  digested and squeezes into the bay, then pops into its slot. A dropped plop pops out of its slot. With
+  the golden loaf got, the bay's plops pop out, the loaf sits swaying in the stomach, a gold infinity sign
+  (Baloo 2, gold fading to its deep gold, an ink outline and a sticker border) pops on over the bay and a
+  plop slides down every 1.2s.
 
 ### Drawing new art (characters, props, scenery)
 
@@ -308,8 +337,14 @@ These rules are fixed. Changing them needs the creator's sign-off.
   cloud lying on its side, its cap rolling over on itself, rising and bending its stem up, before it pinches
   off, spreads and fades (about 2.6s). It's drawn as one cut-out with the usual ink and sticker border, and
   it's the one cut-out that fades: it's a cloud. Still cute, never gross: no stink lines, no brown.
-- **Eating bread (game):** bread is a slice from a loaf (puffy top, crust `#D9964F`, crumb `#FBEBC8` with
-  a few air holes). Facing a slice and pressing Eat, he stops and turns his head to it (3/4) and gapes
+- **Eating bread (game):** the bread lying about a level is **breadcrumbs**, torn chunks (crumb `#FBEBC8`
+  with a few air holes, crust `#D9964F` along an edge or two, jagged where they tore) hanging a little off
+  the ground, drawn like the chunk in his bill when he bites. They come in **four shapes**: a corner (crust
+  along the top and one side), a long strip off the crust's edge, a round nugget capped with crust and a
+  wedge torn across from corner to corner. Each is mirrored or not and tilted up to 12°, and no crumb
+  matches the one beside it, so a row never looks stamped out. Bill tosses a whole **slice of bread** from a
+  loaf (puffy top, the crust all round). Facing bread and pressing Eat, he stops and turns his head to it
+  (3/4) and gapes
   comically wide, jaws thrown open on a mouthful of big, square, shiny white human teeth, the dark of
   his mouth held between the jaws, eyes wide, shuffling to just the right spot
   (0.3s). His neck shoots out and down like a swan's, stretching up, over and down so his head tips
@@ -317,6 +352,7 @@ These rules are fixed. Changing them needs the creator's sign-off.
   crumbs flying (0.2s); and pulls back upright holding it (0.1s, then 0.3s held up). He chews twice with
   his cheek puffed out, the second chew baring his teeth (0.72s), then gulps: a lump bulges down the
   front of his neck in three steps, eyes shutting, satisfied, at the end (0.54s). About 2.4s in all.
+  A crumb he bolts down: a quicker gape (0.2s) and hold (0.15s), no chews, then the gulp, about 1.4s.
   Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
   it's a full wingbeat, five a second: up (about 51°), middle, down (about 18° below, with the body
@@ -359,7 +395,7 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   Toss) and coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
   mouth `#B83A2E`, tongue and uvula `#F07C70`).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
-  short legs and big feet; his near wing beats, rises and falls as the goose's does, and tossing a crust he
+  short legs and big feet; his near wing beats, rises and falls as the goose's does, and tossing a slice he
   flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
   he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
   open bill, and his uvula swings back at each hack and forward again. The game's frames are exported from

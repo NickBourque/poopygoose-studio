@@ -43,6 +43,35 @@ or the cut changes, with the local server running:
 
 `tools/paper-art-preview.html` shows every frame of the goose and every piece of scenery.
 
+## Shared with the game
+
+The game ([poopygoose-game](https://github.com/NickBourque/poopygoose-game)) is checked out next to this
+repo, and its art export pages (`Tools/ArtExport/` there) read this repo straight off disk through its
+local server (served at `/studio/`). So this repo is **upstream** for everything both of them draw, and a
+change here reaches the game the next time its art is exported.
+
+| Lives here (the game reads it) | Lives in the game (documented here) |
+| --- | --- |
+| `DESIGN.md`: how everything looks, moves and sounds, the site and the game | `GAME.md`: how the game plays (moves, rules, numbers, story) |
+| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle | The props' drawings (`Tools/ArtExport/props.html`), the results card, the plop HUD and the button glyphs |
+| `source/goose/`, `source/bill/`: both characters' vector art and rigs | The exported sheets in `Assets/Art/`, and everything Unity |
+
+Keeping them in step:
+
+- **A change to the look goes into DESIGN.md**, wherever the work happens. A game feature with a look
+  (a prop, a HUD, a character pose, a sound direction) is written up here in the same piece of work.
+- **Change shared art here, then re-export it in the game** (its README lists each export page), and
+  commit both repos together, with matching messages.
+- **Draw a thing once.** Something the site and the game both show is drawn here and imported by both.
+  The game's names are the canon: breadcrumbs (a level's bread), a slice of bread (Bill's), the golden loaf,
+  plops.
+- **The site's copy follows the game's facts**: the character file, the moves and the loop
+  (Honk ✦ Waddle ✦ Plop ✦ Repeat) shouldn't promise anything GAME.md doesn't.
+
+Known drift to fix: `scenery.plop()` here and the game's plop are two copies of one drawing, and
+`scenery.bread()` here is a whole loaf in `#E7B47A`, while the game has breadcrumbs, a slice and the golden
+loaf in its own crust colours (DESIGN.md's palette still lists the site's loaf as "Bread").
+
 ## Publishing
 
 The site is hosted on GitHub Pages at <https://poopygoose.studio>. Any push to `main` that changes `site/`
