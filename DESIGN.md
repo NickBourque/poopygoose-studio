@@ -208,6 +208,39 @@ Poopy Goose) are the template for the game's look.
   darker water-blue, with no ink and no sticker border (it's in the water, not on it). Before it leaps the
   shadow swells and white ripple rings spread over the spot. It turns with the paper flip like the birds,
   tilting nose-first along its leap.
+- **The opening storybook (game).** The story is told as a picture book open on the table: an orange cover with
+  an ink edge and a hard ink shadow straight down, paper pages, one illustration across each spread, the gutter
+  shaded where the pages dip into the spine. Pictures are in the world's own style (paper sky, inked pond and
+  grass, the site's scenery), with poses drawn for the story from the birds' rigs. They move a little, like a
+  moving storybook, never a cartoon: cut-outs rock, bob, slide and swap between a few drawn poses; faces swap on
+  held beats. Sound words ("nnngh!", "thud.") are Baloo 2 800 ink with a thick white sticker edge, popping in with
+  the playful overshoot. A time is a caption tag on the top left corner, a paper pill with a hard ink shadow.
+  The story's own words are Nunito 800 in ink, about 48px on a 1100px page, with a soft paper halo so they
+  stay clear over the picture, set left-aligned in a calm patch of sky or grass on one page (never across the
+  spine), a line or two at a time. Each fades in (0.5s, rising a touch) when its moment in the picture comes.
+  The sky is left clear for them: no clouds, the sun tucked small in the top corner. The words are in the
+  game's voice: plain, then a wink ("Bill sighed, and followed along. After all, he had nothing better to do.").
+  In the game the book is drawn at 86% of its picture's size on a 1080 screen, the table (`#ECE5D8`) round it;
+  the pictures play as videos, the words set over them in TextMeshPro (Nunito ExtraBold, a paper outline for the
+  halo). The words of a spread come in once the page turning onto it has landed, and go as the next page lifts.
+  The book's canvas is drawn just in front of the game camera, in its perspective, so the turning page really
+  rises off the book towards us (its free edge half a page's width nearer at the top of its swing), darkens up to
+  30% edge-on and casts a soft ink shadow (45% at its darkest, 200px wide) on the page under it; a turn takes 1.1s.
+  Pages turn only on a button: once a spread has played, the site's badge pill pops in at the bottom right like
+  the join tag, its orange dot pulsing: "[A] Turn the page." ("[A] Off we go." on the last).
+  At the end the book drops away (0.6s, easing in, tipping 6°) as the table fades, and it's the level.
+  Effort is drawn with comic shorthand in ink: curved strain strokes over a head, dashes at a bill, dust puffs,
+  a flicked drop of sweat, turf piled at dug-in feet; a dazed bird gets circling yellow stars. A page turn lifts
+  the right page and curls it over the spine (0.75s in the browser preview, 1.1s in the game; smoothstep), shading as it turns edge-on and casting
+  a shadow on the page under it, the next spread already playing beneath. Played by the game repo's
+  `Tools/ArtExport/storybook.html`.
+- **The flock (game): Canada geese,** not copies of the goose, so he's the odd one out of his own flock: a black
+  head and neck (`#2F2A27`) with a white chinstrap round the cheek and throat, a black bill and feet, a brown body
+  (`#8C6E55`, lighter `#B39A80` below) with a darker folded wing (`#6F5643`) scalloped in the light brown, a pale
+  breast (`#E9DFCF`), a black tail with white under it; a small white eye with an ink pupil. In flight the neck
+  stretches straight out, the feet tuck in and the wings beat brown with black flight feathers. They fly in a
+  proper V (a ">" heading the way they go: the leader in front, two arms trailing back). They're organised where
+  he isn't: one carries the flock's list, a leaf, in its bill.
 - **Dying and coming back (game):** things that hurt are prickly, never gory: brambles are wood-brown
   arching canes with ink thorns, sage leaves and berries (ink when ripe, red when not), standing just
   behind the path. A bird that dies shrinks away like a cut-out leaving and spins back in at the last
@@ -448,8 +481,10 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   shot right up and tipped worried, his eyes popped round on pinprick pupils, a wobbly line along his bill: not
   the goose's sweat, his own), coughing (lids shot up, eyes popped wide and round on small pupils, his bill dropped open on his
   mouth `#B83A2E`, tongue and uvula `#F07C70`), shifty glances left and right (face on: his pupils slid to one
-  side under his scowl, his face turned partway after them) and brows up, cross (both lids lifted and scowling
-  harder over open round eyes).
+  side under his scowl, his face turned partway after them), brows up, cross (both lids lifted and scowling
+  harder over open round eyes) and chewing (for the opening storybook; the master's 3/4 look, deadpan: his bill
+  dropped open 13° on a lump of bread `#F6D999` with a crust edge `#C98A3E`, then shut with a crumb or two at its
+  corner).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
   short legs and big feet, pumping his arm against his near leg from the shoulder (about 13° either way
   walking, 29° running, so breaking into a run it just pumps harder) and throwing it forward for balance as

@@ -11,7 +11,8 @@
 // goose's stink: eyes popped wide and round, his bill dropped open on his tongue and swinging uvula),
 // 'glance-left' and 'glance-right' (shifty: his pupils slid to one side under his scowl and, face on, his face
 // turned partway after them, looking about) and 'brow' (brows up, cross: both lids lifted and scowling harder
-// over open round eyes). New
+// over open round eyes), 'chew' and 'chew-shut' (the master's look, chewing the goose's bread: his bill open on
+// it, and shut with crumbs at its corner). New
 // faces are drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op
 // bubble with the tip of his bill): his neck stretches up and forward. Coughing, his near wing comes up in a
 // fist in front of his bill, as a proper duck's does: fist(). On the move, it's bent at the elbow to a little fist
@@ -21,7 +22,8 @@ import { mapPathPoints } from '../goose/rig.js';
 
 export const VIEWBOX = { x: 0, y: 0, w: 671, h: 1000 };
 export const POSES = ['crossed', 'free'];
-export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough', 'scared', 'glance-left', 'glance-right', 'brow'];
+export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough', 'scared', 'glance-left', 'glance-right', 'brow',
+  'chew', 'chew-shut'];
 // Glancing, his pupils slide this far either way under his lids (Bill px) and, face on, his face turns this far
 // towards where he's looking (as a share of turning halfway round); raising his brows, both lids lift this far
 // and scowl this many times as hard, over open round eyes.
@@ -87,7 +89,9 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
      */
     figure(pose = 'crossed', face = 'grumpy', { feet = true, wing = true, peck = false, uvula = 0, view = '34' } = {}) {
       const turned = view !== '34' && !peck;
-      const eyes = turned ? '' : (face === 'grumpy' ? '' : drawEyes(face)) + (face === 'cough' ? coughMouth(uvula) : '');
+      const chewing = face === 'chew' || face === 'chew-shut';
+      const eyes = turned ? '' : (face === 'grumpy' || chewing ? '' : drawEyes(face))
+        + (face === 'cough' ? coughMouth(uvula) : chewing ? chewMouth(face === 'chew') : '');
       // face on, the master's head is cut away above HEAD_CUT and his drawn one stands on his neck
       const top = turned ? HEAD_CUT : 0, head = turned ? frontHead(face, view === 'half') : '';
       if (pose === 'crossed') {
@@ -295,6 +299,26 @@ function coughMouth(swing) {
         <path fill="${TONGUE}" stroke-width="5" d="M392 304C420 290 470 288 506 298L506 306L392 306Z"/>
         <path fill="${BILL}" stroke-width="8" d="M358 302L520 302C528 306 530 318 522 326C490 338 430 338 392 330C372 324 362 314 358 302Z"/>
       </g></g>`;
+}
+
+// Chewing the goose's bread, deadpan (his master's grumpy lids, 3/4): open, his lower bill dropped a little on
+// a lump of bread on his tongue; shut, a crumb or two at the corner of his bill. Over the master, like the cough's.
+const CHEW_DROP = 13, CRUST = '#c98a3e', CRUMB = '#f6d999';
+function chewMouth(open) {
+  const [hx, hy] = BILL_HINGE, turn = a => `rotate(${a} ${hx} ${hy})`;
+  const crumbs = `<g fill="${CRUMB}" stroke-width="5">
+      <path d="M520 326L534 322L538 334L526 338Z"/><path d="M500 340L510 337L512 346L503 348Z"/></g>`;
+  if (!open) return `<g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round">${crumbs}</g>`;
+  return `<g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round">
+      <path fill="${MOUTH}" stroke-width="7" d="M${hx - 4} ${hy}L534 302L526 312L500 340L${hx} ${hy + 6}Z"/>
+      <g transform="${turn(CHEW_DROP * 0.5)}">
+        <path fill="${CRUMB}" stroke-width="6" d="M420 300C432 286 470 284 492 292C500 298 496 310 486 312L428 312C418 310 414 306 420 300Z"/>
+        <path fill="none" stroke="${CRUST}" stroke-width="8" d="M430 294C450 287 474 287 488 293"/>
+      </g>
+      <g transform="${turn(CHEW_DROP)}">
+        <path fill="${TONGUE}" stroke-width="5" d="M392 304C420 292 470 290 506 298L506 306L392 306Z"/>
+        <path fill="${BILL}" stroke-width="8" d="M358 302L520 302C528 306 530 318 522 326C490 338 430 338 392 330C372 324 362 314 358 302Z"/>
+      </g>${crumbs}</g>`;
 }
 
 // On the move, like any bloke out for a jog: his arm hangs from his shoulder (ARM_PIVOT) to his elbow,
