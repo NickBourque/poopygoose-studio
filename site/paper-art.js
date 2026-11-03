@@ -305,12 +305,22 @@ export const scenery = {
 // Tools/ArtExport/props.html) both use these, so the two never drift. Each draws into its own box (given
 // with it) without a sticker border; the caller adds the border and any scale. lw is the ink line's width.
 
-// A plop with googly eyes, sitting on its bottom (y 124), in a 160 x 140 box.
+// A plop, sitting on its bottom (y 124), in a 160 x 140 box: a chubby swirl of two fat tiers and a tip that
+// curls over like a cowlick, a crease and a shine on each tier, white googly eyes, pink cheeks and a little smile.
 export function drawPlop(g, lw = 9) {
-  const p = path('M 80 18 C 92 34 86 44 76 50 C 104 46 118 64 110 80 C 136 82 146 106 128 122 L 32 124 C 12 108 22 84 46 82 C 38 62 52 46 72 46 C 76 36 80 28 80 18 Z');
-  fillStroke(g, p, '#7A4A32', lw);
-  g.fillStyle = PAL.white; g.beginPath(); g.arc(66, 98, 7, 0, Math.PI * 2); g.arc(96, 98, 7, 0, Math.PI * 2); g.fill();
-  g.fillStyle = INK; g.beginPath(); g.arc(68, 99, 3.5, 0, Math.PI * 2); g.arc(98, 99, 3.5, 0, Math.PI * 2); g.fill();
+  const k = lw / 9;
+  const line = (d, w, colour = INK) => {
+    g.lineWidth = w * k; g.strokeStyle = colour; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke(path(d));
+  };
+  fillStroke(g, path('M 84 22 C 100 26 100 42 86 47 C 110 46 122 60 115 76 C 142 78 151 104 135 120 C 118 126 42 126 26 120 C 9 104 20 79 46 76 C 40 60 52 46 72 46 C 68 34 74 24 84 22 Z'), '#7A4A32', lw);
+  line('M 50 80 C 66 86 94 86 110 79', 6); line('M 72 48 C 77 51 82 51 87 48', 5);
+  const shine = 'rgba(255,255,255,.75)';
+  line('M 34 108 C 34 98 38 92 46 88', 5.5, shine); line('M 56 66 C 57 60 61 55 66 53', 5.5, shine);
+  // the face, its eyes 15 either side of x 80, y 101
+  g.fillStyle = '#F5B4A0'; g.beginPath(); g.ellipse(50, 110, 8, 5, 0, 0, Math.PI * 2); g.ellipse(110, 110, 8, 5, 0, 0, Math.PI * 2); g.fill();
+  g.fillStyle = PAL.white; g.beginPath(); g.arc(65, 101, 7, 0, Math.PI * 2); g.arc(95, 101, 7, 0, Math.PI * 2); g.fill();
+  g.fillStyle = INK; g.beginPath(); g.arc(66, 103, 3.5, 0, Math.PI * 2); g.arc(96, 103, 3.5, 0, Math.PI * 2); g.fill();
+  line('M 73 113 Q 80 120 87 113', 4);
 }
 
 // Bread's colours, shared with the chunk in the goose's bill (source/goose/goose-head-34.svg).

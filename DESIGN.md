@@ -69,8 +69,8 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Sign board | `#E9C79A` | Wooden sign face |
 | Bread crust / crumb | `#D9964F` / `#FBEBC8` | Breadcrumbs, the slice of bread (the site's picnic too), the chunk in his bill |
 | Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
-| Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD; only there |
-| Plop | `#7A4A32` | The poop (always with white googly eyes) |
+| Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD, and the plop's cheeks; only there |
+| Plop | `#7A4A32` | The poop (always with white googly eyes, pink cheeks and a little smile) |
 | Gingham | `#FFF6EA` + orange at 45% | Picnic blanket, with an ink border |
 | Shadow | `rgba(60,40,25, .32–.40)` | Soft blob shadows on the ground |
 
@@ -363,7 +363,10 @@ These rules are fixed. Changing them needs the creator's sign-off.
   a flare into a bell, reaching about twice the bill's length), and the sheet stretches up
   6% rather than squashing.
 - **The Drop (plop):** tap him and he honks and leaves a plop behind him (opposite the way he faces).
-  Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6). In the
+  Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6). A plop
+  (`drawPlop` in `site/paper-art.js`) is a chubby swirl: two fat tiers and a tip curling over like a cowlick,
+  an ink crease and a white shine on each tier, white googly eyes glancing down, tummy-pink cheeks and a small
+  ink smile. It's pleased with itself. In the
   game a plop is a standing cut-out (about 0.4 m tall) just behind his lane: it pops in at his tail, falls
   to the ground, and stays 6 seconds (a small step to land on, a weight sitting on a switch; the birds
   walk straight past it) before shrinking away. Up to 3 are out at once. With nothing in him (game) he
