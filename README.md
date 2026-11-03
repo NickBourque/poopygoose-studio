@@ -59,9 +59,14 @@ change here reaches the game the next time its art is exported.
 Keeping them in step:
 
 - **A change to the look goes into DESIGN.md**, wherever the work happens. A game feature with a look
-  (a prop, a HUD, a character pose, a sound direction) is written up here in the same piece of work.
+  (a prop, a HUD, a character pose, a sound direction) is written up here in the same piece of work, and so
+  is motion the game does in its own code with nothing to change here (the neck wobble, the tail shake,
+  Bill's fidgets): its rule and numbers belong in DESIGN.md.
 - **Change shared art here, then re-export it in the game** (its README lists each export page), and
-  commit both repos together, with matching messages.
+  commit both repos together, with matching messages. A new pose or face in a rig is a new frame in the
+  game's sheet, with its frame number set there too.
+- **`site/paper-art.js` draws the site and the game alike**: a change to the goose's legs, feet or wing
+  changes both. Undoing an experiment undoes it in both repos, the game's re-exported sheets included.
 - **Draw a thing once.** Something the site and the game both show is drawn here and imported by both.
   The game's names are the canon: breadcrumbs (a level's bread), a slice of bread (Bill's), the golden loaf,
   plops.
