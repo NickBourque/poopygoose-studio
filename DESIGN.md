@@ -128,6 +128,10 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Focus | 3px orange outline, 3px offset. Always visible for keyboard use. |
 | Decorative blob | Sage at ~55%, wobbling shape and slow 12° rotation over 12s. |
 | Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill ("Go again."), after the glyph of the button that does it. No sticker border: it's UI, not a cut-out in the world. |
+| Menu (game) | The site's pills at a 1080p screen's size: 84px tall with a 5px ink border over a hard ink shadow 5px straight down, words in Nunito 800 ink (36px). The one thing to press is orange, the rest `paper`. The picked-out option lifts 2px (shadow 7px) inside the orange focus ring (4px thick, 4px out) and gets the choose button's glyph in front of its words ("[A] Carry on."); choosing presses it down 4px (shadow 1px); 0.12s. An option not on yet is faded to 45%. Pause is a card like the results card (tilted -2°, popping in): "Hold *on.*" in Baloo 2 with the squiggle, over its options stacked, with a 45% cream wash over the frozen world. The title screen's options sit in a row along the bottom of the live diorama. Drawn by the game repo's `Tools/ArtExport/interface.html` (9-sliced). |
+| Join tag (game) | The badge pill in the bottom right corner, tilted 2°: its pulsing orange dot (±18% over 2s), jump's glyphs and "Join." in Nunito 800. Pops in and out like a cut-out. |
+| Level name card (game) | A card at the top of the screen, tilted -1.5°: the world in tracked navy Nunito 800 caps ("THE POND · 1") over the level's name in Baloo 2 ink ("Left Behind"). Pops in, holds about 2s, then turns away edge-on like the paper flip (a quarter turn in 0.34s, smoothstep, darkening up to 28%). |
+| Paper fold (game) | Between scenes: a cream sheet (`#F6F1E7`, faint white and `cream-deep` fibres) folds shut over the screen in two halves hinged at its top and bottom edges, like closing a greeting card (0.4s, smoothstep; each half covers cos(angle) of its half of the screen and darkens up to 28% edge-on; the bottom flap a shade darker), with a faint ink crease where they meet. Shut, the goose-head sticker (his front face from the model sheet, the logo's wink, cut round) pops in on the crease and rocks ±4° while the next scene loads, then pops away and the halves fold open. |
 | Button glyph (game) | Printed on signs and cards, no sticker border, with the press-me look: a 7px ink border at prop scale and a hard ink shadow straight down. Xbox face buttons are round, the letter in Baloo 2 (white with an ink outline; ink on the Y), on muted A green `#6FA350`, B red `#D45A48`, X blue `#4F86C2`, Y yellow `#E9B83E`; PlayStation face buttons are round `paper` stickers with their shapes in muted colour and an ink outline: cross blue `#4F86C2`, circle red `#D45A48`, square pink `#D97FA8`, triangle green `#6FA350`. Both pads' other buttons are `cream-deep`, the D-pad's arm to press in orange, and the stick pushed sideways (for waddling) has an orange arrow either side. Keys are `paper` keycaps, a letter in Baloo 2 or a word in Nunito 800. |
 
 **Layout:** content 1080–1240px wide; side gutters 16–48px; sections breathe (48–104px vertical);
@@ -544,9 +548,12 @@ The game is built in Unity. How the pieces above map across:
 - **Lighting:** a warm ambient (sky white, ground `#D8C8AE`) and one warm directional light from upper left.
 - **Camera:** perspective, FOV 28 (close-ups 24), pitched about 18° down, following the goose
   sideways at ~60% with smoothing.
-- **Fonts:** Baloo 2 and Nunito as TextMeshPro font assets (both are OFL).
-- **UI:** pill buttons with 3px ink borders and hard ink drop shadows (9-sliced sprites), the press and
-  hover offsets from section 5, cream and paper panels, orange for the primary action.
+- **Fonts:** Baloo 2 (800) and Nunito (400, 800) as dynamic TextMeshPro font assets (both are OFL), with
+  the button glyph sheet as a TextMeshPro sprite asset, so menus print glyphs inside their words.
+- **UI:** pill buttons with ink borders and hard ink drop shadows (9-sliced sprites drawn at twice a 1080p
+  screen's size), the press and hover offsets from section 5, cream and paper panels, orange for the
+  primary action, on overlay canvases laid out for 1920 × 1080 and scaled to the screen's height (section 5:
+  Menu, Join tag, Level name card, Paper fold). The title screen is the diorama itself, live.
 
 ---
 
