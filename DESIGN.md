@@ -608,5 +608,11 @@ everything needed, with where each came from, is `AUDIO.md` in the game repo.
 - **Bill is deadpan in sound too:** dry and minimal, a flat "hmm" at most. His cough is three proper
   little hacks.
 - **Warnings cut through:** a sound a player relies on (the koi's tell, a frozen thing about to thaw) is
-  clear over the music, and always has a visual tell as well, so the game plays with the sound off.
+  clear over the music, and always has a visual tell as well, so the game plays with the sound off. In the
+  game the music and ambience dip to 55% under one, and it's never cut off to make room for another sound.
 - **Night and weather** keep the same instruments, softer and sparser.
+- **The world is flat, and so is its sound.** Nothing is placed in 3D: a thing pans with where it is on screen
+  (up to 60% to a side) and fades out by half a screen beyond the edge.
+- **Repeats vary:** a sound heard often has a few takes and is pitched a little differently each time (up to
+  10-12% for footsteps, 4% for the honk, so he stays himself). A big sheet of paper flips lower than a small one.
+- **Pausing is quiet:** the world's sound and the music stop where they are, and only the interface sounds.
