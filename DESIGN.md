@@ -200,7 +200,12 @@ Poopy Goose) are the template for the game's look.
   scalloped crests outlined in ink, a soft white highlight under the crest and a few white ripple arcs;
   only the crest line gets a sticker border, so the strips tile seamlessly. The birds float between the
   rows, their lower halves hidden, and rock gently as they paddle. Things landing in the water throw up a
-  splash: a crown of water with white droplets, popping up and shrinking away.
+  splash: a crown of water with white droplets, popping up and shrinking away. For about 3 seconds after
+  leaving the water a bird leaves **wet prints**: webbed footprints lying flat on the ground, one per step,
+  turned the way it's going and widened 1.5 times across the lane so they read from the low camera. They're
+  stains, not cut-outs, so no outline or sticker border: a flat, crisp-edged foot in `#5F9FA9` (the deep
+  water, darker to show on grass) at up to 70%, half that from a nearly dry bird. Each holds for 2 s and
+  fades over 2 s.
 - **The koi (game):** the pond's critter is a fat orange koi from the side, with cream patches, a darker
   orange fin and belly fin, a few orange scale arcs, whiskers in ink and a goofy gaping mouth (a round red
   "O") with a big round eye; after a gulp, its mouth shuts with a crumb at its lips and its eye squeezes
