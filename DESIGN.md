@@ -619,9 +619,8 @@ everything needed, with where each came from, is `AUDIO.md` in the game repo.
 - **Warnings cut through:** a sound a player relies on (the koi's tell, a frozen thing about to thaw) is
   clear over the music, and always has a visual tell as well, so the game plays with the sound off. In the
   game the music and ambience dip to 55% under one, and it's never cut off to make room for another sound.
-- **The storybook has its own score:** a gentle, plucky piece under the picture book that stops dead as the flock is
-  found gone, so the sad moment and the failed take-off play with no music at all, then the level's theme fades in as
-  the goose sets off and carries on into play.
+- **The storybook has its own score:** a gentle, plucky piece under every page of the picture book, crossfading
+  briefly into the level's theme as the book drops away.
 - **Night and weather** keep the same instruments, softer and sparser.
 - **The world is flat, and so is its sound.** Nothing is placed in 3D: a thing pans with where it is on screen
   (up to 60% to a side) and fades out by half a screen beyond the edge.
