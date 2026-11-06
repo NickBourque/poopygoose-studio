@@ -216,8 +216,10 @@ Poopy Goose) are the template for the game's look.
   shadow swells and white ripple rings spread over the spot. It turns with the paper flip like the birds,
   tilting nose-first along its leap.
 - **The opening storybook (game).** The story is told as a picture book open on the table: an orange cover with
-  an ink edge and a hard ink shadow straight down, paper pages, one illustration across each spread, the gutter
-  shaded where the pages dip into the spine. Pictures are in the world's own style (paper sky, inked pond and
+  an ink edge and a hard ink shadow straight down, paper pages, one illustration across each spread, the
+  fold down its middle a crisp thin crease (ink at 62%, 2.5 px across a 1800 px spread) with a catch of white light on
+  the right page's edge and only a light, narrow shade (13% at the crease, gone within 56 px either side), so it never
+  smears over the picture. Pictures are in the world's own style (paper sky, inked pond and
   grass, the site's scenery), with poses drawn for the story from the birds' rigs. They move a little, like a
   moving storybook, never a cartoon: cut-outs rock, bob, slide and swap between a few drawn poses; faces swap on
   held beats. Sound words ("nnngh!", "thud.") are Baloo 2 800 ink with a thick white sticker edge, popping in with
@@ -617,6 +619,9 @@ everything needed, with where each came from, is `AUDIO.md` in the game repo.
 - **Warnings cut through:** a sound a player relies on (the koi's tell, a frozen thing about to thaw) is
   clear over the music, and always has a visual tell as well, so the game plays with the sound off. In the
   game the music and ambience dip to 55% under one, and it's never cut off to make room for another sound.
+- **The storybook has its own score:** a gentle, plucky piece under the picture book that stops dead as the flock is
+  found gone, so the sad moment and the failed take-off play with no music at all, then the level's theme fades in as
+  the goose sets off and carries on into play.
 - **Night and weather** keep the same instruments, softer and sparser.
 - **The world is flat, and so is its sound.** Nothing is placed in 3D: a thing pans with where it is on screen
   (up to 60% to a side) and fades out by half a screen beyond the edge.

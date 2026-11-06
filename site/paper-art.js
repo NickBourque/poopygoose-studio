@@ -230,11 +230,15 @@ export function gooseAtlas({ frameW = GOOSE_FRAME.w, frameH = GOOSE_FRAME.h, col
 
 // ---------- scenery ----------
 // Each returns a canvas already given a sticker border; sizes are in px (scaled into the scene later).
+// setSceneryDetail(2) draws each one with twice the px in each direction, the same picture for wherever it's going to
+// be big (the game's storybook, exported at 4K): whoever places it then says what size to draw it.
+let sceneryDetail = 1;
+export const setSceneryDetail = detail => { sceneryDetail = detail; };
 function canvasOf(w, h, draw, border = 14) {
-  const c = document.createElement('canvas'); c.width = w; c.height = h;
-  const g = c.getContext('2d'); g.lineJoin = 'round'; g.lineCap = 'round';
+  const c = document.createElement('canvas'); c.width = Math.ceil(w * sceneryDetail); c.height = Math.ceil(h * sceneryDetail);
+  const g = c.getContext('2d'); g.scale(sceneryDetail, sceneryDetail); g.lineJoin = 'round'; g.lineCap = 'round';
   draw(g);
-  return border ? sticker(c, border) : c;
+  return border ? sticker(c, border * sceneryDetail) : c;
 }
 
 export const scenery = {
