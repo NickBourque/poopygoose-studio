@@ -129,6 +129,8 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Decorative blob | Sage at ~55%, wobbling shape and slow 12° rotation over 12s. |
 | Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill ("Go again."), after the glyph of the button that does it. No sticker border: it's UI, not a cut-out in the world. |
 | Menu (game) | The site's pills at a 1080p screen's size: 84px tall with a 5px ink border over a hard ink shadow 5px straight down, words in Nunito 800 ink (36px). The one thing to press is orange, the rest `paper`. The picked-out option lifts 2px (shadow 7px) inside the orange focus ring (4px thick, 4px out) and gets the choose button's glyph in front of its words ("[A] Carry on."); choosing presses it down 4px (shadow 1px); 0.12s. An option not on yet is faded to 45%. Pause is a card like the results card (tilted -2°, popping in): "Hold *on.*" in Baloo 2 with the squiggle, over its options stacked, with a 45% cream wash over the frozen world. The title screen's options sit in a row along the bottom of the live diorama. Drawn by the game repo's `Tools/ArtExport/interface.html` (9-sliced). |
+| Settings card (game) | A card like pause (tilted 1.5°, popping in): "*Settings.*" in Baloo 2 with the squiggle, over its volumes and an orange "Done.". From pause it swaps places with the pause card; on the title screen it brings its own 45% cream wash. A volume is its name in Nunito 800 ink on the card, then a slider. |
+| Slider (game) | A `paper` menu pill, 440px wide, filling from the left with an orange pill (never narrower than it is tall, so it stays a pill), with the goose-head sticker (104px) riding the end of the orange. Ten steps, each sliding 0.12s. At the bottom step the orange's gone and the goose sits at the left end. It lifts and gets the focus ring like any option, and the waddle glyph goes in front of its name; the name doesn't lift. |
 | Join tag (game) | The badge pill in the bottom right corner, tilted 2°: its pulsing orange dot (±18% over 2s), jump's glyphs and "Join." in Nunito 800. Pops in and out like a cut-out. |
 | Level name card (game) | A card at the top of the screen, tilted -1.5°: the world in tracked navy Nunito 800 caps ("THE POND · 1") over the level's name in Baloo 2 ink ("Left Behind"). Pops in, holds about 2s, then turns away edge-on like the paper flip (a quarter turn in 0.34s, smoothstep, darkening up to 28%). |
 | Paper fold (game) | Between scenes: a cream sheet (`#F6F1E7`, faint white and `cream-deep` fibres) folds shut over the screen in two halves hinged at its top and bottom edges, like closing a greeting card (0.4s, smoothstep; each half covers cos(angle) of its half of the screen and darkens up to 28% edge-on; the bottom flap a shade darker), with a faint ink crease where they meet. Shut, the goose-head sticker (his front face from the model sheet, the logo's wink, cut round) pops in on the crease and rocks ±4° while the next scene loads, then pops away and the halves fold open. |
@@ -593,7 +595,7 @@ The game is built in Unity. How the pieces above map across:
 - **UI:** pill buttons with ink borders and hard ink drop shadows (9-sliced sprites drawn at twice a 1080p
   screen's size), the press and hover offsets from section 5, cream and paper panels, orange for the
   primary action, on overlay canvases laid out for 1920 × 1080 and scaled to the screen's height (section 5:
-  Menu, Join tag, Level name card, Paper fold). The title screen is the diorama itself, live.
+  Menu, Settings card, Slider, Join tag, Level name card, Paper fold). The title screen is the diorama itself, live.
 
 ---
 
@@ -620,4 +622,9 @@ everything needed, with where each came from, is `AUDIO.md` in the game repo.
   (up to 60% to a side) and fades out by half a screen beyond the edge.
 - **Repeats vary:** a sound heard often has a few takes and is pitched a little differently each time (up to
   10-12% for footsteps, 4% for the honk, so he stays himself). A big sheet of paper flips lower than a small one.
-- **Pausing is quiet:** the world's sound and the music stop where they are, and only the interface sounds.
+- **Pausing is quiet:** the world's sound and the music stop where they are, and only the interface sounds. The
+  exception is the Settings card, opened from pause: the music and ambience play under it, so a change can be
+  judged, then pause again when it closes.
+- **The player's volumes** are music, ambience and sound effects (interface sounds go with sound effects), in ten
+  steps, each playing at its share of full volume squared. A step of sound effects is heard as a honk; a step of
+  the others as a paper tick, over the music or ambience it just changed.
