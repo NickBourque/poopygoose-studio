@@ -194,7 +194,10 @@ Poopy Goose) are the template for the game's look.
   pressure plate opens is a plank door banded with iron, standing across the path at the same angle as
   a gate between two tall posts, and it lifts straight up on a pulley (0.6s) and drops back (0.5s): a
   beam across the post tops carries two pulley wheels that turn as the rope runs, and a "1 TON"
-  counterweight sinks as the door rises. Clouds and other things to stand on are one-way: jump up
+  counterweight sinks as the door rises. A pinwheel the toot blows round is a switch too: four sails
+  curling the same way (orange, sunny, sage and water, each fold in shade) pinned with a sunny pin to a
+  white stick with an orange stripe twisting up it, a metre to the hub. It spins up as the stink reaches it
+  and winds down over about three seconds. Clouds and other things to stand on are one-way: jump up
   through them, land on top, drop down through them.
 - **Water (game):** a pond in the stage is a dip filled like a toy theatre's sea: a flat water-blue top,
   with rows of paper waves standing across it, each bobbing round a small loop out of step with the
