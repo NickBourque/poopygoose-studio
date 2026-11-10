@@ -337,6 +337,128 @@ export function drawPlop(g, lw = 9, colours = PLOP) {
   g.lineWidth = 3.5 * k; g.stroke(path('M 73.6 114.4 Q 80 121.6 86.4 114.4'));
 }
 
+// The colours of each food's plops (GAME.md section 15): a new food is a new row here, and every frame below
+// draws in it. Gold for the golden loaf, purple for blueberries.
+export const PLOP_FOODS = {
+  plain: PLOP,
+  golden: { body: '#F0A43A', halo: '#FFC56B', cap: '#FFF3D6' },
+  blueberry: { body: '#7E5A9B', halo: '#B9A5BE', cap: '#F4F1E2' },
+};
+
+// A plop's frames, in the order the game's sheets hold them: sitting (drawPlop), falling, squashed as it
+// lands, splashed out flat the instant after, and splatted face on against a wall. All share the sitting
+// plop's box and ground (y 124, middle x 80) but spill out of it: the splash is wider and the fall taller.
+// The wall splat is centred on PLOP_WALL_CENTRE, where it hit. Same rules as the sitting one: rounded lobes,
+// the pale cap blending in through the halo where the plop is thickest, ink only round the outside.
+export const PLOP_FRAMES = ['rest', 'fall', 'squash', 'splash', 'wall'];
+export const PLOP_WALL_CENTRE = { x: 80, y: 64 };
+
+// The plop's face at (x, y): googly eyes `spread` either side, pupils pushed by `look`, cheeks, and a mouth:
+// 'smile', 'o' (falling, delighted), 'squeeze' (eyes screwed shut as it lands), 'dazed' (crossed eyes, wobbly
+// mouth) or 'oops' (a flat little line, looking down at its drips).
+function plopFace(g, x, y, k, { spread = 13.8, eye = 7, look = [1, 2], mouth = 'smile' } = {}) {
+  g.strokeStyle = INK; g.lineCap = 'round'; g.lineJoin = 'round';
+  g.fillStyle = '#F5B4A0'; g.beginPath();
+  g.ellipse(x - spread * 2.07, y + 7.2, 7.5, 4.5, 0, 0, Math.PI * 2); g.ellipse(x + spread * 2.07, y + 7.2, 7.5, 4.5, 0, 0, Math.PI * 2);
+  g.fill();
+  if (mouth === 'squeeze') {
+    g.lineWidth = 3 * k;
+    for (const s of [-1, 1]) {
+      g.beginPath(); g.moveTo(x + s * spread + s * 4, y - 4); g.lineTo(x + s * spread - s * 4, y); g.lineTo(x + s * spread + s * 4, y + 4); g.stroke();
+    }
+  } else {
+    g.beginPath(); g.arc(x - spread, y, eye, 0, Math.PI * 2); g.moveTo(x + spread + eye, y); g.arc(x + spread, y, eye, 0, Math.PI * 2);
+    g.fillStyle = PAL.white; g.fill(); g.lineWidth = 2 * k; g.stroke();
+    const crossed = mouth === 'dazed', [lx, ly] = crossed ? [3, 0] : look;
+    g.fillStyle = INK; g.beginPath();
+    g.arc(x - spread + lx, y + ly, eye / 2, 0, Math.PI * 2); g.arc(x + spread + (crossed ? -lx : lx), y + ly, eye / 2, 0, Math.PI * 2);
+    g.fill();
+  }
+  g.lineWidth = 3.5 * k; g.beginPath();
+  if (mouth === 'smile') { g.moveTo(x - 6.4, y + 8.4); g.quadraticCurveTo(x, y + 15.6, x + 6.4, y + 8.4); g.stroke(); }
+  else if (mouth === 'o') { g.ellipse(x, y + 12, 3.5, 4.5, 0, 0, Math.PI * 2); g.fillStyle = PAL.mouth; g.fill(); g.lineWidth = 2.5 * k; g.stroke(); }
+  else if (mouth === 'squeeze') { g.moveTo(x - 7, y + 10); g.quadraticCurveTo(x, y + 17, x + 7, y + 10); g.stroke(); }
+  else if (mouth === 'dazed') { g.moveTo(x - 8, y + 11); g.quadraticCurveTo(x - 4, y + 7, x, y + 11); g.quadraticCurveTo(x + 4, y + 15, x + 8, y + 11); g.stroke(); }
+  else if (mouth === 'oops') { g.moveTo(x - 4.5, y + 11); g.lineTo(x + 4.5, y + 11); g.stroke(); }
+}
+
+// Fills a plop's body, with its halo and cap clipped inside it, and inks round the outside.
+function plopBody(g, lw, colours, body, halo, cap) {
+  g.fillStyle = colours.body; g.fill(body);
+  g.save(); g.clip(body);
+  g.fillStyle = colours.halo; g.fill(halo);
+  g.fillStyle = colours.cap; g.fill(cap);
+  g.restore();
+  g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke(body);
+}
+// Little flung droplets: [x, y, r] each.
+function plopDrops(g, lw, colours, drops) {
+  g.fillStyle = colours.body; g.strokeStyle = INK; g.lineWidth = lw * 0.6;
+  for (const [x, y, r] of drops) { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); g.stroke(); }
+}
+
+// Draws one of PLOP_FRAMES.
+export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
+  const k = lw / 9;
+  if (frame === 'rest') return drawPlop(g, lw, colours);
+  if (frame === 'fall') {
+    // a fat drop, round at the bottom, its peak streaming up behind it and flicked over, two drops trailing
+    plopBody(g, lw, colours,
+      path('M 80 124 C 58 124 47 111 48 94 C 49 78 62 66 71 52 C 77 43 80 33 88 20 C 87 31 89 42 94 52 C 102 66 113 78 112 94 C 111 111 102 124 80 124 Z'),
+      path('M 58 90 C 62 72 76 56 82 30 C 88 52 102 70 103 90 C 94 86 88 94 80 90 C 72 86 66 94 58 90 Z'),
+      path('M 66 80 C 70 66 80 54 84 38 C 88 54 96 68 96 80 C 90 78 86 84 80 81 C 74 78 70 84 66 80 Z'));
+    plopDrops(g, lw, colours, [[70, 24, 5], [102, 30, 3.5]]);
+    plopFace(g, 80, 100, k, { spread: 12, eye: 7.5, look: [0, 3], mouth: 'o' });
+    return;
+  }
+  if (frame === 'squash') {
+    // landed: squashed into a wide pancake of lobes, the peak pushed down to a nub
+    plopBody(g, lw, colours,
+      path('M 14 124 C 2 124 2 108 14 107 C 18 99 28 96 38 99 C 44 92 56 89 66 91 C 72 85 80 82 88 83 C 86 86 86 89 88 92 C 100 90 112 93 118 99 C 128 95 140 100 140 108 C 152 108 156 124 144 124 Z'),
+      path('M 30 110 C 40 96 64 88 84 87 C 104 88 120 98 128 110 C 110 108 104 114 92 111 C 80 108 72 114 60 111 C 48 108 40 114 30 110 Z'),
+      path('M 46 104 C 56 95 72 90 84 90 C 98 92 108 98 112 104 C 104 102 98 107 90 105 C 82 103 74 107 66 105 C 58 103 52 107 46 104 Z'));
+    plopFace(g, 80, 108, k, { spread: 15, mouth: 'squeeze' });
+    return;
+  }
+  if (frame === 'splash') {
+    // the instant after: spread flat in a puddle, round-headed splashes thrown up out of it and drops flying off
+    plopBody(g, lw, colours,
+      path('M -4 124 C -15 124 -14 110 -2 111 C 4 105 12 104 18 107 C 16 98 18 88 26 88 C 34 88 34 98 34 106 C 42 101 50 100 56 101 C 54 90 58 76 68 76 C 78 76 78 90 76 100 C 84 98 90 98 96 100 C 94 90 98 82 106 82 C 114 82 116 92 112 102 C 120 102 128 104 132 108 C 132 100 136 94 142 94 C 148 94 150 102 146 111 C 156 109 168 113 164 124 Z'),
+      path('M 22 116 C 40 104 66 99 82 100 C 100 100 122 105 140 116 C 120 120 44 120 22 116 Z'),
+      path('M 44 112 C 56 105 70 103 82 103 C 96 103 110 106 120 112 C 102 115 62 115 44 112 Z'));
+    plopDrops(g, lw, colours, [[8, 78, 5], [46, 64, 4], [90, 56, 3.5], [124, 58, 5], [160, 82, 4]]);
+    plopFace(g, 80, 110, k, { spread: 14, eye: 6.5, mouth: 'dazed' });
+    return;
+  }
+  if (frame === 'wall') {
+    // face on, stuck where it hit: a ring of rounded lobes about its middle, two drips running down, the pale
+    // cap where it hit hardest. The drips are joined to it (inked behind, filled over), so it's all one shape.
+    const { x: cx, y: cy } = PLOP_WALL_CENTRE, valley = 33;
+    const lobes = [[0, 44], [0.7, 50], [1.35, 40], [2.0, 48], [2.65, 42], [3.3, 50], [3.95, 44], [4.6, 40], [5.3, 49]];
+    const at = (a, r) => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+    const outline = new Path2D();
+    lobes.forEach(([a0, reach], i) => {
+      const a1 = i + 1 < lobes.length ? lobes[i + 1][0] : lobes[0][0] + Math.PI * 2;
+      if (i === 0) outline.moveTo(...at(a0, valley));
+      outline.bezierCurveTo(...at(a0 + (a1 - a0) * 0.1, reach * 1.18), ...at(a1 - (a1 - a0) * 0.1, reach * 1.18), ...at(a1, valley));
+    });
+    outline.closePath();
+    const parts = [outline, path('M 61 96 L 61 112 C 61 122 73 122 73 112 L 73 96 Z'), path('M 94 94 L 94 104 C 94 111 102 111 102 104 L 102 94 Z')];
+    g.strokeStyle = INK; g.lineJoin = 'round'; g.lineCap = 'round'; g.lineWidth = lw * 1.5;
+    for (const p of parts) g.stroke(p);
+    g.fillStyle = colours.body;
+    for (const p of parts) g.fill(p);
+    g.save(); g.clip(outline);
+    g.fillStyle = colours.halo; g.beginPath(); g.ellipse(cx + 4, cy - 8, 30, 24, -0.3, 0, Math.PI * 2); g.fill();
+    g.fillStyle = colours.cap; g.beginPath(); g.ellipse(cx + 6, cy - 11, 19, 14, -0.3, 0, Math.PI * 2); g.fill();
+    g.restore();
+    plopDrops(g, lw, colours, [[18, 40, 5], [146, 82, 4], [138, 22, 3.5]]);
+    plopFace(g, cx, cy + 8, k, { spread: 13, look: [0, 3], mouth: 'oops' });
+    return;
+  }
+  throw new Error(`no plop frame '${frame}'`);
+}
+
 // Bread's colours, shared with the chunk in the goose's bill (source/goose/goose-head-34.svg).
 export const BREAD = { crust: '#D9964F', crumb: '#FBEBC8', pore: '#EDD3A2' };
 

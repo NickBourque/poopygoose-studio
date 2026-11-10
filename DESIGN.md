@@ -414,7 +414,14 @@ These rules are fixed. Changing them needs the creator's sign-off.
   (no spikes), its dome pulled up into a single peak flicked over to the right, and one round droplet flung off
   to the left. The peak is the pale cap, fading down into the olive body through the halo with no ink between
   them; the ink goes round the outside only. White googly eyes ringed in thin ink, glancing down, tummy-pink
-  cheeks and a small ink smile on the splat. It's pleased with itself. In the
+  cheeks and a small ink smile on the splat. It's pleased with itself. Its other frames (`drawPlopFrame`,
+  `PLOP_FRAMES`) keep the same rules, each with its own face: **falling**, a fat drop with the peak streaming up
+  behind it, wide eyes looking down and a little "o"; **squashed** on landing, a wide pancake of lobes with
+  the peak pushed down to a nub, eyes screwed shut (> <); **splashed** the instant after, flat in a puddle
+  with round-headed splashes (never spikes) and drops flying off, eyes crossed and a wobbly mouth; and
+  **splatted on a wall**, face on, a ring of rounded lobes with two drips running down, eyes on its drips and
+  a flat mouth. Every frame takes a food's three colours (`PLOP_FOODS`: plain, golden, blueberry); a new
+  food is a new row there. In the
   game a plop is a standing cut-out (about 0.4 m tall) just behind his lane: it pops in at his tail, falls
   to the ground, and stays 6 seconds (a small step to land on, a weight sitting on a switch; the birds
   walk straight past it) before shrinking away. Up to 3 are out at once. With nothing in him (game) he
