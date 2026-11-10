@@ -309,22 +309,32 @@ export const scenery = {
 // Tools/ArtExport/props.html) both use these, so the two never drift. Each draws into its own box (given
 // with it) without a sticker border; the caller adds the border and any scale. lw is the ink line's width.
 
-// A plop, sitting on its bottom (y 124), in a 160 x 140 box: a chubby swirl of two fat tiers and a tip that
-// curls over like a cowlick, a crease and a shine on each tier, white googly eyes, pink cheeks and a little smile.
-export function drawPlop(g, lw = 9) {
+// The plop's colours: goose-poop olive with an off-white cap, the logo's chest splash grown up, and a halo
+// halfway between them so the cap blends in without a line. Other foods swap all three (DESIGN.md).
+export const PLOP = { body: '#7F9A5A', halo: '#B9C59E', cap: '#F4F1E2' };
+
+// A plop, sitting on its bottom (y 124), in a 160 x 140 box: a low splat of rounded lobes stepping down to
+// each side, its dome pulled up into a single peak flicked over to the right, a droplet flung off to the left.
+// The pale cap fills the peak and fades into the body through the halo, with no ink between them. White googly
+// eyes, pink cheeks and a little smile on the splat.
+export function drawPlop(g, lw = 9, colours = PLOP) {
   const k = lw / 9;
-  const line = (d, w, colour = INK) => {
-    g.lineWidth = w * k; g.strokeStyle = colour; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke(path(d));
-  };
-  fillStroke(g, path('M 84 22 C 100 26 100 42 86 47 C 110 46 122 60 115 76 C 142 78 151 104 135 120 C 118 126 42 126 26 120 C 9 104 20 79 46 76 C 40 60 52 46 72 46 C 68 34 74 24 84 22 Z'), '#7A4A32', lw);
-  line('M 50 80 C 66 86 94 86 110 79', 6); line('M 72 48 C 77 51 82 51 87 48', 5);
-  const shine = 'rgba(255,255,255,.75)';
-  line('M 34 108 C 34 98 38 92 46 88', 5.5, shine); line('M 56 66 C 57 60 61 55 66 53', 5.5, shine);
-  // the face, its eyes 15 either side of x 80, y 101
-  g.fillStyle = '#F5B4A0'; g.beginPath(); g.ellipse(50, 110, 8, 5, 0, 0, Math.PI * 2); g.ellipse(110, 110, 8, 5, 0, 0, Math.PI * 2); g.fill();
-  g.fillStyle = PAL.white; g.beginPath(); g.arc(65, 101, 7, 0, Math.PI * 2); g.arc(95, 101, 7, 0, Math.PI * 2); g.fill();
-  g.fillStyle = INK; g.beginPath(); g.arc(66, 103, 3.5, 0, Math.PI * 2); g.arc(96, 103, 3.5, 0, Math.PI * 2); g.fill();
-  line('M 73 113 Q 80 120 87 113', 4);
+  const body = path('M 19.6 124 C 9 124 9 107.2 21.7 107.2 C 23.8 97.6 30.2 92.8 38.7 92.8 C 34.4 80.8 42.9 73.6 51.4 78.4 C 55.6 66.4 63 60.4 70.5 58 C 74.7 47.2 81.1 40 89.5 35.2 C 86.4 42.4 85.3 49.6 87.4 58 C 95.9 60.4 104.4 67.6 106.5 78.4 C 115 71.2 125.6 76 123.5 88 C 131.9 88 138.3 97.6 136.2 107.2 C 148.9 107.2 151 124 138.3 124 Z');
+  g.fillStyle = colours.body; g.fill(body);
+  g.save(); g.clip(body);
+  g.fillStyle = colours.halo; g.fill(path('M 40.8 95.2 C 40.8 66.4 62 11.2 81.1 11.2 C 100.1 11.2 117.1 66.4 117.1 92.8 C 108.6 90.4 104.4 100 95.9 96.4 C 87.4 92.8 81.1 102.4 70.5 97.6 C 59.9 92.8 49.3 102.4 40.8 95.2 Z'));
+  g.fillStyle = colours.cap; g.fill(path('M 51.4 85.6 C 53.5 66.4 68.3 20.8 81.1 20.8 C 93.8 20.8 104.4 66.4 106.5 83.2 C 100.1 80.8 95.9 90.4 89.5 86.8 C 83.2 83.2 76.8 91.6 68.3 86.8 C 62 83.2 55.6 90.4 51.4 85.6 Z'));
+  g.restore();
+  g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke(body);
+  // the droplet flung off the left lobe
+  g.beginPath(); g.arc(17.5, 85.6, 5, 0, Math.PI * 2);
+  g.fillStyle = colours.body; g.fill(); g.lineWidth = lw * 0.6; g.stroke();
+  // the face, its eyes 14 either side of x 80, y 106
+  g.fillStyle = '#F5B4A0'; g.beginPath(); g.ellipse(51.4, 113.2, 7.5, 4.5, 0, 0, Math.PI * 2); g.ellipse(108.6, 113.2, 7.5, 4.5, 0, 0, Math.PI * 2); g.fill();
+  g.beginPath(); g.arc(66.2, 106, 7, 0, Math.PI * 2); g.moveTo(100.8, 106); g.arc(93.8, 106, 7, 0, Math.PI * 2);
+  g.fillStyle = PAL.white; g.fill(); g.lineWidth = 2 * k; g.stroke();
+  g.fillStyle = INK; g.beginPath(); g.arc(67.2, 108, 3.5, 0, Math.PI * 2); g.arc(94.8, 108, 3.5, 0, Math.PI * 2); g.fill();
+  g.lineWidth = 3.5 * k; g.stroke(path('M 73.6 114.4 Q 80 121.6 86.4 114.4'));
 }
 
 // Bread's colours, shared with the chunk in the goose's bill (source/goose/goose-head-34.svg).
