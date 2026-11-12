@@ -331,7 +331,10 @@ Poopy Goose) are the template for the game's look.
 - Details are drawn as short ink strokes: leaf tufts as little "v" marks, bread scores as slashes,
   toe lines on feet.
 - Signs and speech bubbles use the site fonts (Baloo 2 800 for the big word, Nunito 800 navy for
-  small text). Speech bubbles are white with an ink outline and a tail; "HONK!" is the standard.
+  small text). Speech bubbles are white with an ink outline and a tail; "HONK!" is the standard. In the game,
+  leaving Bill waiting (Stay) the goose says "Stay. Good boy!" (two lines of Baloo 2 800 in ink, the bubble 1.5 m
+  across, its tail pointing down at his head); Bill's side is his "..." bubble from The Stare. A speech bubble pops
+  in like any cut-out, holds 1.3 s and shrinks away.
 - Things the player can interact with get a touch of orange.
 
 ### Camera
@@ -567,7 +570,10 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   head out of the open top, drawn from its own rig at about half size (the goose's head about 0.31 m, Bill's
   about 0.27 m), between the bag's back and front: the goose looking about or blinking; Bill grumpy, blinking,
   rolling his eyes or coughing; either ducked down so only the top of its head and eyes show. Exported by the
-  game repo's `Tools/ArtExport/backpack.html`.
+  game repo's `Tools/ArtExport/backpack.html`. Stay (game): the rider hops out of the top in a 0.45 m arc over
+  0.35 s, landing up to 1.1 m behind its carrier, and the bag (now shut, on Bill) pops onto Bill's back halfway if it
+  wasn't there already; picked back up, the waiting bird hops into the top of the bag in a 0.5 m arc over 0.3 s,
+  following it, and the bag pops on with it in.
 
 | | |
 | --- | --- |
