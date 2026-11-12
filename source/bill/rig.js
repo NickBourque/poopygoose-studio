@@ -41,8 +41,9 @@ export const LEGS = {
 // His near wing (the free pose's) turns about his shoulder to flap and to toss a crust; on the move, his arm
 // (runArm) pumps about its shoulder, high on his chest right under his neck. ARM_BACK and ARM_UP are how far
 // back and up from his crossed pose's arm (where it's drawn) it hangs, to sit there.
+// (ARM_UP below 0: it hangs a little lower than that, under the backpack's strap over his shoulder.)
 export const WING_PIVOT = [540, 600];
-const ARM_BACK = 130, ARM_UP = 25;
+const ARM_BACK = 130, ARM_UP = -5;
 export const ARM_PIVOT = [528 - ARM_BACK, 520 - ARM_UP];
 
 const INK = '#512c1e', GREEN = '#2b6141', WHITE = '#f2f2ee';

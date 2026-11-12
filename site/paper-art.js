@@ -634,3 +634,87 @@ export function drawCloud(g, lw = 11) {
   clipFill(g, c, () => { g.fillStyle = '#EEF1EE'; g.beginPath(); g.ellipse(240, 230, 220, 50, 0, 0, Math.PI * 2); g.fill(); });
   g.lineWidth = lw; g.strokeStyle = INK; g.stroke(c);
 }
+
+// ---------- Bill's backpack (shared with the game) ----------
+// One backpack between the two birds (GAME.md section 6): it's Bill's, a sensible canvas rucksack in sage with
+// wood-brown straps and sunny buckles. Whoever's carrying the other bird wears it, the rider poking its head out
+// of the open top; with nobody in it (Bill wearing it), its flap's buckled shut on a crust of bread poking out:
+// it's where Bill's slices come from. Seen from the near side, worn on the back of a bird facing right: the bag
+// stands behind the bird's back, and its straps cross in front, over the near shoulder to a buckle on the chest.
+export const BACKPACK = { canvas: '#AFC8A1', deep: '#8FAE80', inside: '#5E7A55', strap: '#9A6A4A', buckle: '#FFC56B' };
+// In its 280 x 240 box: where a rider's neck sits in the open top (its head drawn upwards from here, between the
+// bag's back and front), and the region a rider shows within (lower, it's inside the bag). The bag's bottom middle
+// is at BACKPACK_BOTTOM.
+export const BACKPACK_RIDER = { x: 94, y: 82 };
+export const BACKPACK_RIDER_CLIP = { x: 30, y: -200, w: 128, h: 292 };
+export const BACKPACK_BOTTOM = { x: 94, y: 226 };
+// Its box's units in metres (it's about 0.42 m tall), and where it's worn on each bird: metres from the bird's
+// feet to BACKPACK_BOTTOM, facing right.
+export const BACKPACK_M_PER_UNIT = 0.84 / 300;
+export const BACKPACK_WORN = { goose: [-0.3, 0.64], bill: [-0.34, 0.45] };
+// The strap on each carrier, in the box: from the top of the bag, low over the near shoulder and down the side of
+// the chest (the goose's long neck and tall chest take it further down), and where its buckle sits along it.
+// On Bill it crosses high over his shoulder joint, buckled there, and runs down just in front of his upper arm;
+// the game lays his arm below the shoulder over it (bill-arm.png).
+const STRAPS = {
+  goose: { path: 'M 140 151 C 185 152 220 166 245 196 C 275 232 272 288 244 319', buckle: [267, 240] },
+  bill: { path: 'M 144 130 C 175 140 195 150 215 152 C 250 154 282 150 296 172 C 308 192 306 236 300 269', buckle: [242, 155] },
+};
+
+const BAG_BODY = 'M 46 76 C 34 120 30 176 38 214 C 46 230 142 230 150 214 C 158 176 154 120 142 76 C 124 90 64 90 46 76 Z';
+
+/** The back of the bag: the dark inside of its open top and, open, its flap thrown back down its far side. */
+export function drawBackpackBack(g, { open = true } = {}, lw = 9) {
+  const B = BACKPACK;
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  if (!open) return;
+  fillStroke(g, path('M 50 72 C 30 76 20 102 24 128 C 26 144 42 148 50 138 L 54 80 Z'), B.deep, lw);
+  fillStroke(g, path('M 24 124 C 26 136 34 142 42 140 L 42 128 C 34 130 28 128 24 124 Z'), B.buckle, lw * 0.6);
+  fillStroke(g, path('M 44 74 C 60 58 128 58 144 74 C 128 90 60 90 44 74 Z'), B.inside, lw);
+}
+
+/**
+ * The front of the bag, over any rider: its body (shaded down its near side), a front pocket with its own flap
+ * and buckle, and the rolled rim of its open top, or shut, the flap buckled down over it on a crust of bread.
+ */
+export function drawBackpackFront(g, { open = true } = {}, lw = 9) {
+  const B = BACKPACK, body = path(BAG_BODY);
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  g.fillStyle = B.canvas; g.fill(body);
+  g.save(); g.clip(body);
+  g.fillStyle = B.deep; g.fill(path('M 118 70 C 140 110 146 170 138 240 L 200 240 L 200 70 Z'));
+  g.restore();
+  g.strokeStyle = INK; g.lineWidth = lw; g.stroke(body);
+  fillStroke(g, path('M 62 132 C 60 160 62 186 70 198 C 86 204 108 204 122 198 C 130 186 132 160 130 132 Z'), B.deep, lw * 0.8);
+  g.lineWidth = lw * 0.35; g.setLineDash([6, 7]);
+  g.stroke(path('M 69 140 C 68 162 70 182 75 190 C 89 195 105 195 117 190 C 122 182 124 162 123 140'));
+  g.setLineDash([]);
+  fillStroke(g, path('M 58 124 C 78 118 112 118 134 124 L 132 146 C 112 154 78 154 60 146 Z'), B.canvas, lw * 0.8);
+  fillStroke(g, path('M 87 142 C 87 136 105 136 105 142 L 105 158 C 105 164 87 164 87 158 Z'), B.buckle, lw * 0.6);
+  if (open) {
+    fillStroke(g, path('M 44 72 C 64 90 124 90 144 72 C 148 78 148 86 144 90 C 124 108 64 108 44 90 C 40 86 40 78 44 72 Z'), B.deep, lw);
+    return;
+  }
+  // shut: a crust poking out of the near corner, then the flap over the top, strapped down to the pocket
+  g.save(); g.translate(138, 62); g.rotate(-0.6);
+  fillStroke(g, path('M -20 10 C -24 -10 -8 -22 8 -18 C 24 -14 28 4 20 16 Z'), BREAD.crust, lw * 0.9);
+  g.fillStyle = BREAD.crumb; g.beginPath(); g.ellipse(2, -3, 8, 5, 0.3, 0, Math.PI * 2); g.fill();
+  g.restore();
+  fillStroke(g, path('M 40 84 C 36 58 60 44 94 44 C 128 44 152 58 148 84 C 140 104 126 114 110 118 L 78 118 C 62 114 48 104 40 84 Z'), B.deep, lw);
+  g.strokeStyle = INK; g.lineWidth = 12 + lw; g.stroke(path('M 94 108 L 94 128'));
+  g.strokeStyle = B.strap; g.lineWidth = 12; g.stroke(path('M 94 108 L 94 128'));
+}
+
+/**
+ * The strap, in front of the bird wearing it (goose or Bill): a band from the top of the bag, low over the near
+ * shoulder and down the side of the chest, buckled on the way. It reaches below the bag's box.
+ */
+export function drawBackpackStraps(g, bird = 'bill', lw = 9) {
+  const B = BACKPACK, { path: d, buckle: [bx, by] } = STRAPS[bird];
+  const straps = path(d);
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  g.strokeStyle = INK; g.lineWidth = 18 + lw * 1.4; g.stroke(straps);
+  g.strokeStyle = B.strap; g.lineWidth = 18; g.stroke(straps);
+  g.strokeStyle = INK; g.lineWidth = lw * 0.35; g.setLineDash([6, 7]); g.stroke(straps); g.setLineDash([]);
+  fillStroke(g, path(`M ${bx - 12} ${by - 12} L ${bx + 12} ${by - 12} L ${bx + 12} ${by + 12} L ${bx - 12} ${by + 12} Z`), B.buckle, lw * 0.6);
+}

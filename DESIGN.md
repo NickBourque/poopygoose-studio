@@ -509,9 +509,10 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   dropped open 13° on a lump of bread `#F6D999` with a crust edge `#C98A3E`, then shut with a crumb or two at its
   corner).
 - **Motion (game).** He walks and runs the goose's gaits (the same strides, lift and bounce) on his own
-  short legs and big feet, pumping his arm against his near leg from the shoulder (about 13° either way
-  walking, 29° running, so breaking into a run it just pumps harder) and throwing it forward for balance as
-  he skids to a stop. In the air his near wing beats, rises and falls as the goose's does, and tossing a slice he
+  short legs and big feet, pumping his arm against his near leg from the shoulder (it hangs from a little below
+  the base of his neck, leaving room for the backpack's strap over his shoulder. Walking it swings about 13°
+  either way; running it pumps harder back, 29°, but forward only to where it hangs at rest, so his upper arm
+  never rides up against the strap; skidding to a stop he throws it forward about 13° for balance. In the air his near wing beats, rises and falls as the goose's does, and tossing a slice he
   flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
   he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
   open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s
@@ -532,6 +533,28 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   `drawGoo` in the plop's colours, on its own sheet a food laid over his frames, so it matches what the goose
   ate. The game's frames are exported from
   his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
+- **Bill's backpack** (`drawBackpackBack`, `drawBackpackFront`, `drawBackpackStraps`): one backpack between the
+  two birds. Solo, the bird the player isn't playing rides in it on the other's back; whoever's carrying wears
+  it, and with nobody in it Bill does: it's his, and where his slices come from. A sensible canvas rucksack,
+  about 0.42 m tall: sage `#AFC8A1` shaded `#8FAE80` down its near side, the dark inside of its top `#5E7A55`,
+  wood-brown straps `#9A6A4A` with dashed stitching and sunny `#FFC56B` buckles; a front pocket with its own
+  flap and buckle. Open, its top is a rolled rim with the flap thrown back down its far side; shut, the flap's
+  strapped down over it on a crust of bread poking out of the near corner. It's worn resting on the
+  bird's back, snug against the back of its neck with its top by the back of its head and its bottom tucked
+  behind the wing, and only its strap crosses in front: one band from the bag, low over the base of the neck
+  (in front of the shoulder, never arching up over the back) and down the side of the chest to the belly,
+  buckled on the way. Each bird has its own strap and spot (`STRAPS` and `BACKPACK_WORN` in paper-art.js), and
+  it rides on the bird's back, bouncing with its body as it walks and runs (Bill's bounce a frame is exported
+  as `bill-bounce.json`). On Bill, the strap sits high over the top of his shoulder (buckle and all), covering
+  the joint, and runs down his chest a little in front of his upper arm, clear of it however he swings. His
+  shoulder joint never shows in front of the strap, but his forearm and fist swing over it as he pumps his arm
+  (his arm exported alone, with the round of his shoulder about the joint cut away, as `bill-arm.png`, to lay
+  over the strap; where that round's edge ever crosses the strap it's inked, so the strap tucks under his
+  arm's outline rather than seeming to slice through his shoulder). The rider pokes only its
+  head out of the open top, drawn from its own rig at about half size (the goose's head about 0.31 m, Bill's
+  about 0.27 m), between the bag's back and front: the goose looking about or blinking; Bill grumpy, blinking,
+  rolling his eyes or coughing; either ducked down so only the top of its head and eyes show. Exported by the
+  game repo's `Tools/ArtExport/backpack.html`.
 
 | | |
 | --- | --- |
