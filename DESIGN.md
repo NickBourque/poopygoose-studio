@@ -573,7 +573,9 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   game repo's `Tools/ArtExport/backpack.html`. Stay (game): the rider hops out of the top in a 0.45 m arc over
   0.35 s, landing up to 1.1 m behind its carrier, and the bag (now shut, on Bill) pops onto Bill's back halfway if it
   wasn't there already; picked back up, the waiting bird hops into the top of the bag in a 0.5 m arc over 0.3 s,
-  following it, and the bag pops on with it in.
+  following it, and the bag pops on with it in. Co-op works the same way: a player joining has their bird hop out of
+  the top and land behind, and one leaving has theirs hop into it, from further off covering 9 m a second in a
+  longer, higher arc.
 
 | | |
 | --- | --- |
