@@ -210,7 +210,8 @@ Poopy Goose) are the template for the game's look.
   turned the way it's going and widened 1.5 times across the lane so they read from the low camera. They're
   stains, not cut-outs, so no outline or sticker border: a flat, crisp-edged foot in `#5F9FA9` (the deep
   water, darker to show on grass) at up to 70%, half that from a nearly dry bird. Each holds for 2 s and
-  fades over 2 s.
+  fades over 2 s. Bill, after stepping in a plop, leaves the same prints from his sticky foot in the plop's body
+  colour, three steps, each fainter.
 - **The koi (game):** the pond's critter is a fat orange koi from the side, with cream patches, a darker
   orange fin and belly fin, a few orange scale arcs, whiskers in ink and a goofy gaping mouth (a round red
   "O") with a big round eye; after a gulp, its mouth shuts with a crumb at its lips and its eye squeezes
@@ -421,9 +422,10 @@ These rules are fixed. Changing them needs the creator's sign-off.
   `PLOP_FRAMES`) keep the same rules, each with its own face: **falling**, a fat drop with the peak streaming up
   behind it, wide eyes looking down and a little "o"; **squashed** on landing, a wide pancake of lobes with
   the peak pushed down to a nub, eyes screwed shut (> <); **splashed** the instant after, flat in a puddle
-  with round-headed splashes (never spikes) and drops flying off, eyes crossed and a wobbly mouth; and
+  with round-headed splashes (never spikes) and drops flying off, eyes crossed and a wobbly mouth;
   **splatted on a wall**, face on, a ring of rounded lobes with two drips running down, eyes on its drips and
-  a flat mouth. Every frame takes a food's three colours (`PLOP_FOODS`: plain, golden, blueberry); a new
+  a flat mouth; and **trodden flat** (Bill stepped in it), a low puddle risen round his feet with two lumps
+  pushed up either side, eyes screwed shut. Every frame takes a food's three colours (`PLOP_FOODS`: plain, golden, blueberry); a new
   food is a new row there. In the
   game a plop is a standing cut-out (about 0.4 m tall) just behind his lane: it pops in at his tail, falls
   to the ground, and stays 6 seconds (a small step to land on, a weight sitting on a switch; the birds
@@ -514,7 +516,21 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
   open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s
   he either looks about, paranoid (a darting glance one way, then the other, each held a moment, his body
-  jolting about 2° after each), or puts his brows up, cross, for 1.3s; never both at once. The game's frames are exported from
+  jolting about 2° after each), or puts his brows up, cross, for 1.3s; never both at once. Stepping in a
+  plop, he treads it flat round his feet (the plop drawn in front of them, so they look sunk in it) and stands
+  stuck a beat, wide-eyed (the cough's popped eyes, bill shut). Then, brows up and cross, he flings it off his
+  foot: kicked out in front at us, the foot turned sole on (the web fanned out, toes spread, bigger for being
+  nearer), snapped one way and the other about 7 times a second with a swish mark either side, his body
+  jerking about 2.5° with each snap, for 0.6s. For three steps after he walks at about half pace, flinging that
+  foot the same way each time it rises, and it leaves prints in the plop's colour. A plop landing on him
+  splats over his head (a lobed lump with the plop's dazed face on it, dripping down the back of his head and
+  between his eyes) and a few spots on his body. He squashes under it, wide-eyed, wing up, for 0.4s; gags twice
+  over 0.6s, hunched forward, eyes screwed shut (> <), bill dropped open on his tongue, fist up as when he
+  coughs; then shakes it off like a duck drying off for 0.7s, eyes screwed shut, wings out, his whole body
+  thrown one way and the other (frames tilted 6–10°, plus a 7° sway five times over), swish marks either side
+  and the goo flying off him in drops and one last lump (still wearing its face). All goo on him is drawn with
+  `drawGoo` in the plop's colours, on its own sheet a food laid over his frames, so it matches what the goose
+  ate. The game's frames are exported from
   his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
 
 | | |

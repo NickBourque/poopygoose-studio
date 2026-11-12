@@ -12,7 +12,9 @@
 // 'glance-left' and 'glance-right' (shifty: his pupils slid to one side under his scowl and, face on, his face
 // turned partway after them, looking about) and 'brow' (brows up, cross: both lids lifted and scowling harder
 // over open round eyes), 'chew' and 'chew-shut' (the master's look, chewing the goose's bread: his bill open on
-// it, and shut with crumbs at its corner). New
+// it, and shut with crumbs at its corner), 'wide' (the cough's popped eyes with his bill shut: a plop just landed
+// on him), 'gag' (eyes screwed shut, his bill dropped open as for a cough: gagging on it) and 'squeeze' (eyes
+// screwed shut, bill shut: shaking it off). New
 // faces are drawn over his eyes, on patches of his head's green. Free, he can also peck (popping a co-op
 // bubble with the tip of his bill): his neck stretches up and forward. Coughing, his near wing comes up in a
 // fist in front of his bill, as a proper duck's does: fist(). On the move, it's bent at the elbow to a little fist
@@ -23,7 +25,7 @@ import { mapPathPoints } from '../goose/rig.js';
 export const VIEWBOX = { x: 0, y: 0, w: 671, h: 1000 };
 export const POSES = ['crossed', 'free'];
 export const FACES = ['grumpy', 'blink', 'stare', 'roll', 'cough', 'scared', 'glance-left', 'glance-right', 'brow',
-  'chew', 'chew-shut'];
+  'chew', 'chew-shut', 'wide', 'gag', 'squeeze'];
 // Glancing, his pupils slide this far either way under his lids (Bill px) and, face on, his face turns this far
 // towards where he's looking (as a share of turning halfway round); raising his brows, both lids lift this far
 // and scowl this many times as hard, over open round eyes.
@@ -91,7 +93,7 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
       const turned = view !== '34' && !peck;
       const chewing = face === 'chew' || face === 'chew-shut';
       const eyes = turned ? '' : (face === 'grumpy' || chewing ? '' : drawEyes(face))
-        + (face === 'cough' ? coughMouth(uvula) : chewing ? chewMouth(face === 'chew') : '');
+        + (face === 'cough' || face === 'gag' ? coughMouth(uvula) : chewing ? chewMouth(face === 'chew') : '');
       // face on, the master's head is cut away above HEAD_CUT and his drawn one stands on his neck
       const top = turned ? HEAD_CUT : 0, head = turned ? frontHead(face, view === 'half') : '';
       if (pose === 'crossed') {
@@ -255,8 +257,13 @@ function drawEyes(face, eyes = EYES, patch = true, tilt = 0) {
       out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${r + 3}"/>`);
       out.push(`<circle fill="${INK}" cx="${px + 2}" cy="${cy + 2}" r="${r * 0.42}"/>`);
       out.push(lidBar.replace(`d="M${x0 + 5} ${y0}`, `transform="translate(0 -4)" d="M${x0 + 5} ${y0}`));
-    } else if (face === 'cough') {
-      // coughing: lids shot up, eyes popped wide and round on small pupils
+    } else if (face === 'gag' || face === 'squeeze') {
+      // screwed shut: each eye a chevron pointing in towards the other (> <), a crease above it
+      const cx = (x0 + x1) / 2, cy = y1 + 2, w = ((x1 - x0) / 2 - 8) * (side === 'near' ? 1 : -1), h = 11;
+      out.push(`<path fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" d="M${cx - w} ${cy - h}L${cx + w} ${cy}L${cx - w} ${cy + h}"/>`);
+      out.push(`<path fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" d="M${x0 + 6} ${y0 - 6}Q${cx} ${y0 - 14} ${x1 - 6} ${y0 - 4}"/>`);
+    } else if (face === 'cough' || face === 'wide') {
+      // coughing (or a plop just landed on him): lids shot up, eyes popped wide and round on small pupils
       const rx = (x1 - x0) / 2 - 2, ry = side === 'near' ? 21 : 16, cx = (x0 + x1) / 2, cy = y1 + 2;
       out.push(`<ellipse fill="${WHITE}" stroke="${INK}" stroke-width="6" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`);
       out.push(`<circle fill="${INK}" cx="${px + 3}" cy="${cy}" r="${r * 0.5}"/>`);

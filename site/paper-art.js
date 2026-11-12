@@ -93,15 +93,26 @@ const AIR = {
 // birds (Bill) pass their own to drawGooseLegs.
 export const GOOSE_LEGS = { hip: HIP, ankleY: ANKLE_Y, footScale: FOOT_SCALE, ink: LEG_INK, orange: ORANGE, width: [34, 15] };
 
-function legAndFoot(g, [hx, hy], ax, ay, rot, side, legs) {
-  const fill = legs.orange[side], s = legs.footScale;
+// The foot turned to face us, sole on (Bill flinging a plop off it): the web fanned out below the ankle (the
+// origin), three toes spread along its scalloped edge.
+const FOOT_SOLE = path(`M -9 -2 C -22 16 -38 38 -44 56 C -47 67 -37 72 -30 66 Q -19 57 -8 67 C -4 76 4 76 8 67
+  Q 19 57 30 66 C 37 72 47 67 44 56 C 38 38 22 16 9 -2 C 5 -8 -5 -8 -9 -2 Z`);
+const SOLE_TOES = path('M -2 10 L -32 58 M 0 12 L 0 62 M 2 10 L 32 58');
+
+function legAndFoot(g, [hx, hy], ax, ay, rot, side, legs, sole = false, scale = 1) {
+  const fill = legs.orange[side], s = legs.footScale * scale;
   g.lineCap = 'round'; g.lineJoin = 'round';
   g.strokeStyle = legs.ink; g.lineWidth = legs.width[0]; g.beginPath(); g.moveTo(hx, hy); g.lineTo(ax, ay); g.stroke();
   g.strokeStyle = fill; g.lineWidth = legs.width[1]; g.stroke();
   g.save(); g.translate(ax, ay); g.rotate(rot); g.scale(s, s);
-  g.fillStyle = fill; g.fill(FOOT);
-  g.save(); g.clip(FOOT); g.fillStyle = side === 'far' ? legs.orange.near : legs.orange.light; g.fill(FOOT_TOP); g.restore();
-  g.strokeStyle = legs.ink; g.lineWidth = 17 / s; g.stroke(FOOT); g.lineWidth = 8 / s; g.stroke(TOE_LINES);
+  if (sole) {
+    g.fillStyle = fill; g.fill(FOOT_SOLE);
+    g.strokeStyle = legs.ink; g.lineWidth = 17 / s; g.stroke(FOOT_SOLE); g.lineWidth = 8 / s; g.stroke(SOLE_TOES);
+  } else {
+    g.fillStyle = fill; g.fill(FOOT);
+    g.save(); g.clip(FOOT); g.fillStyle = side === 'far' ? legs.orange.near : legs.orange.light; g.fill(FOOT_TOP); g.restore();
+    g.strokeStyle = legs.ink; g.lineWidth = 17 / s; g.stroke(FOOT); g.lineWidth = 8 / s; g.stroke(TOE_LINES);
+  }
   g.restore();
 }
 
@@ -123,21 +134,43 @@ export const TO_FRAME = { s: 0.76, ox: 640, oy: 440, x: 45, y: 44 };
 /**
  * Draws his legs and feet for a pose (logo px) and returns how far his body is lifted above them. Shared
  * with other drawings of the goose (the game's vector rig) so they stand on the same legs, and with Bill,
- * who walks the same gaits on his own legs (pass them as legs, in his own px).
+ * who walks the same gaits on his own legs (pass them as legs, in his own px). pose.legs ({ near, far }, each
+ * { dx, lift, rot, sole, scale }) sets a leg outright, for poses no gait has (Bill flinging a plop off his foot);
+ * sole turns that foot to face us, sole on, and scale sizes it (bigger, nearer us). sides: which legs to draw,
+ * so a leg kicked out towards us can be drawn over his body.
  */
-export function drawGooseLegs(g, pose = {}, legs = GOOSE_LEGS) {
+export function drawGooseLegs(g, pose = {}, legs = GOOSE_LEGS, sides = ['far', 'near']) {
+  const at = gooseLegsAt(pose, legs);
+  for (const side of sides) {
+    const { hip, ankle, rot, sole, scale } = at[side];
+    legAndFoot(g, hip, ...ankle, rot, side, legs, sole, scale);
+  }
+  return at.lift;
+}
+
+/**
+ * Where drawGooseLegs puts his legs for a pose: how far his body is lifted, and for each side its hip, its
+ * ankle (where the foot hangs from) and the foot's turn, so a drawing can put something on a foot (Bill's goo).
+ */
+export function gooseLegsAt(pose = {}, legs = GOOSE_LEGS) {
   const { walk, run, skid = false, air } = pose;
   const gait = run !== undefined ? GAITS.run : walk !== undefined ? GAITS.walk : null;
   const phase = run ?? walk;
   // body rises as each leg passes under him (twice a cycle), on top of the gait's lift
   const lift = gait ? gait.rise + gait.bob * Math.sin(2 * Math.PI * (phase + gait.bobAt)) ** 2 : skid ? SKID.rise : 0;
+  const at = { lift };
   for (const [side, offset] of [['far', 0.5], ['near', 0]]) {
-    const p = gait ? legPose((phase + offset) % 1, gait) : air ? AIR[air][side] : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 };
+    const p = pose.legs?.[side] ?? (gait ? legPose((phase + offset) % 1, gait) : air ? AIR[air][side] : skid ? SKID[side] : { dx: 0, lift: 0, rot: 0 });
     const [hx, hy] = legs.hip[side];
-    legAndFoot(g, [hx, hy - lift], hx + p.dx, legs.ankleY[side] - p.lift, p.rot, side, legs);
+    at[side] = { hip: [hx, hy - lift], ankle: [hx + p.dx, legs.ankleY[side] - p.lift], rot: p.rot, sole: !!p.sole, scale: p.scale ?? 1 };
   }
-  return lift;
+  return at;
 }
+
+/** A walk's leg at phase q (0-1), as drawGooseLegs places it: { dx, lift, rot }. */
+export const walkLegPose = q => legPose(q, GAITS.walk);
+/** The share of a walking stride a foot is planted. */
+export const WALK_CONTACT = GAITS.walk.contact;
 
 /**
  * Draws his near wing for a pose with draw(): lifted about the shoulder when flapping (or skidding), with
@@ -346,11 +379,12 @@ export const PLOP_FOODS = {
 };
 
 // A plop's frames, in the order the game's sheets hold them: sitting (drawPlop), falling, squashed as it
-// lands, splashed out flat the instant after, and splatted face on against a wall. All share the sitting
+// lands, splashed out flat the instant after, splatted face on against a wall, and trodden flat by Bill (in front
+// of his feet, so they look sunk in it). All share the sitting
 // plop's box and ground (y 124, middle x 80) but spill out of it: the splash is wider and the fall taller.
 // The wall splat is centred on PLOP_WALL_CENTRE, where it hit. Same rules as the sitting one: rounded lobes,
 // the pale cap blending in through the halo where the plop is thickest, ink only round the outside.
-export const PLOP_FRAMES = ['rest', 'fall', 'squash', 'splash', 'wall'];
+export const PLOP_FRAMES = ['rest', 'fall', 'squash', 'splash', 'wall', 'stepped'];
 export const PLOP_WALL_CENTRE = { x: 80, y: 64 };
 
 // The plop's face at (x, y): googly eyes `spread` either side, pupils pushed by `look`, cheeks, and a mouth:
@@ -456,7 +490,53 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
     plopFace(g, cx, cy + 8, k, { spread: 13, look: [0, 3], mouth: 'oops' });
     return;
   }
+  if (frame === 'stepped') {
+    // stepped in (Bill): trodden out flat into a low puddle that rises round his feet, two lumps pushed up either
+    // side of them, its face screwed shut
+    plopBody(g, lw, colours,
+      path('M -6 124 C -16 124 -15 109 -3 109 C 2 100 12 97 22 100 C 26 90 36 86 44 92 C 52 88 64 90 70 94 C 78 92 86 92 92 94 C 98 88 110 88 116 93 C 124 87 136 90 138 99 C 148 98 158 104 156 112 C 166 113 168 124 158 124 Z'),
+      path('M 20 114 C 40 102 64 98 82 98 C 102 98 124 104 140 114 C 120 118 40 118 20 114 Z'),
+      path('M 44 108 C 58 102 70 101 82 101 C 96 101 108 103 118 108 C 100 111 62 111 44 108 Z'));
+    plopDrops(g, lw, colours, [[2, 88, 4.5], [156, 86, 4]]);
+    plopFace(g, 80, 110, k, { spread: 15, mouth: 'squeeze' });
+    return;
+  }
   throw new Error(`no plop frame '${frame}'`);
+}
+
+/**
+ * Goo off a plop, stuck on something (Bill, splatted or stepped in one), in the plop's colours: blobs, each
+ * { x, y, r, squash, rot, drips: [[dx, length], ...], face } (a ring of rounded lobes, as the wall splat, squashed
+ * to squash of its height and turned by rot, drips running down from it, and the plop's face on it if face gives
+ * plopFace's options), and drops flung off, [x, y, r] each. Ink only round the outside, as the plop.
+ */
+export function drawGoo(g, { blobs = [], drops = [] }, lw = 9, colours = PLOP) {
+  const k = lw / 9;
+  for (const { x, y, r, squash = 1, rot = 0, drips = [], face } of blobs) {
+    g.save(); g.translate(x, y); g.rotate(rot);
+    const lobes = 9, valley = r * 0.78, outline = new Path2D();
+    const at = (a, d) => [Math.cos(a) * d, Math.sin(a) * d * squash];
+    for (let i = 0; i < lobes; i++) {
+      const a0 = (i / lobes) * Math.PI * 2 + 0.2, a1 = ((i + 1) / lobes) * Math.PI * 2 + 0.2, reach = r * (1.12 + 0.12 * Math.sin(i * 2.3));
+      if (i === 0) outline.moveTo(...at(a0, valley));
+      outline.bezierCurveTo(...at(a0 + (a1 - a0) * 0.1, reach), ...at(a1 - (a1 - a0) * 0.1, reach), ...at(a1, valley));
+    }
+    outline.closePath();
+    const w = r * 0.13;
+    const parts = [outline, ...drips.map(([dx, len]) =>
+      path(`M ${dx - w} 0 L ${dx - w} ${len} C ${dx - w} ${len + w * 1.6} ${dx + w} ${len + w * 1.6} ${dx + w} ${len} L ${dx + w} 0 Z`))];
+    g.strokeStyle = INK; g.lineJoin = 'round'; g.lineCap = 'round'; g.lineWidth = lw * 1.5;
+    for (const p of parts) g.stroke(p);
+    g.fillStyle = colours.body;
+    for (const p of parts) g.fill(p);
+    g.save(); g.clip(outline);
+    g.fillStyle = colours.halo; g.beginPath(); g.ellipse(-r * 0.15, -r * 0.3 * squash, r * 0.6, r * 0.45 * squash, -0.3, 0, Math.PI * 2); g.fill();
+    g.fillStyle = colours.cap; g.beginPath(); g.ellipse(-r * 0.12, -r * 0.36 * squash, r * 0.36, r * 0.26 * squash, -0.3, 0, Math.PI * 2); g.fill();
+    g.restore();
+    if (face) plopFace(g, 0, r * squash * 0.05, k, face);
+    g.restore();
+  }
+  plopDrops(g, lw, colours, drops);
 }
 
 // Bread's colours, shared with the chunk in the goose's bill (source/goose/goose-head-34.svg).
