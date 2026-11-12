@@ -512,10 +512,15 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   short legs and big feet, pumping his arm against his near leg from the shoulder (it hangs from a little below
   the base of his neck, leaving room for the backpack's strap over his shoulder. Walking it swings about 13°
   either way; running it pumps harder back, 29°, but forward only to where it hangs at rest, so his upper arm
-  never rides up against the strap; skidding to a stop he throws it forward about 13° for balance. In the air his near wing beats, rises and falls as the goose's does, and tossing a slice he
-  flings it up over his head, rolling his eyes. He blinks only standing about. Caught in the goose's stink
-  he coughs like a very proper duck: standing, his near wing comes up in a fist a short way in front of his
-  open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s
+  never rides up against the strap; skidding to a stop he throws it forward about 13° for balance. In the air he flaps his real arm, not a
+  wing: the same arm held straight (the rig's `flapArm`, forearm in line with his upper arm to the fist, its
+  feather tips trailing), always pointing back behind him and beating up and down a little: from about 55° on
+  the downstroke to about 100° (a little past level) on the upstroke, held out behind rising and a little
+  higher falling. For the Bread Toss he rolls his eyes, reaches back over his shoulder, arm straight, his fist
+  down in the top of the backpack where the rider's head pokes out, brings a slice up out of its top in his
+  fist (held by its bottom edge, at 0.6 of the size it lands) and flings his arm, straight, forward as it goes. He blinks only standing about. Caught in the goose's
+  stink he coughs like a very proper duck: standing, his arm comes up from his shoulder (his running arm,
+  raised, upper arm out in front) to a fist a short way in front of his open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s
   he either looks about, paranoid (a darting glance one way, then the other, each held a moment, his body
   jolting about 2° after each), or puts his brows up, cross, for 1.3s; never both at once. Stepping in a
   plop, he treads it flat round his feet (the plop drawn in front of them, so they look sunk in it) and stands
@@ -544,13 +549,21 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   behind the wing, and only its strap crosses in front: one band from the bag, low over the base of the neck
   (in front of the shoulder, never arching up over the back) and down the side of the chest to the belly,
   buckled on the way. Each bird has its own strap and spot (`STRAPS` and `BACKPACK_WORN` in paper-art.js), and
-  it rides on the bird's back, bouncing with its body as it walks and runs (Bill's bounce a frame is exported
-  as `bill-bounce.json`). On Bill, the strap sits high over the top of his shoulder (buckle and all), covering
+  it rides on the bird's back, bouncing with its body as it walks and runs (each bird's bounce a frame is
+  exported as `goose-bounce.json` and `bill-bounce.json`). Standing about, the birds' heads turn to face us
+  but their bodies stay side-on, so it's worn the same way then too. On Bill, the strap sits high over the top of his shoulder (buckle and all), covering
   the joint, and runs down his chest a little in front of his upper arm, clear of it however he swings. His
   shoulder joint never shows in front of the strap, but his forearm and fist swing over it as he pumps his arm
   (his arm exported alone, with the round of his shoulder about the joint cut away, as `bill-arm.png`, to lay
   over the strap; where that round's edge ever crosses the strap it's inked, so the strap tucks under his
-  arm's outline rather than seeming to slice through his shoulder). The rider pokes only its
+  arm's outline rather than seeming to slice through his shoulder). Standing about with his wings crossed he
+  wears a second strap ('bill-standing') that comes straight down his chest at the back, by the shoulder
+  nearest the backpack: his crossed arms lie over it, it going behind them at the top of his forearm's outline
+  and its end showing below them. Which strap each of his frames wears is exported as `bill-straps.json`. With
+  his arm raised (flapping, coughing, the Bread Toss) it hangs from about 6 cm lower on his chest, so his
+  shoulder isn't up by his neck, and his whole arm is in front of the forward
+  strap, his upper arm's outline inked all round where it crosses it. In the game the bag stands a hair behind the wearer and the strap
+  (then Bill's arm) a hair in front, turning with it. The rider pokes only its
   head out of the open top, drawn from its own rig at about half size (the goose's head about 0.31 m, Bill's
   about 0.27 m), between the bag's back and front: the goose looking about or blinking; Bill grumpy, blinking,
   rolling his eyes or coughing; either ducked down so only the top of its head and eyes show. Exported by the

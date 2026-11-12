@@ -655,10 +655,13 @@ export const BACKPACK_WORN = { goose: [-0.3, 0.64], bill: [-0.34, 0.45] };
 // The strap on each carrier, in the box: from the top of the bag, low over the near shoulder and down the side of
 // the chest (the goose's long neck and tall chest take it further down), and where its buckle sits along it.
 // On Bill it crosses high over his shoulder joint, buckled there, and runs down just in front of his upper arm;
-// the game lays his arm below the shoulder over it (bill-arm.png).
+// the game lays his arm below the shoulder over it (bill-arm.png). Standing about with his wings crossed, it
+// comes straight down his chest at the back, by the shoulder nearest the backpack ('bill-standing'), so his
+// crossed arms lie over it and its end shows below them.
 const STRAPS = {
   goose: { path: 'M 140 151 C 185 152 220 166 245 196 C 275 232 272 288 244 319', buckle: [267, 240] },
   bill: { path: 'M 144 130 C 175 140 195 150 215 152 C 250 154 282 150 296 172 C 308 192 306 236 300 269', buckle: [242, 155] },
+  'bill-standing': { path: 'M 144 130 C 180 138 214 146 226 162 C 234 174 233 240 232 288', buckle: [196, 145] },
 };
 
 const BAG_BODY = 'M 46 76 C 34 120 30 176 38 214 C 46 230 142 230 150 214 C 158 176 154 120 142 76 C 124 90 64 90 46 76 Z';
@@ -703,6 +706,11 @@ export function drawBackpackFront(g, { open = true } = {}, lw = 9) {
   fillStroke(g, path('M 40 84 C 36 58 60 44 94 44 C 128 44 152 58 148 84 C 140 104 126 114 110 118 L 78 118 C 62 114 48 104 40 84 Z'), B.deep, lw);
   g.strokeStyle = INK; g.lineWidth = 12 + lw; g.stroke(path('M 94 108 L 94 128'));
   g.strokeStyle = B.strap; g.lineWidth = 12; g.stroke(path('M 94 108 L 94 128'));
+}
+
+/** A strap's path (in the bag's box) and buckle, and how wide it's drawn with its outline, in the box's units. */
+export function backpackStrap(bird = 'bill', lw = 9) {
+  return { ...STRAPS[bird], width: 18 + lw * 1.4 };
 }
 
 /**

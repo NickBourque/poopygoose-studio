@@ -122,6 +122,20 @@ export async function loadBillRig(base = new URL('./', import.meta.url)) {
     fist: () => fistMarkup(),
     /** On the move, his near wing bent at the elbow to a little fist, for pumping about ARM_PIVOT (in place of wing()). */
     runArm: () => runArmMarkup(),
+    /** His arm straight (forearm in line with his upper arm) to the same fist, for flapping about ARM_PIVOT. */
+    flapArm: () => runArmMarkup(true),
+    /**
+     * His upper arm's whole outline, inked (the top of it, where it melts into his chest, isn't drawn on runArm):
+     * for edging the arm where it's laid over something worn across his shoulder (the backpack's strap).
+     */
+    armOutline: () => `<path fill="none" stroke="${INK}" stroke-width="15" stroke-linejoin="round" ` +
+      `transform="translate(${-ARM_BACK} ${-ARM_UP})" d="${BICEP}"/>`,
+    /** Where the middle of his fist is (Bill px) with his arm hanging, bent (runArm) or straight (flapArm). */
+    fistAt(straight = false) {
+      const [ex, ey] = ELBOW, [fx, fy] = FIST;
+      const [x, y] = straight ? [ex - (fy - ey), ey + (fx - ex)] : [fx, fy];
+      return [x - ARM_BACK, y - ARM_UP];
+    },
   };
 }
 
@@ -331,30 +345,40 @@ function chewMouth(open) {
 
 // On the move, like any bloke out for a jog: his arm hangs from his shoulder (ARM_PIVOT) to his elbow,
 // bent there, the forearm forward to a fist out in front. The game turns it about his shoulder to pump it.
-function runArmMarkup() {
+// Straight (flapping), the forearm carries on down from the elbow in line with his upper arm, its feather tips
+// trailing off its back, to the same fist: his real arm, flapped like a wing.
+function runArmMarkup(straight = false) {
   // The upper arm is his crossed pose's: a hefty bicep hung from high on his chest at the base of his neck,
   // swelling to a fat round bulge in front and rounding off at the elbow, his body's grey with a shade down
   // its back, a crease where it bunches over the elbow and the master's speckles. Its top reaches up into his
   // chest and melts into it: its outline only starts below his shoulder, front and back.
-  const bicep = 'M490 514C510 504 550 504 572 516C612 540 642 596 642 660C642 706 622 738 596 750' +
-    'C568 762 530 758 512 738C496 700 486 600 490 514Z';
+  const bicep = BICEP;
   const bicepEdge = 'M600 548C626 580 642 620 642 660C642 706 622 738 596 750C568 762 530 758 512 738' +
     'C500 712 494 672 494 630';
   // The forearm is as thick as his crossed pose's, a band of wing feathers forward from the elbow, swelling
   // into a fist: a rounded mitten of feathers, their tips curled under as knuckles, a thumb feather over the
   // top; feather tips hang off its underside.
   const forearm = 'M586 688L664 680C700 666 734 688 734 716C734 746 704 760 674 756L596 758Z';
+  // straight, the forearm turns down about the elbow
+  const [ex, ey] = ELBOW;
   return `<g stroke="${INK}" stroke-linejoin="round" stroke-linecap="round" transform="translate(${-ARM_BACK} ${-ARM_UP})">
+      <g${straight ? ` transform="rotate(90 ${ex} ${ey})"` : ''}>
       <path fill="${BODY}" stroke-width="14" d="${forearm}"/>
       <path fill="none" stroke="${WING_SHADE}" stroke-width="10" d="M604 746L664 744"/>
       <path fill="none" stroke-width="7" d="M616 758Q622 774 634 758M640 758Q646 774 658 758"/>
-      <path fill="none" stroke-width="7" d="M716 690Q732 694 730 708M722 710Q736 714 732 728M716 730Q728 736 722 748M672 684Q696 688 706 704"/>
+      <path fill="none" stroke-width="7" d="M716 690Q732 694 730 708M722 710Q736 714 732 728M716 730Q728 736 722 748M672 684Q696 688 706 704"/></g>
       <path fill="${BODY}" stroke="none" d="${bicep}"/>
       <path fill="none" stroke="${WING_SHADE}" stroke-width="12" d="M512 600C506 640 506 690 522 728"/>
       <g fill="${SPECKLE}" stroke="none"><ellipse cx="604" cy="628" rx="9" ry="6"/><ellipse cx="620" cy="652" rx="6" ry="4"/></g>
-      <path fill="none" stroke-width="7" d="M574 722Q596 714 612 694"/>
+      ${straight ? '' : '<path fill="none" stroke-width="7" d="M574 722Q596 714 612 694"/>'}
       <path fill="none" stroke-width="15" d="${bicepEdge}"/></g>`;
 }
+// Where his forearm bends from his upper arm, and the middle of his fist, bent (runArm), in the arm's own px
+// (before it's hung back at his shoulder): a slice of bread he's holding is held there.
+const ELBOW = [590, 720], FIST = [700, 716];
+// His upper arm (runArm's), in the arm's own px.
+const BICEP = 'M490 514C510 504 550 504 572 516C612 540 642 596 642 660C642 706 622 738 596 750' +
+  'C568 762 530 758 512 738C496 700 486 600 490 514Z';
 
 // Coughing, his near wing comes up from his shoulder, bent at the elbow, its feathers hanging off the inside of
 // his forearm, to a fist held a short way in front of his bill: its feather tips curled towards his mouth, a
