@@ -152,6 +152,7 @@ two-column sections stack below 900px; buttons go full width below 560px.
 | Clouds | drift slowly side to side; the sun rocks ±0.08 rad |
 | Marquee | 52s per loop, linear, seamless |
 | Pulses and blobs | 2s pulse; 12s wobble |
+| A cut-out sprouting out of the ground (game: level 1's swap sign, solo again) | 0.6s from its foot, like a seedling fast-forwarded: up first as a thin shoot (a quarter of its width in the first 0.09s), then filling out, each easing out past 1 and back (`easeOutBack`), swaying 6° either way 1.5 times as it settles. Shrinking back into the ground is the same backwards, in 0.3s. Off screen it's just there or gone |
 
 Respect reduced-motion settings: stop ambient loops and the goose's automatic turning, keep only
 direct responses to the player.
