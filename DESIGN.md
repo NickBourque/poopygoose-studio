@@ -569,7 +569,8 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   (then Bill's arm) a hair in front, turning with it. The rider pokes only its
   head out of the open top, drawn from its own rig at about half size (the goose's head about 0.31 m, Bill's
   about 0.27 m), between the bag's back and front: the goose looking about or blinking; Bill grumpy, blinking,
-  rolling his eyes or coughing; either ducked down so only the top of its head and eyes show. Exported by the
+  rolling his eyes or coughing; either ducked down so only the top of its head and eyes show (in the game, landing
+  hard, or under anything low over its head). Exported by the
   game repo's `Tools/ArtExport/backpack.html`. Stay (game): the rider hops out of the top in a 0.45 m arc over
   0.35 s, landing up to 1.1 m behind its carrier, and the bag (now shut, on Bill) pops onto Bill's back halfway if it
   wasn't there already; picked back up, the waiting bird hops into the top of the bag in a 0.5 m arc over 0.3 s,
