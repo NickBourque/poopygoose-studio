@@ -533,9 +533,9 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   jerking about 2.5° with each snap, for 0.6s. For three steps after he walks at about half pace, flinging that
   foot the same way each time it rises, and it leaves prints in the plop's colour. A plop landing on him
   splats over his head (a lobed lump with the plop's dazed face on it, dripping down the back of his head and
-  between his eyes) and a few spots on his body. He squashes under it, wide-eyed, wing up, for 0.4s; gags twice
+  between his eyes) and a few spots on his body. He squashes under it, wide-eyed, his arm flung up and back, for 0.4s; gags twice
   over 0.6s, hunched forward, eyes screwed shut (> <), bill dropped open on his tongue, fist up as when he
-  coughs; then shakes it off like a duck drying off for 0.7s, eyes screwed shut, wings out, his whole body
+  coughs; then shakes it off like a duck drying off for 0.7s, eyes screwed shut, his arm thrown out behind him and flailing up and down, his whole body
   thrown one way and the other (frames tilted 6–10°, plus a 7° sway five times over), swish marks either side
   and the goo flying off him in drops and one last lump (still wearing its face). All goo on him is drawn with
   `drawGoo` in the plop's colours, on its own sheet a food laid over his frames, so it matches what the goose
@@ -568,7 +568,9 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   strap, his upper arm's outline inked all round where it crosses it. In the game the bag stands a hair behind the wearer and the strap
   (then Bill's arm) a hair in front, turning with it. The rider pokes only its
   head out of the open top, drawn from its own rig at about half size (the goose's head about 0.31 m, Bill's
-  about 0.27 m), between the bag's back and front: the goose looking about or blinking; Bill grumpy, blinking,
+  about 0.27 m), between the bag's back and front: the goose looking about, blinking, glancing back behind him (his 3/4 head
+  turned round), up (tipped 16°) or at us (his front, raised to sit as high), or delighted (his front with his eyes
+  squeezed into the logo's happy arcs); Bill grumpy, blinking,
   rolling his eyes or coughing; either ducked down so only the top of its head and eyes show (in the game, landing
   hard, or under anything low over its head). Exported by the
   game repo's `Tools/ArtExport/backpack.html`. Stay (game): the rider hops out of the top in a 0.45 m arc over
