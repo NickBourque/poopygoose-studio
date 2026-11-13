@@ -69,6 +69,7 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Sign board | `#E9C79A` | Wooden sign face |
 | Bread crust / crumb | `#D9964F` / `#FBEBC8` | Breadcrumbs, the slice of bread (the site's picnic too), the chunk in his bill |
 | Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
+| Stone (game) | `#C9C4BA`, lit `#E2DED5`, shade `#ADA79C` | Statues (section 7): grey card, with gilt (the gold) for anything pompous |
 | Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD, and the plop's cheeks; only there |
 | Plop | Body `#7F9A5A`, halo `#B9C59E`, cap `#F4F1E2` | The poop: goose-poop olive with an off-white cap, the logo's chest splash grown up, the halo halfway between so the cap blends in with no line (always with white googly eyes, pink cheeks and a little smile). Kept a deeper green than the grass so it never sinks into it. Other foods (game) swap all three: a body, a halo halfway to the cap, and a pale cap; the golden loaf's are deep gold `#F0A43A`, gold `#FFC56B` and `#FFF3D6` |
 | Gingham | `#FFF6EA` + orange at 45% | Picnic blanket, with an ink border |
@@ -287,6 +288,20 @@ Poopy Goose) are the template for the game's look.
   and swaying a little, with no shadow; taken, it shrinks to 55% and trails behind the bird's head,
   still sparkling, until it's kept, then pops away. On the results card it's a sticker slapped on the top right
   corner, tilted and hanging over the edge.
+- **Statues (game):** one a level, pompous, there to be improved with a plop (GAME.md section 15). Stone is
+  grey card (`#C9C4BA`, lit `#E2DED5`, shade `#ADA79C`), inked and stickered like everything else, with a
+  carved panel on the plinth whose words are cut into it (Baloo 2 ink over a Nunito navy line). The pompous bit
+  is a touch of gilt (the gold, `#FFC56B` / `#E9A94A`), never orange: the statue isn't a thing to use, it's a
+  target. The Pond's is **a stone swan** about 2.9 m tall: a plinth 1.2 m tall (a chipped cap, a crack down the
+  column, moss at its foot, "THE SWAN / Better than you.") and on it a swan, chest out, wing raised a little,
+  a gilt crown, beak in the air, lids half down, looking down its beak at whoever's coming from the left.
+  Improved, it's **aghast**: eye popped wide, a brow shot up, beak dropped open, and the plop sits splatted on its
+  crown in its food's colours, drips running down the front of its face and the back of its head, its googly
+  face pleased with itself. The splat never covers the statue's face: the joke is the face. It's slapped on in
+  0.12s, landing 30% too big and squashing down about the head. It's the plop's goo (`drawGoo` in
+  `paper-art.js`), so a new food's colours come with it. On the results card the improved statue is a sticker on
+  the top left corner, tilted the other way from the loaf's (9°), slapped on just before it. Each level's statue
+  is someone new to be rude about (drawn with its world).
 - **The plop HUD (game):** the game's one always-on piece of HUD, in the top left corner: the goose's
   insides as a cute diagram, never gross (no colours of real insides beyond a soft pink, nothing wet). A
   paper panel drawn like the site's cards (paper `#FFFDF8`, 7px ink border at 600 px a metre, round
