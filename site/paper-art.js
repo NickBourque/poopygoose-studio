@@ -357,6 +357,7 @@ export function drawPlop(g, lw = 9, colours = PLOP) {
   g.save(); g.clip(body);
   g.fillStyle = colours.halo; g.fill(path('M 40.8 95.2 C 40.8 66.4 62 11.2 81.1 11.2 C 100.1 11.2 117.1 66.4 117.1 92.8 C 108.6 90.4 104.4 100 95.9 96.4 C 87.4 92.8 81.1 102.4 70.5 97.6 C 59.9 92.8 49.3 102.4 40.8 95.2 Z'));
   g.fillStyle = colours.cap; g.fill(path('M 51.4 85.6 C 53.5 66.4 68.3 20.8 81.1 20.8 C 93.8 20.8 104.4 66.4 106.5 83.2 C 100.1 80.8 95.9 90.4 89.5 86.8 C 83.2 83.2 76.8 91.6 68.3 86.8 C 62 83.2 55.6 90.4 51.4 85.6 Z'));
+  plopSeeds(g, colours);
   g.restore();
   g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke(body);
   // the droplet flung off the left lobe
@@ -368,15 +369,55 @@ export function drawPlop(g, lw = 9, colours = PLOP) {
   g.fillStyle = PAL.white; g.fill(); g.lineWidth = 2 * k; g.stroke();
   g.fillStyle = INK; g.beginPath(); g.arc(67.2, 108, 3.5, 0, Math.PI * 2); g.arc(94.8, 108, 3.5, 0, Math.PI * 2); g.fill();
   g.lineWidth = 3.5 * k; g.stroke(path('M 73.6 114.4 Q 80 121.6 86.4 114.4'));
+  plopSprout(g, colours, 89, 43, lw, 0.28, 1.25);
 }
 
 // The colours of each food's plops (GAME.md section 15): a new food is a new row here, and every frame below
-// draws in it. Gold for the golden loaf, purple for blueberries.
+// draws in it. Gold for the golden loaf, purple for blueberries. Their order is the game's PlopFood order.
 export const PLOP_FOODS = {
   plain: PLOP,
   golden: { body: '#F0A43A', halo: '#FFC56B', cap: '#FFF3D6' },
   blueberry: { body: '#7E5A9B', halo: '#B9A5BE', cap: '#F4F1E2' },
+  // Seeds: a fresher, yellower olive than the plain plop, the sunflower seeds he ate showing in it, and a seedling
+  // sprouting from its peak: told apart by its shape, not only its colour (DESIGN.md: every kind of plop has its own
+  // shape), and it reads as "this one grows" at a glance.
+  seed: { body: '#A6AB4F', halo: '#D0D2A0', cap: '#F4F1E2', seeds: '#4A3B2E', sprout: true },
 };
+
+// Sunflower seeds showing in a plop whose colours have them (colours.seeds): little dark teardrops with a pale
+// stripe, scattered over the plop's box (160 x 130) and clipped to its body by the caller. scale, dx and dy move
+// the scatter onto something drawn elsewhere (goo is drawn about its middle).
+const PLOP_SEED_SPOTS = [[46, 112, 0.4], [70, 98, -0.6], [100, 108, 0.9], [122, 114, -0.2], [86, 72, 0.3], [60, 82, 1.2],
+  [112, 88, -1], [32, 104, -0.9], [138, 102, 0.6], [78, 120, 1.6], [96, 52, -0.3], [52, 64, 0.8]];
+function plopSeeds(g, colours, scale = 1, dx = 0, dy = 0) {
+  if (!colours.seeds) return;
+  g.save(); g.scale(scale, scale); g.translate(dx, dy);
+  for (const [x, y, rot] of PLOP_SEED_SPOTS) {
+    g.save(); g.translate(x, y); g.rotate(rot);
+    g.fillStyle = colours.seeds; g.beginPath(); g.ellipse(0, 0, 6, 3.6, 0, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = PAL.cream; g.lineWidth = 1.4; g.beginPath(); g.moveTo(-4, 0); g.lineTo(4, 0); g.stroke();
+    g.restore();
+  }
+  g.restore();
+}
+
+// A seedling sprouting from a plop whose colours have one (colours.sprout): a short sage-deep stem from (x, y),
+// curving up, and two sage leaves opening at its top, the right one a touch bigger, each inked. tilt leans it (rad),
+// size scales it; drawn on top, after the plop's outline, so it reads by its shape at any size.
+function plopSprout(g, colours, x, y, lw, tilt = 0, size = 1) {
+  if (!colours.sprout) return;
+  g.save(); g.translate(x, y); g.rotate(tilt); g.scale(size, size);
+  g.lineCap = 'round'; g.lineJoin = 'round';
+  const stem = path('M 0 6 C -3 -4 3 -11 0 -21');
+  g.strokeStyle = INK; g.lineWidth = 9; g.stroke(stem);
+  g.strokeStyle = PAL.sageDeep; g.lineWidth = 4.5; g.stroke(stem);
+  for (const leaf of ['M 0 -21 C -5 -33 -21 -36 -27 -28 C -19 -21 -9 -19 0 -21 Z', 'M 0 -21 C 6 -36 25 -40 30 -29 C 21 -21 10 -18 0 -21 Z']) {
+    const p = path(leaf);
+    g.fillStyle = PAL.sage; g.fill(p);
+    g.lineWidth = Math.max(3, lw * 0.6); g.strokeStyle = INK; g.stroke(p);
+  }
+  g.restore();
+}
 
 // A plop's frames, in the order the game's sheets hold them: sitting (drawPlop), falling, squashed as it
 // lands, splashed out flat the instant after, splatted face on against a wall, and trodden flat by Bill (in front
@@ -422,6 +463,7 @@ function plopBody(g, lw, colours, body, halo, cap) {
   g.save(); g.clip(body);
   g.fillStyle = colours.halo; g.fill(halo);
   g.fillStyle = colours.cap; g.fill(cap);
+  plopSeeds(g, colours);
   g.restore();
   g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.lineCap = 'round'; g.stroke(body);
 }
@@ -443,6 +485,7 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
       path('M 66 80 C 70 66 80 54 84 38 C 88 54 96 68 96 80 C 90 78 86 84 80 81 C 74 78 70 84 66 80 Z'));
     plopDrops(g, lw, colours, [[70, 24, 5], [102, 30, 3.5]]);
     plopFace(g, 80, 100, k, { spread: 12, eye: 7.5, look: [0, 3], mouth: 'o' });
+    plopSprout(g, colours, 88, 24, lw, 0.3, 1.2);
     return;
   }
   if (frame === 'squash') {
@@ -452,6 +495,7 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
       path('M 30 110 C 40 96 64 88 84 87 C 104 88 120 98 128 110 C 110 108 104 114 92 111 C 80 108 72 114 60 111 C 48 108 40 114 30 110 Z'),
       path('M 46 104 C 56 95 72 90 84 90 C 98 92 108 98 112 104 C 104 102 98 107 90 105 C 82 103 74 107 66 105 C 58 103 52 107 46 104 Z'));
     plopFace(g, 80, 108, k, { spread: 15, mouth: 'squeeze' });
+    plopSprout(g, colours, 87, 86, lw, 0.15, 0.75);
     return;
   }
   if (frame === 'splash') {
@@ -462,6 +506,7 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
       path('M 44 112 C 56 105 70 103 82 103 C 96 103 110 106 120 112 C 102 115 62 115 44 112 Z'));
     plopDrops(g, lw, colours, [[8, 78, 5], [46, 64, 4], [90, 56, 3.5], [124, 58, 5], [160, 82, 4]]);
     plopFace(g, 80, 110, k, { spread: 14, eye: 6.5, mouth: 'dazed' });
+    plopSprout(g, colours, 82, 103, lw, -0.2, 0.85);
     return;
   }
   if (frame === 'wall') {
@@ -485,9 +530,11 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
     g.save(); g.clip(outline);
     g.fillStyle = colours.halo; g.beginPath(); g.ellipse(cx + 4, cy - 8, 30, 24, -0.3, 0, Math.PI * 2); g.fill();
     g.fillStyle = colours.cap; g.beginPath(); g.ellipse(cx + 6, cy - 11, 19, 14, -0.3, 0, Math.PI * 2); g.fill();
+    plopSeeds(g, colours);
     g.restore();
     plopDrops(g, lw, colours, [[18, 40, 5], [146, 82, 4], [138, 22, 3.5]]);
     plopFace(g, cx, cy + 8, k, { spread: 13, look: [0, 3], mouth: 'oops' });
+    plopSprout(g, colours, 86, 30, lw, 0.2, 1.2);
     return;
   }
   if (frame === 'stepped') {
@@ -499,6 +546,7 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
       path('M 44 108 C 58 102 70 101 82 101 C 96 101 108 103 118 108 C 100 111 62 111 44 108 Z'));
     plopDrops(g, lw, colours, [[2, 88, 4.5], [156, 86, 4]]);
     plopFace(g, 80, 110, k, { spread: 15, mouth: 'squeeze' });
+    plopSprout(g, colours, 82, 97, lw, -0.3, 0.75);
     return;
   }
   throw new Error(`no plop frame '${frame}'`);
@@ -532,8 +580,10 @@ export function drawGoo(g, { blobs = [], drops = [] }, lw = 9, colours = PLOP) {
     g.save(); g.clip(outline);
     g.fillStyle = colours.halo; g.beginPath(); g.ellipse(-r * 0.15, -r * 0.3 * squash, r * 0.6, r * 0.45 * squash, -0.3, 0, Math.PI * 2); g.fill();
     g.fillStyle = colours.cap; g.beginPath(); g.ellipse(-r * 0.12, -r * 0.36 * squash, r * 0.36, r * 0.26 * squash, -0.3, 0, Math.PI * 2); g.fill();
+    plopSeeds(g, colours, r / 40, -80, -64);
     g.restore();
     if (face) plopFace(g, 0, r * squash * 0.05, k, face);
+    plopSprout(g, colours, r * 0.1, -r * squash * 0.95, lw, 0.2, r / 34);
     g.restore();
   }
   plopDrops(g, lw, colours, drops);

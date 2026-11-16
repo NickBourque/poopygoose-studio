@@ -71,7 +71,7 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
 | Stone (game) | `#C9C4BA`, lit `#E2DED5`, shade `#ADA79C` | Statues (section 7): grey card, with gilt (the gold) for anything pompous |
 | Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD, and the plop's cheeks; only there |
-| Plop | Body `#7F9A5A`, halo `#B9C59E`, cap `#F4F1E2` | The poop: goose-poop olive with an off-white cap, the logo's chest splash grown up, the halo halfway between so the cap blends in with no line (always with white googly eyes, pink cheeks and a little smile). Kept a deeper green than the grass so it never sinks into it. Other foods (game) swap all three: a body, a halo halfway to the cap, and a pale cap; the golden loaf's are deep gold `#F0A43A`, gold `#FFC56B` and `#FFF3D6` |
+| Plop | Body `#7F9A5A`, halo `#B9C59E`, cap `#F4F1E2` | The poop: goose-poop olive with an off-white cap, the logo's chest splash grown up, the halo halfway between so the cap blends in with no line (always with white googly eyes, pink cheeks and a little smile). Kept a deeper green than the grass so it never sinks into it. Other foods (game) swap all three: a body, a halo halfway to the cap, and a pale cap; the golden loaf's are deep gold `#F0A43A`, gold `#FFC56B` and `#FFF3D6`. Seed plops (game) are a fresher, yellower olive (`#A6AB4F`, halo `#D0D2A0`, the plain cap) with the sunflower seeds he ate showing in them (little dark teardrops, `#4A3B2E`, with a cream stripe) and a **seedling sprouting from the peak**: a short sage-deep stem and two inked sage leaves, on every frame and on its goo. **Every kind of plop differs in shape, not only colour** (game): at HUD size, and for colour-blind players, colour alone doesn't tell two greens apart, so each food that changes what a plop does gets a mark of its own on its silhouette (seeds: the sprout) |
 | Gingham | `#FFF6EA` + orange at 45% | Picnic blanket, with an ink border |
 | Shadow | `rgba(60,40,25, .32–.40)` | Soft blob shadows on the ground |
 
@@ -135,7 +135,7 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Join tag (game) | The badge pill in the bottom right corner, tilted 2°: its pulsing orange dot (±18% over 2s), jump's glyphs and "Join." in Nunito 800. Pops in and out like a cut-out. |
 | Level name card (game) | A card at the top of the screen, tilted -1.5°: the world in tracked navy Nunito 800 caps ("THE POND · 1") over the level's name in Baloo 2 ink ("Left Behind"). Pops in, holds about 2s, then turns away edge-on like the paper flip (a quarter turn in 0.34s, smoothstep, darkening up to 28%). |
 | Paper fold (game) | Between scenes: a cream sheet (`#F6F1E7`, faint white and `cream-deep` fibres) folds shut over the screen in two halves hinged at its top and bottom edges, like closing a greeting card (0.4s, smoothstep; each half covers cos(angle) of its half of the screen and darkens up to 28% edge-on; the bottom flap a shade darker), with a faint ink crease where they meet. Shut, the goose-head sticker (his front face from the model sheet, the logo's wink, cut round) pops in on the crease and rocks ±4° while the next scene loads, then pops away and the halves fold open. |
-| Button glyph (game) | Printed on signs and cards, no sticker border, with the press-me look: a 7px ink border at prop scale and a hard ink shadow straight down. Xbox face buttons are round, the letter in Baloo 2 (white with an ink outline; ink on the Y), on muted A green `#6FA350`, B red `#D45A48`, X blue `#4F86C2`, Y yellow `#E9B83E`; PlayStation face buttons are round `paper` stickers with their shapes in muted colour and an ink outline: cross blue `#4F86C2`, circle red `#D45A48`, square pink `#D97FA8`, triangle green `#6FA350`. Both pads' other buttons are `cream-deep`, the D-pad's arm to press in orange, and the stick pushed sideways (for waddling) has an orange arrow either side. Keys are `paper` keycaps, a letter in Baloo 2 or a word in Nunito 800. |
+| Button glyph (game) | Printed on signs and cards, no sticker border, with the press-me look: a 7px ink border at prop scale and a hard ink shadow straight down. Xbox face buttons are round, the letter in Baloo 2 (white with an ink outline; ink on the Y), on muted A green `#6FA350`, B red `#D45A48`, X blue `#4F86C2`, Y yellow `#E9B83E`; PlayStation face buttons are round `paper` stickers with their shapes in muted colour and an ink outline: cross blue `#4F86C2`, circle red `#D45A48`, square pink `#D97FA8`, triangle green `#6FA350`. Both pads' other buttons are `cream-deep`, the D-pad's arm to press in orange, and the stick pushed sideways (for waddling) has an orange arrow either side. Triggers (LT / RT, L2 / R2) are taller than the bumpers, their tops rounded right over like the trigger itself, in `cream-deep` with their name in Baloo 2. Keys are `paper` keycaps, a letter in Baloo 2 or a word in Nunito 800. Two players' glyphs that won't fit where they're printed (1.4 m on a sign's board, half that on each column of a two-column sign) are all printed smaller to fit, never cut off or run off the edge. |
 
 **Layout:** content 1080–1240px wide; side gutters 16–48px; sections breathe (48–104px vertical);
 two-column sections stack below 900px; buttons go full width below 560px.
@@ -302,6 +302,14 @@ Poopy Goose) are the template for the game's look.
   `paper-art.js`), so a new food's colours come with it. On the results card the improved statue is a sticker on
   the top left corner, tilted the other way from the loaf's (9°), slapped on just before it. Each level's statue
   is someone new to be rude about (drawn with its world).
+- **Seeds and the sunflower (game):** the first food after bread (GAME.md section 15). Seeds are a little heap of
+  sunflower seeds where a breadcrumb would hang: striped teardrops, dark (`#4A3B2E`) with cream stripes, each inked.
+  The flower a seed plop grows is a **sunflower turned up to the sky**, seen side on, so its head is a wide dish of
+  petals to land on: sunny-yellow petals (`#FFC56B`, the ones behind in `#E9A94A`) round a wood-brown disc with
+  darker seeds spiralling in it (`#7E5538`) and a soft shine, on a sage-deep stem with two sage leaves (ink-veined).
+  It grows in three cut-out frames, each popping in like a sticker: a seedling (two little leaves), a bud on a tall
+  stem with yellow just showing at its tip (0.25s), then open (0.55s). The dish is about 1.4 m across its petals and
+  1.8 m up. It stands a little behind the birds, like the scenery, and lasts.
 - **The plop HUD (game):** the game's one always-on piece of HUD, in the top left corner: the goose's
   insides as a cute diagram, never gross (no colours of real insides beyond a soft pink, nothing wet). A
   paper panel drawn like the site's cards (paper `#FFFDF8`, 7px ink border at 600 px a metre, round
@@ -314,10 +322,16 @@ Poopy Goose) are the template for the game's look.
   are the world's own cut-outs, shrunk: the bread he's digesting sits in his stomach, rocking (8°) as the
   stomach churns (4%), and dissolves as it turns into plops (a crumb in 1s, a slice a quarter at a time
   over 4s). Each plop squeezes out from behind the stomach, slides down the intestine wiggling (12°) as it's
-  digested and squeezes into the bay, then pops into its slot. A dropped plop pops out of its slot. With
-  the golden loaf got, the bay's plops pop out, the loaf sits swaying in the stomach, a gold infinity sign
-  (Baloo 2, gold fading to its deep gold, an ink outline and a sticker border) pops on over the bay and a
-  plop slides down every 1.2s.
+  digested and squeezes into the bay, then pops into its slot, each plop in its own kind's colours (the plop's own
+  frames, sitting), grouped by kind with the kind on deck last. A dropped plop pops out of its slot. A heap of seeds
+  in the stomach is the seeds' own cut-out. **The on-deck badge** hangs off the bay's end: a round `paper` sticker
+  drawn like a site button (a 7px ink border, a hard ink shadow straight down) with a cream well, ringed in orange
+  like the menus' focus ring (it's the one that's picked). The plop on deck sits big in the well, and a little paper
+  pill tag on its corner prints how many of that kind he has (the results card's digits), or the gold infinity sign
+  (Baloo 2, gold fading to its deep gold, an ink outline and a sticker border) for gold. Cycling, it flips over like
+  a card (narrowing to edge-on and back, 0.24s), the new plop on its other side; with nothing to drop it pops away.
+  With the golden loaf got, the loaf sits swaying in the stomach for the rest of the level, and while gold is on deck
+  with nothing to digest a gold plop slides down every 1.2s.
 - **The Pond (game):** level 1's world, the site's diorama grown into a side-scroller, on the same bright
   morning: a cream sky with the site's sun and clouds hanging in it, the site's round and tall trees and bushes
   behind the lane, its reeds (with cattails) and white and yellow flowers along it. Those are the site's own
@@ -470,7 +484,9 @@ These rules are fixed. Changing them needs the creator's sign-off.
   crumbs flying (0.2s); and pulls back upright holding it (0.1s, then 0.3s held up). He chews twice with
   his cheek puffed out, the second chew baring his teeth (0.72s), then gulps: a lump bulges down the
   front of his neck in three steps, eyes shutting, satisfied, at the end (0.54s). About 2.4s in all.
-  A crumb he bolts down: a quicker gape (0.2s) and hold (0.15s), no chews, then the gulp, about 1.4s.
+  A crumb he bolts down: a quicker gape (0.2s) and hold (0.15s), no chews, then the gulp, about 1.4s. A heap of
+  seeds he bolts down the same way, his bill clamped on a beakful of sunflower seeds (dark, a cream stripe each,
+  sticking out where the chunk would) with a couple flying off, never a chunk of bread.
   Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
   it's a full wingbeat, five a second: up (about 51°), middle, down (about 18° below, with the body

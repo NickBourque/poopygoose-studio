@@ -3,7 +3,7 @@
 //
 // Views: 'front' (traced from the logo), 'half' (the front turned 15°, made by bending the front's face
 // round his head), '34' (turned 30°) and 'side' (profile). All face right. Faces: open eyes, blink, honk,
-// in front only the logo's wink and scared (wide eyes, worried brows, a bead of sweat), and in 3/4 only eating bread (eat: 'gape', 'bite', 'chew-a' or 'chew-b';
+// in front only the logo's wink and scared (wide eyes, worried brows, a bead of sweat), and in 3/4 only eating (eat: 'gape', 'bite', 'bite-seeds' (a beakful of seeds), 'chew-a' or 'chew-b';
 // gulp: 1-3, the lump on its way down his neck; lunge: 0.5 or 1, his neck bent down to reach bread; peck,
 // his neck stretched up and forward to pop a bubble with his bill). Legs aren't here: site/paper-art.js
 // draws them.
@@ -18,7 +18,7 @@ const HEAD = { cx: 1025, r: 180, billR: 132, billAhead: 128 };   // the head as 
 const HALF_TURN = 15;
 // Eating bread (3/4 view): the gape, the bite and two chews (goose-head-34.svg), then a gulp: a lump going
 // down the front of his neck, at each of these points on its outline in turn (logo px).
-const EAT_FACES = ['gape', 'bite', 'chew-a', 'chew-b'];
+const EAT_FACES = ['gape', 'bite', 'bite-seeds', 'chew-a', 'chew-b'];
 const GULP = [[1100, 838], [1114, 876], [1129, 914]];
 // Reaching for bread where it sits (lunge: 0.5 on the way, 1 there), his neck stretches and bends up, over
 // and down like a swan's, ending in a curl so his head tips forward rather than upside down:
@@ -105,7 +105,7 @@ export async function loadGooseRig(base = new URL('./', import.meta.url)) {
     show('bill-lower', !honk && !eat); show('bill-upper', !honk && !eat); show('bill-honk', honk);
     for (const id of EAT_FACES) show(`bill-${id}`, eat === id);
     show('cheek-puff', eat === 'chew-a' || eat === 'chew-b');
-    const wide = !blink && (honk || peck || eat === 'gape' || eat === 'bite' || gulp > 0);
+    const wide = !blink && (honk || peck || eat === 'gape' || eat === 'bite' || eat === 'bite-seeds' || gulp > 0);
     if (wide) {
       for (const [id, [cx, cy]] of Object.entries(DRAWN_EYES[view])) get(id)?.setAttribute('transform', widen(cx, cy));
       for (const id of ['brow-near', 'brow-far']) get(id)?.setAttribute('transform', `translate(0 ${-HONK_BROWS})`);
