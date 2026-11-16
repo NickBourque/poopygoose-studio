@@ -302,6 +302,13 @@ Poopy Goose) are the template for the game's look.
   `paper-art.js`), so a new food's colours come with it. On the results card the improved statue is a sticker on
   the top left corner, tilted the other way from the loaf's (9°), slapped on just before it. Each level's statue
   is someone new to be rude about (drawn with its world).
+- **The flock's splats (game):** by each level's nest, proof the flock stopped there on the way south (GAME.md
+  section 15). One big plop (twice the goose's) with two smaller ones beside it, in the plain plop's colours and
+  faces, one sticker round them all, standing a little behind the birds. Off the big one curls **steam**: three wavy
+  white lines with a thin ink outline, a cut-out of their own that sways (4°) and breathes (7%). The first bird by
+  gets **printed narration**, "Still warm.", like the storybook's words: Nunito in ink (48 px at 1080p) with a soft
+  `paper` halo, low in the middle of the screen, fading in as it rises 8 px (0.5s), holding 2.4s and fading away.
+  Nobody says it, so Bill's bubble keeps its "…"; he raises a brow, or rolls his eyes from the backpack.
 - **Seeds and the sunflower (game):** the first food after bread (GAME.md section 15). Seeds are a little heap of
   sunflower seeds where a breadcrumb would hang: striped teardrops, dark (`#4A3B2E`) with cream stripes, each inked.
   The flower a seed plop grows is a **sunflower turned up to the sky**, seen side on, so its head is a wide dish of
