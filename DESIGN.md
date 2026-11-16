@@ -327,7 +327,8 @@ Poopy Goose) are the template for the game's look.
   seams in ink; **lily pads** in sage with a notch and ink-soft veins, some with a white water lily round a
   sunny middle; the **mossy stump** the first nest sits on (bark in wood brown with grain strokes, a pale cut
   top with its rings, moss draped over the rim); and an **overhanging branch** with leafy clumps in the
-  trees' "v"-tufted style. Ground and banks are the usual card with grass tops.
+  trees' "v"-tufted style (drawn, but out of level 1: on its own it read as a branch hanging in mid-air; a branch
+  needs a trunk it visibly grows from). Ground and banks are the usual card with grass tops.
 - **The sleeping heron (game):** The Pond's critter to honk, a tall heron in pale blue-grey (`#CBD4DA`, its
   wing `#9EAEB9`) with a white neck and head, a black crest stripe trailing a plume, and an orange beak and
   legs (orange: you can use it). Facing left. Asleep it's a hunched lump on one leg, head tucked down on its
