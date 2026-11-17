@@ -128,7 +128,7 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Brand mark | Goose-head sticker + "Poopy Goose" (Baloo 2) over "STUDIO" (Nunito, tracked, navy). On hover the head tips -10° and grows 8%, with a bounce. |
 | Focus | 3px orange outline, 3px offset. Always visible for keyboard use. |
 | Decorative blob | Sage at ~55%, wobbling shape and slow 12° rotation over 12s. |
-| Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill ("Go again."), after the glyph of the button that does it. No sticker border: it's UI, not a cut-out in the world. |
+| Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill ("Go again.", or "On we go." for a level that leads on to the next), after the glyph of the button that does it. No sticker border: it's UI, not a cut-out in the world. |
 | Menu (game) | The site's pills at a 1080p screen's size: 84px tall with a 5px ink border over a hard ink shadow 5px straight down, words in Nunito 800 ink (36px). The one thing to press is orange, the rest `paper`. The picked-out option lifts 2px (shadow 7px) inside the orange focus ring (4px thick, 4px out) and gets the choose button's glyph in front of its words ("[A] Carry on."); choosing presses it down 4px (shadow 1px); 0.12s. An option not on yet is faded to 45%. Pause is a card like the results card (tilted -2°, popping in): "Hold *on.*" in Baloo 2 with the squiggle, over its options stacked, with a 45% cream wash over the frozen world. The title screen's options sit in a row along the bottom of the live diorama. Drawn by the game repo's `Tools/ArtExport/interface.html` (9-sliced). |
 | Settings card (game) | A card like pause (tilted 1.5°, popping in): "*Settings.*" in Baloo 2 with the squiggle, over its volumes and an orange "Done.". From pause it swaps places with the pause card; on the title screen it brings its own 45% cream wash. A volume is its name in Nunito 800 ink on the card, then a slider. |
 | Slider (game) | A `paper` menu pill, 440px wide, filling from the left with an orange pill (never narrower than it is tall, so it stays a pill), with the goose-head sticker (104px) riding the end of the orange. Ten steps, each sliding 0.12s. At the bottom step the orange's gone and the goose sits at the left end. It lifts and gets the focus ring like any option, and the waddle glyph goes in front of its name; the name doesn't lift. |
@@ -300,7 +300,13 @@ Poopy Goose) are the template for the game's look.
   face pleased with itself. The splat never covers the statue's face: the joke is the face. It's slapped on in
   0.12s, landing 30% too big and squashing down about the head. It's the plop's goo (`drawGoo` in
   `paper-art.js`), so a new food's colours come with it. On the results card the improved statue is a sticker on
-  the top left corner, tilted the other way from the loaf's (9°), slapped on just before it. Each level's statue
+  the top left corner, tilted the other way from the loaf's (9°), slapped on just before it, at the same size
+  whichever statue it is. Level 2's is **a bronze heron** on the same stone plinth ("THE HERON / Taller than
+  you."), 4 m to its crown: the sleeping heron's own pose awake, but standing on one leg with the other tucked up,
+  cast in bronze (`#C99257`, lit `#E2B47C`, shaded `#9C6B3D`) with verdigris streaks (`#8FC1AA`) where the rain
+  runs down its body and a short cast plume drooping off the back of its head. Its beak is bronze too: a statue
+  isn't a thing to use, so no orange. Smug, a flat lid over its eye; improved, eye popped and beak dropped open, the
+  goo on top of its head. Each level's statue
   is someone new to be rude about (drawn with its world).
 - **The flock's splats (game):** by each level's nest, proof the flock stopped there on the way south (GAME.md
   section 15). One big plop (twice the goose's) with two smaller ones beside it, in the plain plop's colours and
@@ -356,7 +362,16 @@ Poopy Goose) are the template for the game's look.
   chest, eyes shut in a curve, two ink-soft Baloo 2 "z"s floating up. Honked, it paper-flips to awake: bolt
   upright on both legs, neck straight up, beak in the air, a flat lid over a pale yellow eye (offended, never
   angry), about 3 m tall. In its last second awake it shows its drowsy frame (lids nearly shut, beak sunk
-  level) and wobbles, then flips back to asleep.
+  level) and wobbles, then flips back to asleep. A plop falling on it asleep wakes it the same way.
+- **The feeding spot (game):** level 2's park at The Pond's far end, where people feed the ducks (GAME.md
+  section 16), drawn at the goose's 300 px a metre to match the rocks and jetty: a **park bench** (wood slats
+  `#E9C79A` on dark navy iron, a little brass plaque, crumbs left on the seat); a green **litter bin** (`#6E9A78`)
+  on its post, a paper bag poking out; the **paper bag** the bread came in (`#D9B98C`), on its side and spilling
+  crumbs; a **bird feeder** on a navy shepherd's crook, its clear seed tube capped in orange (the seeds under it
+  are to eat) tipped and dropping seeds; and an **upturned rowing boat** in pale blue (`#8DB4D2`) with a white
+  stripe and a wooden keel, its name painted on ("MARGARET"), the second nest sitting on its keel. Level 2's
+  signs are The Pond's signs, the same board and post, the "PLEASE DO NOT FEED THE DUCKS." notice too (honked:
+  "Geese: help yourselves.").
 
 ### Drawing new art (characters, props, scenery)
 
