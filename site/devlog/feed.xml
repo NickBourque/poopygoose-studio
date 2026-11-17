@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The dev diary's RSS feed. Each <item>'s <content:encoded> is also its email to the flock, copied into a
+  Kit broadcast through tools/devlog-email.html: plain HTML, absolute links and images, no classes.
+  Newest item first. README.md ("Dev diary") explains adding one.
+-->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Poopy Goose dev diary</title>
+    <link>https://poopygoose.studio/devlog/</link>
+    <atom:link href="https://poopygoose.studio/devlog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Notes from the nest. Mostly about plops.</description>
+    <language>en</language>
+    <lastBuildDate>Tue, 17 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <image>
+      <url>https://poopygoose.studio/icon-192.png</url>
+      <title>Poopy Goose dev diary</title>
+      <link>https://poopygoose.studio/devlog/</link>
+    </image>
+
+    <item>
+      <title>Two birds. One backpack.</title>
+      <link>https://poopygoose.studio/devlog/two-birds-one-backpack/</link>
+      <guid isPermaLink="true">https://poopygoose.studio/devlog/two-birds-one-backpack/</guid>
+      <pubDate>Tue, 17 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Dev diary #001: Bill joined the goose, The Drop got a lot more useful, a stone swan got improved, and there's a second level to waddle through.</description>
+      <content:encoded><![CDATA[
+<p><em>Dev diary #001 · 17 November 2026 · <a href="https://poopygoose.studio/devlog/two-birds-one-backpack/">Read it on the website</a></em></p>
+
+<p>Welcome to the dev diary. Every so often we'll write down what's hatched since last time: what we built, what we threw out, and what made us laugh. You signed up for honks. This is the first one.</p>
+
+<p>A quick catch-up first. Poopy Goose is a side-scrolling platformer set in a little world made of paper. It's properly tricky (never mean), and you can play it alone or with a friend on the couch. The goose has missed the flock's flight south, after a long story involving a slice of bread. His flight feathers picked that same week to fall out. So he's walking.</p>
+
+<h2>Meet Bill</h2>
+<p style="text-align:center"><img src="https://poopygoose.studio/devlog/img/bill.png" alt="Bill, a grumpy mallard with a green head, standing with his wings crossed and his eyelids low." width="160" height="236"><br><em>Bill. Unimpressed.</em></p>
+<p>Bill is a mallard. He has seen everything, and he wasn't impressed by any of it. He's the straight man to the goose's chaos, he's the second player in co-op, and he's coming along to get the goose to his flock. He'd rather not say why.</p>
+<p>His signature move is <strong>The Stare</strong>. He looks at something until it stops moving. Moving planks. Falling plops. It works on most things, which says a lot about Bill.</p>
+<p>The name is a duck pun. Nobody in the game ever mentions it.</p>
+
+<h2>The backpack</h2>
+<p style="text-align:center"><img src="https://poopygoose.studio/devlog/img/backpack-goose.png" alt="The goose's head poking out of a green canvas backpack, looking pleased." width="110" height="177"><br><em>Best seat on the pond.</em></p>
+<p>Playing alone, you can swap between the two birds whenever you like. Whoever isn't walking rides in a backpack on the other one's back, head poking out, blinking at the scenery. Swap, and they hop over.</p>
+<p>Need one of them to hold a spot? Tell them to <strong>Stay</strong>, and they'll wait where they land until you come back for them. The goose, riding, ducks under anything low and looks delighted about all of it. In co-op, Bill wears the backpack and keeps it shut.</p>
+
+<h2>The Drop, second pass</h2>
+<p style="text-align:center"><img src="https://poopygoose.studio/devlog/img/plop.png" alt="A plop: a small green swirl with a cream peak, two googly eyes, rosy cheeks and a smile." width="140" height="101"><br><em>A plop. Looking pleased with itself.</em></p>
+<p>The game is called Poopy Goose. We noticed the goose wasn't doing much of that. So The Drop got a rethink: what comes out depends on what went in.</p>
+<p>Eat a breadcrumb, and there's a plop waiting. Drop it in mid-air and it gives the goose a little hop upward, so a goose full of bread can climb higher than one running on empty. Drop it on a pressure plate and it holds a gate open for a few seconds. Run.</p>
+<p>Plops land where they fall. On brambles, one makes a step to stand on, briefly. On a sleeping heron, it wakes him up. He's offended.</p>
+<p>The toot got a button of its own, too. In the air it pushes the goose forward, and it's strong enough to spin a paper pinwheel. We consider this realistic.</p>
+
+<h2>Art criticism</h2>
+<p style="text-align:center"><img src="https://poopygoose.studio/devlog/img/stone-swan.png" alt="A stone statue of a swan in a little gold crown, on a cracked plinth whose plaque reads: The Swan. Better than you." width="130" height="272"><br><em>A public monument.</em></p>
+<p>The Pond has a statue of a swan in a crown. Its plaque reads THE SWAN, and under that, <em>Better than you.</em></p>
+<p>You can improve it.</p>
+<p>Your work shows up afterwards on the level's results card, as a little sticker, so you can be proud of it. You should be.</p>
+
+<h2>Level 2: Crumbs</h2>
+<p>Level 1 got a tidy-up: Bill's in it now, there's a sign that teaches the swap and Stay, and there's room for the toot and the statue.</p>
+<p>And there's a second level. It's called <strong>Crumbs</strong>. The morning after level 1, the two of them follow a trail of breadcrumbs down out of the woods to the end of the pond where people feed the ducks. Nobody's there. They left plenty behind. It's the level that teaches you to eat, and then to drop. (It's also what you say when something's gone a bit wrong. Both apply.)</p>
+<p>It plays well. We checked. Repeatedly.</p>
+
+<h2>It sounds like something now</h2>
+<p>The game has sound. The goose has three honks to pick from. The heron snores, startles and yawns. Checkpoint flags chime, the title screen has its own theme, and the footsteps were cut from a recording of a foot tapping. It works better than it sounds.</p>
+
+<h2>What's next</h2>
+<p>More of The Pond. A level of Bill's own, to show off what he can do. And a few things we're not ready to honk about yet. Platforms and a release date are still to be honked.</p>
+
+<p><strong>Honk ✦ Waddle ✦ Plop ✦ Repeat</strong></p>
+<p><em>Poopy Goose Studio · <a href="https://poopygoose.studio/devlog/">All dev diaries</a></em></p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

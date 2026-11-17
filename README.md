@@ -28,6 +28,7 @@ itself, but the dev pages in `tools/` save their output through `serve.ps1`.
 | `site/paper-diorama.js` | The 3D paper world: island, pond, camera, and the goose's walking, turning, honking and flapping. |
 | `site/assets/goose-sprite.png` | The goose sprite, generated from `source/logo.jpg` (see below). |
 | `site/main.js` | Sign-up form, footer year, header shadow. |
+| `site/devlog/` | The dev diary: its list (`index.html`), one folder per diary, their stickers (`img/`) and the RSS feed, which also holds each diary's email (`feed.xml`). |
 | `source/` | The original artwork: logo, 3D render, turnaround video. |
 | `tools/` | Dev pages for building and checking the art (open them through the local server). |
 | `assets-3d/`, `image-to-3d/`, `explorations/` | The earlier 3D-goose experiments, kept for reference. |
@@ -87,6 +88,30 @@ confirmation email and keeps the list. While the ID is empty, the form opens an 
 hello@poopygoose.studio instead.
 
 Studio mail (hello@poopygoose.studio) is on Google Workspace. The domain's DNS is managed at Squarespace.
+
+## Dev diary
+
+The dev diary lives at <https://poopygoose.studio/devlog/>, and each one is also emailed to the flock as a
+Kit broadcast, sent by hand. (Kit's RSS-to-email automation would send them by itself, but it needs a paid
+Kit plan.) `site/devlog/feed.xml` is the diary's RSS feed, for feed readers, and it also holds each diary's
+email version.
+
+To add one:
+
+1. Copy a diary's folder (say `site/devlog/two-birds-one-backpack/`) to a new short slug, and write the new
+   one in it: its title, description, canonical and `og:` links, number and date. Game art goes in
+   `site/devlog/img/`, cut from the game's exported sheets.
+2. Add a card for it at the top of the list in `site/devlog/index.html` (newest first).
+3. Add an `<item>` for it at the top of `site/devlog/feed.xml`, and bump `lastBuildDate`. Its
+   `<content:encoded>` is the email: the same words as the page, in plain HTML, with full
+   `https://poopygoose.studio/...` links and image URLs and each image's `width` and `height` set. Its
+   `<guid>` is the diary's URL and must never change, or feed readers show it as new again.
+4. Push to `main`, and wait the minute or two until the diary is live (the email's images load from the site).
+5. Open `tools/devlog-email.html` through the local server and pick the diary. In Kit, start a new
+   broadcast, then copy the subject, the preview text and the email across with its buttons. Send a test
+   to yourself before sending it to the flock.
+
+What the diary says follows the same rule as the rest of the site: nothing GAME.md doesn't back up.
 
 ## Large files
 

@@ -1,0 +1,78 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dev diary email</title>
+<!-- Dev page: shows each dev diary's email (its <content:encoded> in site/devlog/feed.xml) ready to copy
+     into a new Kit broadcast. README.md, "Dev diary", has the steps. -->
+<style>
+  body { margin: 0; background: #F6F1E7; color: #482319; font: 400 16px/1.5 system-ui, sans-serif; }
+  header { padding: 20px 24px; border-bottom: 2px solid rgba(72, 35, 25, .12); }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  header p { margin: 0; color: #6E4A3E; }
+  select { font: inherit; margin-top: 12px; padding: 6px 10px; border-radius: 8px; border: 2px solid #482319; background: #FFFDF8; }
+  .fields { display: grid; gap: 10px; padding: 20px 24px 0; max-width: 680px; }
+  .field { display: grid; grid-template-columns: 110px 1fr auto; gap: 10px; align-items: center; }
+  .field b { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: #26394E; }
+  .field span { background: #FFFDF8; border-radius: 8px; padding: 6px 10px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 24px; }
+  button { font: 700 15px/1 system-ui, sans-serif; color: #482319; cursor: pointer; padding: 10px 16px; border-radius: 999px; border: 2.5px solid #482319; background: #FFFDF8; box-shadow: 0 3px 0 #482319; }
+  button.main { background: #FE8920; }
+  button:active { transform: translateY(3px); box-shadow: none; }
+  .msg { align-self: center; font-weight: 700; }
+  /* roughly how a plain email client shows it */
+  .email { max-width: 600px; margin: 0 24px 40px; padding: 24px 28px; background: #fff; border: 1px solid #ddd; font: 16px/1.55 Georgia, serif; color: #222; }
+  .email img { max-width: 100%; height: auto; }
+</style>
+<header>
+  <h1>Dev diary email</h1>
+  <p>Copy a diary into a new Kit broadcast. Push it live first: the images load from poopygoose.studio.</p>
+  <select id="pick" aria-label="Diary"></select>
+</header>
+<div class="fields">
+  <div class="field"><b>Subject</b><span id="subject"></span><button data-copy="subject">Copy</button></div>
+  <div class="field"><b>Preview text</b><span id="preview"></span><button data-copy="preview">Copy</button></div>
+</div>
+<div class="actions">
+  <button class="main" id="copy-rich">Copy email (paste into Kit's editor)</button>
+  <button id="copy-html">Copy as HTML</button>
+  <span class="msg" id="msg" role="status"></span>
+</div>
+<div class="email" id="email"></div>
+<script type="module">
+  const NS = 'http://purl.org/rss/1.0/modules/content/';
+  const xml = new DOMParser().parseFromString(await (await fetch('/site/devlog/feed.xml')).text(), 'application/xml');
+  const items = [...xml.querySelectorAll('item')].map(i => ({
+    title: i.querySelector('title').textContent,
+    summary: i.querySelector('description').textContent,
+    html: i.getElementsByTagNameNS(NS, 'encoded')[0].textContent.trim(),
+  }));
+  const pick = document.getElementById('pick'), msg = document.getElementById('msg');
+  pick.append(...items.map((it, n) => new Option(it.title, n)));
+  const show = () => {
+    const it = items[pick.value];
+    document.getElementById('subject').textContent = it.title;
+    document.getElementById('preview').textContent = it.summary;
+    document.getElementById('email').innerHTML = it.html;
+  };
+  pick.onchange = show; show();
+
+  const done = text => { msg.textContent = text; setTimeout(() => msg.textContent = '', 4000); };
+  // If the browser won't let the page write to the clipboard, select the thing instead, for Ctrl+C.
+  const copy = async (write, el, ok) => {
+    try { await write(); done(ok); } catch {
+      getSelection().selectAllChildren(el); done('Selected. Press Ctrl+C to copy.');
+    }
+  };
+  for (const b of document.querySelectorAll('[data-copy]')) {
+    const el = document.getElementById(b.dataset.copy);
+    b.onclick = () => copy(() => navigator.clipboard.writeText(el.textContent), el, 'Copied.');
+  }
+  // Rich text keeps the headings, bold, links and images when pasted into Kit's editor.
+  const email = document.getElementById('email');
+  document.getElementById('copy-rich').onclick = () => copy(() => navigator.clipboard.write([new ClipboardItem({
+    'text/html': new Blob([items[pick.value].html], { type: 'text/html' }),
+    'text/plain': new Blob([email.innerText], { type: 'text/plain' }),
+  })]), email, 'Copied. Paste it into the broadcast.');
+  document.getElementById('copy-html').onclick = () =>
+    copy(() => navigator.clipboard.writeText(items[pick.value].html), email, 'HTML copied.');
+</script>
