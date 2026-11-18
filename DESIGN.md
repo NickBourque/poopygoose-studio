@@ -67,7 +67,7 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Card edge | `#F2E4CC` | Sides of the island (the thickness of the card) |
 | Sunny yellow | `#FFC56B` | Sun, flower centres, yellow flowers |
 | Sign board | `#E9C79A` | Wooden sign face |
-| Bread crust / crumb | `#D9964F` / `#FBEBC8` | Breadcrumbs, the slice of bread (the site's picnic too), the chunk in his bill |
+| Bread crust / crumb | `#D9964F` / `#FBEBC8` | Breadcrumbs, the story's slice of bread (the site's picnic too), the chunk in his bill (Bill's blueberry scone has its own colours, with the bread below) |
 | Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
 | Stone (game) | `#C9C4BA`, lit `#E2DED5`, shade `#ADA79C` | Statues (section 7): grey card, with gilt (the gold) for anything pompous |
 | Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD, and the plop's cheeks; only there |
@@ -334,7 +334,7 @@ Poopy Goose) are the template for the game's look.
   stomach's pink, ink-edged, bunched into a round pouch for each plop he can carry (4), an ink crease at each
   pinch, a shine on each pouch and a pale pink slot (`#FCE3D8`) ringed in dashed ink-soft in each. The things on it
   are the world's own cut-outs, shrunk: the bread he's digesting sits in his stomach, rocking (8°) as the
-  stomach churns (4%), and dissolves as it turns into plops (a crumb in 1s, a slice a quarter at a time
+  stomach churns (4%), and dissolves as it turns into plops (a crumb in 1s, a scone a quarter at a time
   over 4s). Each plop squeezes out from behind the stomach, slides down the intestine wiggling (12°) as it's
   digested and squeezes into the bay, then pops into its slot, each plop in its own kind's colours (the plop's own
   frames, sitting), grouped by kind with the kind on deck last. A dropped plop pops out of its slot. A heap of seeds
@@ -497,8 +497,11 @@ These rules are fixed. Changing them needs the creator's sign-off.
   the ground, drawn like the chunk in his bill when he bites. They come in **four shapes**: a corner (crust
   along the top and one side), a long strip off the crust's edge, a round nugget capped with crust and a
   wedge torn across from corner to corner. Each is mirrored or not and tilted up to 12°, and no crumb
-  matches the one beside it, so a row never looks stamped out. Bill tosses a whole **slice of bread** from a
-  loaf (puffy top, the crust all round). Facing bread and pressing Eat, he stops and turns his head to it
+  matches the one beside it, so a row never looks stamped out. Bill tosses a **blueberry scone** (`drawScone`;
+  it was a slice of bread, which the story keeps): round and rough all over, sitting a little squat, bake
+  `#E2A55C` shaded `#C98543` round its bottom with a light top `#F3CF8E`, freckled and cracked in the shade colour,
+  and studded with inked blueberries `#4E4C86`, each with a little star of a crown and a shine `#8E8CC4`. No face:
+  food in the game has none. Facing bread and pressing Eat, he stops and turns his head to it
   (3/4) and gapes
   comically wide, jaws thrown open on a mouthful of big, square, shiny white human teeth, the dark of
   his mouth held between the jaws, eyes wide, shuffling to just the right spot
@@ -509,7 +512,10 @@ These rules are fixed. Changing them needs the creator's sign-off.
   front of his neck in three steps, eyes shutting, satisfied, at the end (0.54s). About 2.4s in all.
   A crumb he bolts down: a quicker gape (0.2s) and hold (0.15s), no chews, then the gulp, about 1.4s. A heap of
   seeds he bolts down the same way, his bill clamped on a beakful of sunflower seeds (dark, a cream stripe each,
-  sticking out where the chunk would) with a couple flying off, never a chunk of bread.
+  sticking out where the chunk would) with a couple flying off, never a chunk of bread. Bill's blueberry scone
+  (game) is eaten like the slice was, but what he bites off is a craggy chunk of scone (scone bake `#E2A55C`, a
+  paler torn end `#F6DDAA`, a blueberry or two in it) with scone crumbs and a blueberry flying off. **Every food
+  gets its own bite:** he's never drawn holding bread while eating something else.
   Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
   it's a full wingbeat, five a second: up (about 51°), middle, down (about 18° below, with the body
@@ -550,7 +556,7 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   two slanted nostrils, a lip of his lower bill under its
   mouth's line, set in a frown), a darker green under his chin. On the move his head turns to his
   master's 3/4, passing through a halfway frame (his eyes and bill slid towards the way he's turning).
-  Coughing and tossing a slice he keeps his head turned aside. The paper flip still turns him round. His body
+  Coughing and tossing a scone he keeps his head turned aside. The paper flip still turns him round. His body
   stays as traced.
 - **Poses.** Wings crossed (standing about) and wings folded at his sides (moving: a torso drawn to match
   the master under its head, neck, tail and feet). Walking, running and skidding, his near wing is an arm
@@ -576,8 +582,8 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   feather tips trailing), always pointing back behind him and beating up and down a little: from about 55° on
   the downstroke to about 100° (a little past level) on the upstroke, held out behind rising and a little
   higher falling. For the Bread Toss he rolls his eyes, reaches back over his shoulder, arm straight, his fist
-  down in the top of the backpack where the rider's head pokes out, brings a slice up out of its top in his
-  fist (held by its bottom edge, at 0.6 of the size it lands) and flings his arm, straight, forward as it goes. He blinks only standing about. Caught in the goose's
+  down in the top of the backpack where the rider's head pokes out, brings a scone up out of its top in his
+  fist (held from underneath, at 0.6 of the size it lands) and flings his arm, straight, forward as it goes. He blinks only standing about. Caught in the goose's
   stink he coughs like a very proper duck: standing, his arm comes up from his shoulder (his running arm,
   raised, upper arm out in front) to a fist a short way in front of his open bill, and his uvula swings back at each hack and forward again. Standing about facing us, every 5–11s
   he either looks about, paranoid (a darting glance one way, then the other, each held a moment, his body
@@ -599,7 +605,7 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
 - **Bill's backpack** (`drawBackpackBack`, `drawBackpackFront`, `drawBackpackStraps`): one backpack between the
   two birds. Solo, the bird the player isn't playing rides in it on the other's back; whoever's carrying wears
-  it, and with nobody in it Bill does: it's his, and where his slices come from. A sensible canvas rucksack,
+  it, and with nobody in it Bill does: it's his, and where his scones come from. A sensible canvas rucksack,
   about 0.42 m tall: sage `#AFC8A1` shaded `#8FAE80` down its near side, the dark inside of its top `#5E7A55`,
   wood-brown straps `#9A6A4A` with dashed stitching and sunny `#FFC56B` buckles; a front pocket with its own
   flap and buckle. Open, its top is a rolled rim with the flap thrown back down its far side; shut, the flap's

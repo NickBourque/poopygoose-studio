@@ -129,6 +129,35 @@
     <g transform="translate(1376 622) rotate(40) scale(0.6)"><ellipse fill="#4a3b2e" stroke="#462418" stroke-width="9" rx="38" ry="20"/><path fill="none" stroke="#f6f1e7" stroke-width="5" d="M-26 1Q0 -5 28 0"/></g>
     <g transform="translate(1392 676) rotate(-30) scale(0.5)"><ellipse fill="#4a3b2e" stroke="#462418" stroke-width="10" rx="38" ry="20"/><path fill="none" stroke="#f6f1e7" stroke-width="5" d="M-26 1Q0 -5 28 0"/></g>
   </g>
+  <!-- the bite on Bill's blueberry scone instead (GAME.md section 18): a craggy golden chunk broken off it,
+       its torn end paler and crumbly, a blueberry or two in it, clamped where the bread's chunk would be,
+       scone crumbs and a blueberry flying off (colours are paper-art.js's SCONE) -->
+  <g id="bill-bite-scone" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <path class="scone" fill="#e2a55c" stroke="#462418" stroke-width="14" d="M1168 648C1196 622 1246 606 1290 612C1318 616 1330 630 1326 648L1342 664L1330 684L1346 704L1330 724L1338 744C1322 762 1296 770 1268 766L1180 748Z"/>
+    <path fill="#c98543" d="M1192 738C1226 752 1270 760 1300 754L1312 744L1296 730C1262 738 1226 734 1196 724Z"/>
+    <path fill="#f3cf8e" d="M1204 640C1232 624 1268 618 1292 624C1300 628 1296 640 1284 642C1256 644 1226 650 1206 656Z"/>
+    <!-- the torn end, paler and crumbly -->
+    <path fill="#f6ddaa" d="M1314 640L1330 664L1318 684L1334 704L1318 724L1326 742C1316 750 1306 754 1296 756L1306 738L1294 720L1308 702L1294 682L1306 662L1296 644Z"/>
+    <ellipse fill="#c98543" cx="1228" cy="710" rx="6" ry="4"/>
+    <ellipse fill="#c98543" cx="1276" cy="650" rx="5" ry="3"/>
+    <ellipse fill="#c98543" cx="1262" cy="738" rx="5" ry="3"/>
+    <ellipse fill="#e2a55c" cx="1318" cy="712" rx="5" ry="3"/>
+    <!-- blueberries, one broken open at the torn end -->
+    <circle fill="#4e4c86" stroke="#462418" stroke-width="6" cx="1254" cy="694" r="18"/>
+    <ellipse fill="#8e8cc4" cx="1247" cy="687" rx="6" ry="4" transform="rotate(-30 1247 687)"/>
+    <path fill="none" stroke="#2e2c5a" stroke-width="4" d="M1252 712L1256 704L1262 712"/>
+    <circle fill="#4e4c86" stroke="#462418" stroke-width="6" cx="1306" cy="692" r="13"/>
+    <ellipse fill="#8e8cc4" cx="1301" cy="687" rx="4" ry="3" transform="rotate(-30 1301 687)"/>
+    <g transform="rotate(10 1060 700)">
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+    <use href="#tq-bill-upper-marks"/>
+    <!-- scone crumbs and a blueberry flying off -->
+    <path fill="#e2a55c" stroke="#462418" stroke-width="4" d="M1362 618L1374 614L1378 626L1366 632Z"/>
+    <path fill="#f6ddaa" stroke="#462418" stroke-width="4" d="M1376 660L1386 656L1390 666L1380 670Z"/>
+    <circle fill="#4e4c86" stroke="#462418" stroke-width="4" cx="1374" cy="700" r="8"/>
+  </g>
   <g id="bill-chew-a" display="none" stroke-linecap="round" stroke-linejoin="round">
     <g transform="rotate(4 1060 700) translate(-6 4)">
       <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>

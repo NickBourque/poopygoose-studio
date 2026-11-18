@@ -54,7 +54,7 @@ change here reaches the game the next time its art is exported.
 | Lives here (the game reads it) | Lives in the game (documented here) |
 | --- | --- |
 | `DESIGN.md`: how everything looks, moves and sounds, the site and the game | `GAME.md`: how the game plays (moves, rules, numbers, story) |
-| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle; the plop and the bread (breadcrumbs, the slice, the golden loaf and its glints) and the cloud, which its props use; and the scenery (trees, bush, reeds, flowers, sun), which The Pond exports as it is | The other props' drawings (`Tools/ArtExport/props.html`), The Pond's own scenery and the heron (`scenery.html`), the results card, the plop HUD and the button glyphs |
+| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle; the plop and the bread (breadcrumbs, the story's slice, Bill's blueberry scone, the golden loaf and its glints) and the cloud, which its props use; and the scenery (trees, bush, reeds, flowers, sun), which The Pond exports as it is | The other props' drawings (`Tools/ArtExport/props.html`), The Pond's own scenery and the heron (`scenery.html`), the results card, the plop HUD and the button glyphs |
 | `source/goose/`, `source/bill/`: both characters' vector art and rigs | The exported sheets in `Assets/Art/`, and everything Unity |
 
 Keeping them in step:
@@ -69,7 +69,7 @@ Keeping them in step:
 - **`site/paper-art.js` draws the site and the game alike**: a change to the goose's legs, feet or wing
   changes both. Undoing an experiment undoes it in both repos, the game's re-exported sheets included.
 - **Draw a thing once.** Something the site and the game both show is drawn here and imported by both.
-  The game's names are the canon: breadcrumbs (a level's bread), a slice of bread (Bill's), the golden loaf,
+  The game's names are the canon: breadcrumbs (a level's bread), a scone (Bill's, a blueberry one), the golden loaf,
   plops.
 - **The site's copy follows the game's facts**: the character file, the moves and the loop
   (Honk ✦ Waddle ✦ Plop ✦ Repeat) shouldn't promise anything GAME.md doesn't.

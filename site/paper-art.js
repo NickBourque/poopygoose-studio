@@ -630,7 +630,7 @@ export function drawBreadcrumb(g, shape, lw = 9) {
 }
 
 // A whole slice of bread from a loaf: a puffy top, square sides, a flat bottom (y 190) and crust all round,
-// its middle at x 100, in a 200 x 210 box. The goose's bread in the story; Bill tosses them in the game.
+// its middle at x 100, in a 200 x 210 box. The goose's bread in the story (in the game Bill tosses scones).
 export function drawSlice(g, lw = 9) {
   fillStroke(g, path('M 40 190 L 40 84 C 10 74 10 24 50 22 C 70 10 130 10 150 22 C 190 24 190 74 160 84 L 160 190 Z'), BREAD.crust, lw);
   g.fillStyle = BREAD.crumb; g.fill(path('M 56 176 L 56 74 C 32 66 32 36 60 35 C 78 25 122 25 140 35 C 168 36 168 66 144 74 L 144 176 Z'));
@@ -641,6 +641,44 @@ export function drawSlice(g, lw = 9) {
   }
   g.strokeStyle = 'rgba(255,255,255,0.45)'; g.lineWidth = 5; g.lineCap = 'round';
   g.beginPath(); g.moveTo(64, 27); g.quadraticCurveTo(82, 20, 104, 20); g.stroke();
+}
+
+// A blueberry scone, which Bill tosses (Bread Toss) in the game: round and rough all over, sitting a little squat,
+// freckled and cracked, blueberries baked in and bursting out of it. No face: food in the game has none. Its bottom
+// on y 186, its middle at x 100, in the slice's 200 x 210 box, so it sits where a slice did.
+export const SCONE = { bake: '#E2A55C', deep: '#C98543', light: '#F3CF8E', berry: '#4E4C86', berryShine: '#8E8CC4' };
+export function drawScone(g, lw = 9) {
+  let seed = 77;
+  const rand = () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const blob = (x, y, rx, ry, rot, fill) => { g.fillStyle = fill; g.beginPath(); g.ellipse(x, y, rx, ry, rot, 0, Math.PI * 2); g.fill(); };
+  // its outline: points round a squat circle, wobbled, the corners rounded off so it looks baked, not cut
+  const pts = [];
+  for (let i = 0; i < 22; i++) { const a = Math.PI * 2 * i / 22, r = 1 + (rand() - 0.5) * 0.12; pts.push([100 + Math.cos(a) * 80 * r, Math.min(112 + Math.sin(a) * 74 * r, 186)]); }
+  const wobbled = pts.map(([x, y]) => [x + (rand() - 0.5) * 4, y + (rand() - 0.5) * 4]), n = wobbled.length;
+  const mid = i => { const a = wobbled[i % n], b = wobbled[(i + 1) % n]; return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; };
+  const outline = new Path2D(); outline.moveTo(...mid(0));
+  for (let i = 1; i <= n; i++) { const [cx, cy] = wobbled[i % n], [x, y] = mid(i); outline.quadraticCurveTo(cx, cy, x, y); }
+  outline.closePath();
+  g.fillStyle = SCONE.bake; g.fill(outline);
+  clipFill(g, outline, () => {
+    blob(100, 200, 90, 30, 0, SCONE.deep);          // the bottom, baked darker on the tray
+    blob(84, 82, 50, 34, -0.3, SCONE.light);        // the top, catching the light
+    g.fillStyle = SCONE.deep;                       // freckles
+    for (let i = 0; i < 40; i++) { g.beginPath(); g.arc(20 + rand() * 160, 40 + rand() * 150, 1.5 + rand() * 2.5, 0, Math.PI * 2); g.fill(); }
+    g.strokeStyle = SCONE.deep; g.lineWidth = 3; g.lineCap = 'round';   // a few craggy cracks
+    for (const [x, y, dx, dy] of [[60, 120, 18, 6], [118, 70, 16, -6], [132, 140, -14, 8], [90, 166, 20, -2]]) { g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + dx / 2, y + dy + 5, x + dx, y + dy); g.stroke(); }
+  });
+  // the blueberries: round, inked, each with the little star of its crown and a shine
+  for (const [x, y, r] of [[66, 70, 11], [140, 78, 12], [104, 116, 10], [52, 132, 12], [150, 140, 11], [96, 166, 9], [124, 48, 8]]) {
+    g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fillStyle = SCONE.berry; g.fill();
+    g.lineWidth = 4; g.strokeStyle = INK; g.stroke();
+    g.lineWidth = 2.5;
+    for (let k = 0; k < 4; k++) { const a = k * Math.PI / 4; g.beginPath(); g.moveTo(x + 2 - Math.cos(a) * 3.5, y - 2 - Math.sin(a) * 3.5); g.lineTo(x + 2 + Math.cos(a) * 3.5, y - 2 + Math.sin(a) * 3.5); g.stroke(); }
+    blob(x - r * 0.4, y - r * 0.45, r * 0.22, r * 0.14, -0.6, SCONE.berryShine);
+  }
+  g.lineWidth = lw; g.strokeStyle = INK; g.lineJoin = 'round'; g.stroke(outline);
+  g.strokeStyle = 'rgba(255,255,255,0.5)'; g.lineWidth = 6; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(54, 88); g.quadraticCurveTo(62, 66, 84, 56); g.stroke();
 }
 
 // The golden loaf, the game's prize: a whole tin loaf in sunny gold (gold means "a prize", never "use this"),
