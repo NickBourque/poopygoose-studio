@@ -497,11 +497,16 @@ These rules are fixed. Changing them needs the creator's sign-off.
   with round-headed splashes (never spikes) and drops flying off, eyes crossed and a wobbly mouth;
   **splatted on a wall**, face on, a ring of rounded lobes with two drips running down, eyes on its drips and
   a flat mouth; and **trodden flat** (Bill stepped in it), a low puddle risen round his feet with two lumps
-  pushed up either side, eyes screwed shut. Every frame takes a food's three colours (`PLOP_FOODS`: plain, golden, blueberry); a new
+  pushed up either side, eyes screwed shut. Then **peeling** off the ground like a sticker as it goes, instead
+  of shrinking (Nick, 2026-11-20): a corner lifting first (the droplet's side), then the fold run right across
+  with most of it over. Its back is plain paper (`#EFE8D4`), inked round, shaded darker where it bends and
+  casting a soft shadow on the front; once off the ground it flutters up, turning over and tilting, and pops
+  away. Getting back up from the splash has no frame of its own: in the game it squashes and stretches back up
+  to sitting, springing up from flat past it and wobbling down. Every frame takes a food's three colours (`PLOP_FOODS`: plain, golden, blueberry); a new
   food is a new row there. In the
   game a plop is a standing cut-out (about 0.4 m tall) just behind his lane: it pops in at his tail, falls
   to the ground, and stays 6 seconds (a small step to land on, a weight sitting on a switch; the birds
-  walk straight past it) before shrinking away. Up to 3 are out at once. With nothing in him (game) he
+  walk straight past it) before peeling off like a sticker. Up to 3 are out at once. With nothing in him (game) he
   toots instead: eyes squeezed shut, tail up, and green stink (`#B5C26A`, shade `#9DAE52`, lines between its
   billows `#7F8F3C`) shoots straight back from his tail in a narrow jet and balloons into a little mushroom
   cloud lying on its side, its cap rolling over on itself, rising and bending its stem up, before it pinches

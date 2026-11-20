@@ -425,8 +425,54 @@ function plopSprout(g, colours, x, y, lw, tilt = 0, size = 1) {
 // plop's box and ground (y 124, middle x 80) but spill out of it: the splash is wider and the fall taller.
 // The wall splat is centred on PLOP_WALL_CENTRE, where it hit. Same rules as the sitting one: rounded lobes,
 // the pale cap blending in through the halo where the plop is thickest, ink only round the outside.
-export const PLOP_FRAMES = ['rest', 'fall', 'squash', 'splash', 'wall', 'stepped'];
+// Then peeling up off the ground like a sticker as it goes (GAME.md section 15), a corner first (peel), then mostly
+// over (peeled). Getting back up from the splash is a squash and stretch in the game's code, not a frame.
+export const PLOP_FRAMES = ['rest', 'fall', 'squash', 'splash', 'wall', 'stepped', 'peel', 'peeled'];
 export const PLOP_WALL_CENTRE = { x: 80, y: 64 };
+
+// The back of a plop peeling up: plain paper, a shade darker where it bends over.
+const PLOP_BACK = '#EFE8D4';
+
+// A plop peeling up off the ground like a sticker: the sitting plop, cut along the fold from a to b, the part on
+// the far side of it (the side holding `from`) turned over onto the rest, showing its plain paper back, inked round,
+// shaded where it bends and casting a soft shadow on the front.
+function plopPeel(g, lw, colours, a, b, from) {
+  const W = 240, H = 180, ox = 40, oy = 20;
+  const canvas = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+  const front = canvas(), fg = front.getContext('2d');
+  fg.translate(ox, oy); drawPlop(fg, lw, colours);
+  const silhouette = colour => {
+    const c = canvas(), x = c.getContext('2d');
+    x.drawImage(front, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = colour; x.fillRect(0, 0, W, H);
+    return c;
+  };
+  // the fold: its direction, and the normal pointing to the side that turns over
+  let dx = b.x - a.x, dy = b.y - a.y; const len = Math.hypot(dx, dy); dx /= len; dy /= len;
+  let nx = -dy, ny = dx;
+  if ((from.x - a.x) * nx + (from.y - a.y) * ny < 0) { nx = -nx; ny = -ny; }
+  const side = sign => {
+    const p = new Path2D(), far = 2000;
+    p.moveTo(a.x - dx * far, a.y - dy * far); p.lineTo(a.x + dx * far, a.y + dy * far);
+    p.lineTo(a.x + dx * far + sign * nx * far, a.y + dy * far + sign * ny * far);
+    p.lineTo(a.x - dx * far + sign * nx * far, a.y - dy * far + sign * ny * far); p.closePath();
+    return p;
+  };
+  // the back: the plop's silhouette in plain paper, inked round, darker towards the fold
+  const back = canvas(), bg = back.getContext('2d'), ink = silhouette(INK), r = lw * 0.45;
+  for (let i = 0; i < 16; i++) { const t = (i / 16) * Math.PI * 2; bg.drawImage(ink, Math.cos(t) * r, Math.sin(t) * r); }
+  bg.drawImage(silhouette(PLOP_BACK), 0, 0);
+  bg.globalCompositeOperation = 'source-atop';
+  const shade = bg.createLinearGradient(a.x + ox, a.y + oy, a.x + ox + nx * 45, a.y + oy + ny * 45);
+  shade.addColorStop(0, 'rgba(120, 96, 60, 0.35)'); shade.addColorStop(1, 'rgba(120, 96, 60, 0)');
+  bg.fillStyle = shade; bg.fillRect(0, 0, W, H);
+  // the front, all but what's turned over
+  g.save(); g.clip(side(-1)); g.drawImage(front, -ox, -oy); g.restore();
+  // turned over across the fold: a reflection in it
+  const angle = Math.atan2(dy, dx);
+  const over = () => { g.translate(a.x, a.y); g.rotate(angle); g.scale(1, -1); g.rotate(-angle); g.translate(-a.x, -a.y); g.clip(side(1)); };
+  g.save(); g.translate(3, 5); over(); g.globalAlpha = 0.18; g.drawImage(silhouette(INK), -ox, -oy); g.restore();
+  g.save(); over(); g.drawImage(back, -ox, -oy); g.restore();
+}
 
 // The plop's face at (x, y): googly eyes `spread` either side, pupils pushed by `look`, cheeks, and a mouth:
 // 'smile', 'o' (falling, delighted), 'squeeze' (eyes screwed shut as it lands), 'dazed' (crossed eyes, wobbly
@@ -549,6 +595,9 @@ export function drawPlopFrame(g, frame, lw = 9, colours = PLOP) {
     plopSprout(g, colours, 82, 97, lw, -0.3, 0.75);
     return;
   }
+  // a corner lifting first, from the left with its droplet, then the fold run right across and most of it over
+  if (frame === 'peel') return plopPeel(g, lw, colours, { x: 8, y: 56 }, { x: 78, y: 134 }, { x: 0, y: 124 });
+  if (frame === 'peeled') return plopPeel(g, lw, colours, { x: 62, y: 0 }, { x: 80, y: 140 }, { x: 0, y: 124 });
   throw new Error(`no plop frame '${frame}'`);
 }
 
