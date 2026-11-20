@@ -136,7 +136,7 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Join tag (game) | The badge pill in the bottom right corner, tilted 2°: its pulsing orange dot (±18% over 2s), jump's glyphs and "Join." in Nunito 800. Pops in and out like a cut-out. |
 | Level name card (game) | A card at the top of the screen, tilted -1.5°: the world in tracked navy Nunito 800 caps ("THE POND · 1") over the level's name in Baloo 2 ink ("Left Behind"). Pops in, holds about 2s, then turns away edge-on like the paper flip (a quarter turn in 0.34s, smoothstep, darkening up to 28%). |
 | Paper fold (game) | Between scenes: a cream sheet (`#F6F1E7`, faint white and `cream-deep` fibres) folds shut over the screen in two halves hinged at its top and bottom edges, like closing a greeting card (0.4s, smoothstep; each half covers cos(angle) of its half of the screen and darkens up to 28% edge-on; the bottom flap a shade darker), with a faint ink crease where they meet. Shut, the goose-head sticker (his front face from the model sheet, the logo's wink, cut round) pops in on the crease and rocks ±4° while the next scene loads, then pops away and the halves fold open. |
-| Button glyph (game) | Printed on signs and cards, no sticker border, with the press-me look: a 7px ink border at prop scale and a hard ink shadow straight down. Xbox face buttons are round, the letter in Baloo 2 (white with an ink outline; ink on the Y), on muted A green `#6FA350`, B red `#D45A48`, X blue `#4F86C2`, Y yellow `#E9B83E`; PlayStation face buttons are round `paper` stickers with their shapes in muted colour and an ink outline: cross blue `#4F86C2`, circle red `#D45A48`, square pink `#D97FA8`, triangle green `#6FA350`. Both pads' other buttons are `cream-deep`, the D-pad's arm to press in orange, and the stick pushed sideways (for waddling) has an orange arrow either side. Triggers (LT / RT, L2 / R2) are taller than the bumpers, their tops rounded right over like the trigger itself, in `cream-deep` with their name in Baloo 2. Keys are `paper` keycaps, a letter in Baloo 2 or a word in Nunito 800. Two players' glyphs that won't fit where they're printed (1.4 m on a sign's board, half that on each column of a two-column sign) are all printed smaller to fit, never cut off or run off the edge. |
+| Button glyph (game) | Printed on signs and cards, no sticker border, with the press-me look: a 7px ink border at prop scale and a hard ink shadow straight down. Xbox face buttons are round, the letter in Baloo 2 (white with an ink outline; ink on the Y), on muted A green `#6FA350`, B red `#D45A48`, X blue `#4F86C2`, Y yellow `#E9B83E`; PlayStation face buttons are round `paper` stickers with their shapes in muted colour and an ink outline: cross blue `#4F86C2`, circle red `#D45A48`, square pink `#D97FA8`, triangle green `#6FA350`. Both pads' other buttons are `cream-deep`, the D-pad's arm to press in orange, and the stick pushed sideways (for waddling) has an orange arrow either side. Triggers (LT / RT, L2 / R2) are taller than the bumpers, their tops rounded right over like the trigger itself, in `cream-deep` with their name in Baloo 2. Keys are `paper` keycaps, a letter in Baloo 2 or a word in Nunito 800. Two players' glyphs that won't fit where they're printed (1.4 m on a sign's board, half that on each column of a two-column sign) are all printed smaller to fit, never cut off or run off the edge. **On a sign, whose controls they are shows beside its words** (Nick): a little round portrait (a `cream` disc with an ink ring, about 0.22 m) of the goose's face, Bill's grumpy one, or both side by side when the move is both of theirs ("[goose][Bill] Jump.", "[Bill] Toss scone."); a two-column sign has a smaller pair beside each column's word. |
 
 **Layout:** content 1080–1240px wide; side gutters 16–48px; sections breathe (48–104px vertical);
 two-column sections stack below 900px; buttons go full width below 560px.
@@ -217,7 +217,8 @@ Poopy Goose) are the template for the game's look.
   colour, three steps, each fainter.
 - **The koi (game):** the pond's critter is a fat orange koi from the side, with cream patches, a darker
   orange fin and belly fin, a few orange scale arcs, whiskers in ink and a goofy gaping mouth (a round red
-  "O") with a big round eye; after a gulp, its mouth shuts with a crumb at its lips and its eye squeezes
+  "O") with a big round eye; after a gulp, its mouth shuts with a crumb of Bill's scone and a blueberry at its lips (it eats
+  what he tosses: never bread) and its eye squeezes
   smug. Under the water it shows only as its shadow lying on the surface: the koi seen from above in a
   darker water-blue, with no ink and no sticker border (it's in the water, not on it). Before it leaps the
   shadow swells and white ripple rings spread over the spot. It turns with the paper flip like the birds,
@@ -278,7 +279,11 @@ Poopy Goose) are the template for the game's look.
   edge, the touch that says it's a goose's. An orange bow on its front is the touch of orange that says
   "this is where you're going". It's two cut-outs sharing one pivot, its back behind the birds and its
   front in front, kept lined up from wherever the camera is, so they're seen standing in it. Reaching it,
-  the goose honks and Bill stares, and the results card pops up (section 5).
+  the goose honks and Bill stares, and the results card pops up (section 5). Level 3's nest (game) sits on the
+  last jetty in front of a **lifebuoy** stood on its edge, about 3.3 m across, leaning on the jetty's mooring post and
+  tied to it: red (`#E35D4B`) and cream quarters, rope wrapped round it at each quarter, a shine on its top, inked
+  like everything else. Red, not orange: it isn't a thing to use, the bow still is. It's one cut-out behind the
+  nest, so the nest reads as sat in the bottom of its ring.
 - **The golden loaf (game):** one a level, the optional prize. A whole tin loaf, its dome scored three
   times, in sunny gold (`#FFC56B`, its top crust `#F0A43A`) with a bright shine. **Gold means "a prize"**,
   kept apart from orange ("use this"). It **shimmers, sparkles and glows**: every 1.8s a slanted band of
@@ -307,7 +312,11 @@ Poopy Goose) are the template for the game's look.
   cast in bronze (`#C99257`, lit `#E2B47C`, shaded `#9C6B3D`) with verdigris streaks (`#8FC1AA`) where the rain
   runs down its body and a short cast plume drooping off the back of its head. Its beak is bronze too: a statue
   isn't a thing to use, so no orange. Smug, a flat lid over its eye; improved, eye popped and beak dropped open, the
-  goo on top of its head. Each level's statue
+  goo on top of its head. Level 3's is **a marble koi** leaping on the plinth ("THE KOI / Fed better than you."),
+  the koi's own drawing stood on end and balanced on the tip of its tail, facing left down at the goose, its
+  mouth gaping at the sky about 3.3 m up: white marble (`#EEEAE3`, shaded `#D3CDC3`) with grey veins (`#B5AEA3`),
+  its fins gilt (the swan's `#FFC56B` and `#E9A94A`), its scales carved. Smug, a flat lid over its eye; improved,
+  eye popped and a carved brow shot up, and the goo lands **right in its open mouth**. Each level's statue
   is someone new to be rude about (drawn with its world).
 - **The flock's splats (game):** by each level's nest, proof the flock stopped there on the way south (GAME.md
   section 15). One big plop (twice the goose's) with two smaller ones beside it, in the plain plop's colours and
@@ -369,10 +378,16 @@ Poopy Goose) are the template for the game's look.
   `#E9C79A` on dark navy iron, a little brass plaque, crumbs left on the seat); a green **litter bin** (`#6E9A78`)
   on its post, a paper bag poking out; the **paper bag** the bread came in (`#D9B98C`), on its side and spilling
   crumbs; a **bird feeder** on a navy shepherd's crook, its clear seed tube capped in orange (the seeds under it
-  are to eat) tipped and dropping seeds; and an **upturned rowing boat** in pale blue (`#8DB4D2`) with a white
-  stripe and a wooden keel, its name painted on ("MARGARET"), the second nest sitting on its keel. Level 2's
+  are to eat) tipped and dropping seeds; and an **upturned red canoe** (`#D9533F`, shaded `#B13F31`), 4.6 m long,
+  longer than the nest, its pointed ends down to the ground and a wooden gunwale arcing between them, a wooden keel
+  strip, its name painted on **upside down** like the canoe ("S. S. Tiddlywinks"), and a plop's splat on its right
+  end, smiling, dripping down its side; the second nest sits on its keel. Level 2's
   signs are The Pond's signs, the same board and post, the "PLEASE DO NOT FEED THE DUCKS." notice too (honked:
   "Geese: help yourselves.").
+- **Along the pond (game):** level 3 (GAME.md section 18) is The Pond's own scenery again (jetties, lily pads,
+  reeds), with the canoe and bench at its start (the bread bag gone). Its signs are the same board and post:
+  "Toss scone." and "Stare." over Bill's glyphs, the "NO FISHING." notice in one big line (honked: "Fish exempt."), and
+  "DEEP WATER. / Mind the fish." by the golden loaf (honked: "Look up. Then down. / Then at the fish.").
 
 ### Drawing new art (characters, props, scenery)
 
