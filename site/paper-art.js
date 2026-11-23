@@ -374,7 +374,71 @@ export function drawPlop(g, lw = 9, colours = PLOP) {
 
 // Baked beans (GAME.md section 15), the food and its colours: the beans fat and pale apricot with a lighter shine,
 // their sauce orange-red. The game's pickup, the goose's bite and the bean plop all use these.
-export const BEANS = { bean: '#F2B06A', shine: '#FBD9A6', sauce: '#C8502A', sauceLight: '#E0703F' };
+export const BEANS = {
+  bean: '#F2B06A', shine: '#FBD9A6', sauce: '#C8502A', sauceLight: '#E0703F',
+  // the can they come in: tin, its shine and its shadowed ribs, and the label's cream oval
+  tin: '#C9CED6', tinLight: '#EEF1F4', tinDark: '#9AA1AC', label: '#F6E6CF',
+};
+
+// A can of baked beans standing on its end, its bottom's middle at (cx, bottom): tin with a ribbed rim top and
+// bottom, a sauce-red label with a lighter stripe and a cream oval showing three beans, a shine down its left, and a
+// lid with a ring pull. Open, the lid's peeled back and standing up behind, and its mouth shows the tin inside with a
+// smear of sauce (an empty can); full, a couple of beans peep over the rim. w and h are its size, lw its ink.
+export function drawBeanCan(g, cx, bottom, { w = 60, h = 88, lw = 5, open = false, full = false } = {}) {
+  const x0 = cx - w / 2, x1 = cx + w / 2, top = bottom - h, ry = w * 0.16;
+  g.save(); g.lineJoin = 'round'; g.lineCap = 'round';
+  // the lid peeled back, hinged on the far side of the rim
+  if (open) {
+    g.save(); g.translate(cx + w * 0.06, top - ry - w * 0.2); g.rotate(-0.18);
+    g.beginPath(); g.ellipse(0, 0, w * 0.47, w * 0.2, 0, 0, Math.PI * 2);
+    g.fillStyle = BEANS.tinLight; g.fill(); g.strokeStyle = INK; g.lineWidth = lw; g.stroke();
+    g.beginPath(); g.ellipse(0, 0, w * 0.32, w * 0.12, 0, 0, Math.PI * 2);
+    g.strokeStyle = BEANS.tinDark; g.lineWidth = lw * 0.6; g.stroke();
+    g.restore();
+  }
+  const body = new Path2D();
+  body.moveTo(x0, top); body.lineTo(x0, bottom); body.ellipse(cx, bottom, w / 2, ry, 0, Math.PI, 0, true); body.lineTo(x1, top);
+  body.ellipse(cx, top, w / 2, ry, 0, 0, Math.PI, false); body.closePath();
+  g.fillStyle = BEANS.tin; g.fill(body);
+  g.save(); g.clip(body);
+  // the label, its lighter stripe and the cream oval with its beans
+  const labelTop = top + h * 0.2, labelBottom = bottom - h * 0.12;
+  g.fillStyle = BEANS.sauce; g.fillRect(x0, labelTop, w, labelBottom - labelTop);
+  g.fillStyle = BEANS.sauceLight; g.fillRect(x0, labelTop + 3, w, (labelBottom - labelTop) * 0.14);
+  const ovalY = (labelTop + labelBottom) / 2 + 3;
+  g.beginPath(); g.ellipse(cx, ovalY, w * 0.32, (labelBottom - labelTop) * 0.3, 0, 0, Math.PI * 2);
+  g.fillStyle = BEANS.label; g.fill(); g.strokeStyle = INK; g.lineWidth = lw * 0.5; g.stroke();
+  drawBean(g, cx - w * 0.1, ovalY + 2, 0.4, w / 110, lw * 0.6);
+  drawBean(g, cx + w * 0.1, ovalY + 3, -0.3, w / 110, lw * 0.6);
+  drawBean(g, cx, ovalY - 4, 0.1, w / 115, lw * 0.6);
+  // ink along the label's edges, the ribs at each rim, and a shine down the left
+  g.strokeStyle = INK; g.lineWidth = lw * 0.5;
+  for (const y of [labelTop, labelBottom]) { g.beginPath(); g.ellipse(cx, y, w / 2, ry, 0, 0, Math.PI); g.stroke(); }
+  g.strokeStyle = BEANS.tinDark; g.lineWidth = lw * 0.6;
+  for (const y of [top + h * 0.08, bottom - h * 0.05]) { g.beginPath(); g.ellipse(cx, y, w / 2, ry, 0, 0.15, Math.PI - 0.15); g.stroke(); }
+  g.fillStyle = 'rgba(255,255,255,0.55)'; g.fillRect(x0 + w * 0.14, top, w * 0.1, h);
+  g.restore();
+  g.strokeStyle = INK; g.lineWidth = lw; g.stroke(body);
+  // the top: the lid and its ring pull, or open, the tin inside
+  g.beginPath(); g.ellipse(cx, top, w / 2, ry, 0, 0, Math.PI * 2);
+  if (open) {
+    g.fillStyle = BEANS.tinDark; g.fill(); g.stroke();
+    g.save(); g.beginPath(); g.ellipse(cx, top, w / 2 - lw / 2, ry - lw / 2, 0, 0, Math.PI * 2); g.clip();
+    g.fillStyle = BEANS.sauce; g.beginPath(); g.ellipse(cx - w * 0.12, top + ry * 0.45, w * 0.24, ry * 0.4, 0, 0, Math.PI * 2); g.fill();
+    if (full) { drawBean(g, cx - w * 0.12, top + 1, 0.2, w / 120, lw * 0.5); drawBean(g, cx + w * 0.14, top + 2, -0.4, w / 120, lw * 0.5); }
+    g.restore();
+  } else {
+    g.fillStyle = BEANS.tinLight; g.fill(); g.stroke();
+    g.beginPath(); g.ellipse(cx, top, w * 0.36, ry * 0.66, 0, 0, Math.PI * 2);
+    g.strokeStyle = BEANS.tinDark; g.lineWidth = lw * 0.5; g.stroke();
+    // the ring pull: a rivet and a loop lying towards the front
+    g.strokeStyle = INK; g.lineWidth = lw * 0.6; g.fillStyle = BEANS.tin;
+    g.beginPath(); g.ellipse(cx + w * 0.08, top + ry * 0.2, w * 0.14, ry * 0.42, 0, 0, Math.PI * 2); g.fill(); g.stroke();
+    g.fillStyle = BEANS.tinLight; g.beginPath(); g.ellipse(cx + w * 0.08, top + ry * 0.2, w * 0.06, ry * 0.18, 0, 0, Math.PI * 2); g.fill();
+    g.fillStyle = INK; g.beginPath(); g.arc(cx - w * 0.06, top, lw * 0.45, 0, Math.PI * 2); g.fill();
+  }
+  g.restore();
+}
 
 // One baked bean at (x, y): a fat oval, a little kidney-shaped, turned by rot, inked, with a shine. size scales it.
 export function drawBean(g, x, y, rot = 0, size = 1, lw = 4) {

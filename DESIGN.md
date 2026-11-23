@@ -335,8 +335,12 @@ Poopy Goose) are the template for the game's look.
   1.8 m up. It stands a little behind the birds, like the scenery, and lasts.
 - **Beans and the beanstalk (game):** a food that grows, for taller climbs (GAME.md section 15). Baked beans
   (`BEANS`, `drawBean` in `site/paper-art.js`): fat oval beans, a little kidney-shaped, pale apricot (`#F2B06A`) with
-  a lighter shine (`#FBD9A6`), each inked, in their orange-red sauce (`#C8502A`, lighter `#E0703F`). In the game a
-  little heap of them lies in a puddle of sauce where a breadcrumb would hang, a drip running down its front. The
+  a lighter shine (`#FBD9A6`), each inked, in their orange-red sauce (`#C8502A`, lighter `#E0703F`). In the game they
+  come in a **can** (`drawBeanCan`) standing where a breadcrumb would hang: tin (`#C9CED6`, a shine `#EEF1F4`, ribs
+  `#9AA1AC`) with a ribbed rim top and bottom, a sauce-red label with a lighter stripe and a cream oval (`#F6E6CF`)
+  showing three beans, a white shine down its left and a lid with a ring pull. Empty (tossed away once chugged) its
+  lid's peeled back over it and its mouth shows the tin inside with a smear of sauce. On the HUD, in his stomach, the
+  beans are a little heap in a puddle of sauce, a drip running down its front. The
   beanstalk a bean plop grows is a thick **twisting stalk**, two strands wound round each other (`#6E9F4E`, the second
   strand a darker band `#4F7D3A` crossing from side to side), inked along its sides only, built of **1.5 m segments**
   stacked so they join seamlessly (no border across the stalk, a white border along its sides). Each segment holds out
@@ -366,7 +370,17 @@ Poopy Goose) are the template for the game's look.
   a card (narrowing to edge-on and back, 0.24s), the new plop on its other side; with nothing to drop it pops away.
   With the golden loaf got, the loaf sits swaying in the stomach for the rest of the level, and while gold is on deck
   with nothing to digest a gold plop slides down every 1.2s.
-- **The Pond (game):** level 1's world, the site's diorama grown into a side-scroller, on the same bright
+  With beans in him (bean toots, called Super Toots, GAME.md section 15) little heaps of beans fizz up through the stomach, fewer as they
+  wear off, and **the bean timer** hangs off the panel's bottom edge under the stomach: a little paper kitchen timer
+  drawn like the badge (a `paper` dial, a 7px ink border, a hard ink shadow straight down), ringed in bean sauce
+  (`#C8502A`) with a sauce knob on top and a cream face ticked round like a clock (every third tick long). On the face
+  a wedge of sauce (a lighter `#E0703F` shine along its rim, ink-edged) runs clockwise from twelve and winds back to
+  twelve as the time runs out, 24 steps; a paper hub in the middle prints the seconds left (the results card's
+  digits). Each second it ticks over, leaning 5° and settling, its number popping; for the last 5 seconds it rattles
+  like a timer about to ring, then dings and pops away. More beans while it's up fill it again with a bump.
+  Beside the dial, tucked under its edge and held still while it rattles, a paper pill tag (drawn like the count
+  tag) says **"Super Toots!"** in Baloo 2, bean sauce outlined in ink: the one word on the HUD, because a countdown
+  needs to say what it counts.- **The Pond (game):** level 1's world, the site's diorama grown into a side-scroller, on the same bright
   morning: a cream sky with the site's sun and clouds hanging in it, the site's round and tall trees and bushes
   behind the lane, its reeds (with cattails) and white and yellow flowers along it. Those are the site's own
   drawings, exported as they are, so the game's pond is the site's pond. Its own pieces, drawn to match:
@@ -545,9 +559,12 @@ These rules are fixed. Changing them needs the creator's sign-off.
   seeds he bolts down the same way, his bill clamped on a beakful of sunflower seeds (dark, a cream stripe each,
   sticking out where the chunk would) with a couple flying off, never a chunk of bread. Bill's blueberry scone
   (game) is eaten like the slice was, but what he bites off is a craggy chunk of scone (scone bake `#E2A55C`, a
-  paler torn end `#F6DDAA`, a blueberry or two in it) with scone crumbs and a blueberry flying off. Baked beans (game)
-  he bolts down like seeds, a glob of beans in their sauce clamped in his bill (the beans fat and pale in it, sauce
-  dripping off its end), a bean and a drop of sauce flying off. **Every food
+  paler torn end `#F6DDAA`, a blueberry or two in it) with scone crumbs and a blueberry flying off. A can of beans
+  (game) he grabs by its top end, the can sticking straight out of his bill along it; biting it he **cracks it open**
+  (burst lines off his bill, a spurt of sauce, the ring pull flying off), pulls back holding it open (a drip of sauce
+  down his bill), then **chugs it**: his neck leans back a little and his head tips right back (62°), eyes shut, the
+  can upended over him, a gulp going down his neck each frame, three rounds of three (0.13s a frame). Done, he tosses
+  the empty can over his shoulder, spinning, and it clatters down and pops away. **Every food
   gets its own bite:** he's never drawn holding bread while eating something else.
   Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game

@@ -82,6 +82,22 @@
       <path class="ink" fill="#462418" d="M1094 596C1100 592 1106 596 1106 604C1104 612 1100 618 1096 624C1090 614 1088 602 1094 596Z"/>
       <path class="ink" fill="#462418" d="M1158 596C1163 592 1168 596 1167 603C1165 610 1162 616 1159 621C1154 612 1153 601 1158 596Z"/>
     </g>
+    <g id="can-in-bill" stroke-linecap="round" stroke-linejoin="round">
+      <path fill="#c9ced6" stroke="#462418" stroke-width="14" d="M1214 660L1356 660A16 40 0 0 1 1356 740L1214 740Z"/>
+      <path fill="#c8502a" d="M1240 663L1334 663L1334 737L1240 737Z"/>
+      <path fill="#e0703f" d="M1240 668L1334 668L1334 680L1240 680Z"/>
+      <path fill="none" stroke="#462418" stroke-width="6" d="M1240 663L1240 737M1334 663L1334 737"/>
+      <ellipse fill="#f6e6cf" stroke="#462418" stroke-width="6" cx="1290" cy="704" rx="26" ry="21"/>
+      <g fill="#f2b06a" stroke="#462418" stroke-width="4">
+        <ellipse cx="1282" cy="708" rx="10" ry="7" transform="rotate(20 1282 708)"/>
+        <ellipse cx="1299" cy="709" rx="10" ry="7" transform="rotate(-18 1299 709)"/>
+        <ellipse cx="1290" cy="697" rx="10" ry="7" transform="rotate(6 1290 697)"/>
+      </g>
+      <path fill="none" stroke="#9aa1ac" stroke-width="6" d="M1226 668L1226 732M1346 668L1346 732"/>
+      <path fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="9" d="M1220 676L1352 676"/>
+      <ellipse fill="#eef1f4" stroke="#462418" stroke-width="10" cx="1356" cy="700" rx="16" ry="40"/>
+      <ellipse fill="none" stroke="#9aa1ac" stroke-width="5" cx="1356" cy="700" rx="8" ry="28"/>
+    </g>
   </defs>
   <g id="bill-gape" display="none" stroke-linecap="round" stroke-linejoin="round">
     <!-- the inside of his mouth, held between the jaws: from the hinge along each jaw to its tip, the open
@@ -158,27 +174,38 @@
     <path fill="#f6ddaa" stroke="#462418" stroke-width="4" d="M1376 660L1386 656L1390 666L1380 670Z"/>
     <circle fill="#4e4c86" stroke="#462418" stroke-width="4" cx="1374" cy="700" r="8"/>
   </g>
-  <!-- the bite on baked beans instead (GAME.md section 15): a glob of beans in their orange-red sauce clamped
-       where the bread's chunk would be, the beans fat and pale in it, sauce dripping off the end of his bill,
-       a bean and a drop of sauce flying off (colours are paper-art.js's BEANS) -->
-  <g id="bill-bite-beans" display="none" stroke-linecap="round" stroke-linejoin="round">
-    <path fill="#c8502a" stroke="#462418" stroke-width="14" d="M1176 652C1206 630 1262 618 1300 630C1330 640 1342 664 1336 690C1346 712 1334 742 1306 752C1300 772 1288 790 1276 792C1266 790 1266 774 1270 760L1182 746Z"/>
-    <path fill="#e0703f" d="M1200 652C1232 638 1270 632 1294 642C1300 650 1290 656 1276 656C1250 656 1224 662 1206 668Z"/>
-    <g fill="#f2b06a" stroke="#462418" stroke-width="6">
-      <ellipse cx="1238" cy="688" rx="27" ry="17" transform="rotate(-12 1238 688)"/>
-      <ellipse cx="1290" cy="668" rx="25" ry="16" transform="rotate(20 1290 668)"/>
-      <ellipse cx="1302" cy="718" rx="26" ry="16" transform="rotate(-24 1302 718)"/>
-      <ellipse cx="1252" cy="730" rx="24" ry="15" transform="rotate(8 1252 730)"/>
-    </g>
-    <g fill="#fbd9a6"><ellipse cx="1232" cy="682" rx="9" ry="4" transform="rotate(-12 1232 682)"/><ellipse cx="1284" cy="662" rx="8" ry="4" transform="rotate(20 1284 662)"/><ellipse cx="1296" cy="712" rx="8" ry="4" transform="rotate(-24 1296 712)"/></g>
-    <g transform="rotate(10 1060 700)">
+  <!-- a can of baked beans instead (GAME.md section 15; colours are paper-art.js's BEANS): he grabs it by its top
+       end, the can sticking straight out of his bill along it (so tipping his head back to chug it upends it), its
+       sauce-red label with the cream oval, its bottom's ribbed end showing. bill-bite-can is the crack as he bites
+       it open: a spurt of sauce, the ring pull flying off and a crack's burst lines. bill-hold-can is it held open
+       (pulling back, and chugging), a drip of sauce down his bill. -->
+  <g id="bill-bite-can" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#can-in-bill"/>
+    <g transform="rotate(16 1060 700)">
       <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
     </g>
     <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
     <use href="#tq-bill-upper-marks"/>
-    <!-- a bean and a drop of sauce flying off -->
-    <ellipse fill="#f2b06a" stroke="#462418" stroke-width="5" cx="1378" cy="628" rx="14" ry="9" transform="rotate(30 1378 628)"/>
-    <circle fill="#c8502a" stroke="#462418" stroke-width="4" cx="1386" cy="674" r="7"/>
+    <!-- the crack: burst lines off the top of his bill, a spurt of sauce and the ring pull flying off -->
+    <path fill="none" stroke="#462418" stroke-width="9" d="M1262 600L1276 572M1290 616L1318 596M1244 594L1240 564"/>
+    <path fill="#c8502a" stroke="#462418" stroke-width="5" d="M1300 640C1310 620 1330 612 1342 618C1336 628 1320 636 1300 640Z"/>
+    <circle fill="#c8502a" stroke="#462418" stroke-width="4" cx="1356" cy="604" r="8"/>
+    <circle fill="#c8502a" stroke="#462418" stroke-width="4" cx="1334" cy="586" r="6"/>
+    <g transform="rotate(-30 1300 560)">
+      <ellipse fill="none" stroke="#462418" stroke-width="13" cx="1300" cy="560" rx="17" ry="11"/>
+      <ellipse fill="none" stroke="#c9ced6" stroke-width="6" cx="1300" cy="560" rx="17" ry="11"/>
+      <path fill="#c9ced6" stroke="#462418" stroke-width="5" d="M1314 552L1336 548C1344 548 1344 562 1336 564L1316 566Z"/>
+    </g>
+  </g>
+  <g id="bill-hold-can" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <use href="#can-in-bill"/>
+    <g transform="rotate(16 1060 700)">
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+    <use href="#tq-bill-upper-marks"/>
+    <!-- a drip of sauce running down his bill from the corner -->
+    <path fill="#c8502a" stroke="#462418" stroke-width="5" d="M1226 740C1232 754 1232 768 1224 772C1216 768 1216 754 1222 742Z"/>
   </g>
   <g id="bill-chew-a" display="none" stroke-linecap="round" stroke-linejoin="round">
     <g transform="rotate(4 1060 700) translate(-6 4)">
