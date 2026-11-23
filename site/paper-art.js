@@ -372,6 +372,20 @@ export function drawPlop(g, lw = 9, colours = PLOP) {
   plopSprout(g, colours, 89, 43, lw, 0.28, 1.25);
 }
 
+// Baked beans (GAME.md section 15), the food and its colours: the beans fat and pale apricot with a lighter shine,
+// their sauce orange-red. The game's pickup, the goose's bite and the bean plop all use these.
+export const BEANS = { bean: '#F2B06A', shine: '#FBD9A6', sauce: '#C8502A', sauceLight: '#E0703F' };
+
+// One baked bean at (x, y): a fat oval, a little kidney-shaped, turned by rot, inked, with a shine. size scales it.
+export function drawBean(g, x, y, rot = 0, size = 1, lw = 4) {
+  g.save(); g.translate(x, y); g.rotate(rot); g.scale(size, size);
+  const p = new Path2D('M -14 -2 C -14 -10 -4 -11 2 -9 C 8 -11 15 -8 15 0 C 15 8 6 10 0 9 C -8 10 -14 6 -14 -2 Z');
+  g.fillStyle = BEANS.bean; g.fill(p);
+  g.strokeStyle = INK; g.lineWidth = lw / size; g.lineJoin = 'round'; g.stroke(p);
+  g.fillStyle = BEANS.shine; g.beginPath(); g.ellipse(-3, -4, 6, 2.4, -0.15, 0, Math.PI * 2); g.fill();
+  g.restore();
+}
+
 // The colours of each food's plops (GAME.md section 15): a new food is a new row here, and every frame below
 // draws in it. Gold for the golden loaf, purple for blueberries. Their order is the game's PlopFood order.
 export const PLOP_FOODS = {
@@ -382,6 +396,9 @@ export const PLOP_FOODS = {
   // sprouting from its peak: told apart by its shape, not only its colour (DESIGN.md: every kind of plop has its own
   // shape), and it reads as "this one grows" at a glance.
   seed: { body: '#A6AB4F', halo: '#D0D2A0', cap: '#F4F1E2', seeds: '#4A3B2E', sprout: true },
+  // Beans: a rusty orange-brown, the baked beans he ate showing in it (fat and pale), and a curly green tendril
+  // springing from its peak, a bean plant's: it grows a beanstalk.
+  bean: { body: '#B5552F', halo: '#D98B5F', cap: '#F6E6CF', beans: BEANS.bean, tendril: true },
 };
 
 // Sunflower seeds showing in a plop whose colours have them (colours.seeds): little dark teardrops with a pale
@@ -390,6 +407,7 @@ export const PLOP_FOODS = {
 const PLOP_SEED_SPOTS = [[46, 112, 0.4], [70, 98, -0.6], [100, 108, 0.9], [122, 114, -0.2], [86, 72, 0.3], [60, 82, 1.2],
   [112, 88, -1], [32, 104, -0.9], [138, 102, 0.6], [78, 120, 1.6], [96, 52, -0.3], [52, 64, 0.8]];
 function plopSeeds(g, colours, scale = 1, dx = 0, dy = 0) {
+  if (colours.beans) return plopBeans(g, colours, scale, dx, dy);
   if (!colours.seeds) return;
   g.save(); g.scale(scale, scale); g.translate(dx, dy);
   for (const [x, y, rot] of PLOP_SEED_SPOTS) {
@@ -405,6 +423,7 @@ function plopSeeds(g, colours, scale = 1, dx = 0, dy = 0) {
 // curving up, and two sage leaves opening at its top, the right one a touch bigger, each inked. tilt leans it (rad),
 // size scales it; drawn on top, after the plop's outline, so it reads by its shape at any size.
 function plopSprout(g, colours, x, y, lw, tilt = 0, size = 1) {
+  if (colours.tendril) return plopTendril(g, x, y, lw, tilt, size);
   if (!colours.sprout) return;
   g.save(); g.translate(x, y); g.rotate(tilt); g.scale(size, size);
   g.lineCap = 'round'; g.lineJoin = 'round';
@@ -416,6 +435,33 @@ function plopSprout(g, colours, x, y, lw, tilt = 0, size = 1) {
     g.fillStyle = PAL.sage; g.fill(p);
     g.lineWidth = Math.max(3, lw * 0.6); g.strokeStyle = INK; g.stroke(p);
   }
+  g.restore();
+}
+
+// Beans showing in a bean plop (colours.beans): a few fat pale beans scattered over it, as the seeds are.
+const PLOP_BEAN_SPOTS = [[50, 110, 0.3], [94, 104, -0.5], [124, 114, 0.8], [76, 80, -0.2], [104, 74, 0.6], [36, 100, -0.9], [64, 118, 1.3]];
+function plopBeans(g, colours, scale = 1, dx = 0, dy = 0) {
+  g.save(); g.scale(scale, scale); g.translate(dx, dy);
+  for (const [x, y, rot] of PLOP_BEAN_SPOTS) {
+    g.save(); g.translate(x, y); g.rotate(rot);
+    g.fillStyle = colours.beans; g.beginPath(); g.ellipse(0, 0, 7.5, 4.6, 0, 0, Math.PI * 2); g.fill();
+    g.fillStyle = BEANS.shine; g.beginPath(); g.ellipse(-2, -1.6, 3.2, 1.3, 0, 0, Math.PI * 2); g.fill();
+    g.restore();
+  }
+  g.restore();
+}
+
+// A bean plant's curly tendril springing from a bean plop's peak (colours.tendril): a sage-deep stem curling round
+// into a spiral, one little leaf off it, inked. Like the seedling, drawn on top, so it reads by its shape.
+function plopTendril(g, x, y, lw, tilt = 0, size = 1) {
+  g.save(); g.translate(x, y); g.rotate(tilt); g.scale(size, size);
+  g.lineCap = 'round'; g.lineJoin = 'round';
+  const curl = path('M 0 6 C -2 -6 4 -16 2 -24 C 0 -34 -12 -38 -16 -30 C -19 -24 -12 -18 -7 -23');
+  g.strokeStyle = INK; g.lineWidth = 9; g.stroke(curl);
+  g.strokeStyle = PAL.sageDeep; g.lineWidth = 4.5; g.stroke(curl);
+  const leaf = path('M 2 -12 C 8 -20 22 -22 26 -14 C 28 -8 22 -2 14 -4 C 10 -2 4 -6 2 -12 Z');
+  g.fillStyle = PAL.sage; g.fill(leaf);
+  g.lineWidth = Math.max(3, lw * 0.6); g.strokeStyle = INK; g.stroke(leaf);
   g.restore();
 }
 

@@ -158,6 +158,28 @@
     <path fill="#f6ddaa" stroke="#462418" stroke-width="4" d="M1376 660L1386 656L1390 666L1380 670Z"/>
     <circle fill="#4e4c86" stroke="#462418" stroke-width="4" cx="1374" cy="700" r="8"/>
   </g>
+  <!-- the bite on baked beans instead (GAME.md section 15): a glob of beans in their orange-red sauce clamped
+       where the bread's chunk would be, the beans fat and pale in it, sauce dripping off the end of his bill,
+       a bean and a drop of sauce flying off (colours are paper-art.js's BEANS) -->
+  <g id="bill-bite-beans" display="none" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="#c8502a" stroke="#462418" stroke-width="14" d="M1176 652C1206 630 1262 618 1300 630C1330 640 1342 664 1336 690C1346 712 1334 742 1306 752C1300 772 1288 790 1276 792C1266 790 1266 774 1270 760L1182 746Z"/>
+    <path fill="#e0703f" d="M1200 652C1232 638 1270 632 1294 642C1300 650 1290 656 1276 656C1250 656 1224 662 1206 668Z"/>
+    <g fill="#f2b06a" stroke="#462418" stroke-width="6">
+      <ellipse cx="1238" cy="688" rx="27" ry="17" transform="rotate(-12 1238 688)"/>
+      <ellipse cx="1290" cy="668" rx="25" ry="16" transform="rotate(20 1290 668)"/>
+      <ellipse cx="1302" cy="718" rx="26" ry="16" transform="rotate(-24 1302 718)"/>
+      <ellipse cx="1252" cy="730" rx="24" ry="15" transform="rotate(8 1252 730)"/>
+    </g>
+    <g fill="#fbd9a6"><ellipse cx="1232" cy="682" rx="9" ry="4" transform="rotate(-12 1232 682)"/><ellipse cx="1284" cy="662" rx="8" ry="4" transform="rotate(20 1284 662)"/><ellipse cx="1296" cy="712" rx="8" ry="4" transform="rotate(-24 1296 712)"/></g>
+    <g transform="rotate(10 1060 700)">
+      <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>
+    </g>
+    <use href="#tq-bill-upper-shape" class="orange" fill="#f88b2d" stroke="#462418" stroke-width="18"/>
+    <use href="#tq-bill-upper-marks"/>
+    <!-- a bean and a drop of sauce flying off -->
+    <ellipse fill="#f2b06a" stroke="#462418" stroke-width="5" cx="1378" cy="628" rx="14" ry="9" transform="rotate(30 1378 628)"/>
+    <circle fill="#c8502a" stroke="#462418" stroke-width="4" cx="1386" cy="674" r="7"/>
+  </g>
   <g id="bill-chew-a" display="none" stroke-linecap="round" stroke-linejoin="round">
     <g transform="rotate(4 1060 700) translate(-6 4)">
       <use href="#tq-bill-lower-shape" class="orange-deep" fill="#f56f23" stroke="#462418" stroke-width="17"/>

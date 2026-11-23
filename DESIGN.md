@@ -71,7 +71,7 @@ Orange hover: `#FF9A3D`. Placeholder text: `#A08A80`.
 | Gold / deep gold (game) | `#FFC56B` / `#F0A43A` | The golden loaf and the HUD's infinity sign: a prize, never "use this" |
 | Stone (game) | `#C9C4BA`, lit `#E2DED5`, shade `#ADA79C` | Statues (section 7): grey card, with gilt (the gold) for anything pompous |
 | Tummy pink (game) | `#F5B4A0` / `#E99A86`, tube `#F9CDBE`, pouch inside `#FCE3D8` | The goose's stomach, intestine and bowel on the plop HUD, and the plop's cheeks; only there |
-| Plop | Body `#7F9A5A`, halo `#B9C59E`, cap `#F4F1E2` | The poop: goose-poop olive with an off-white cap, the logo's chest splash grown up, the halo halfway between so the cap blends in with no line (always with white googly eyes, pink cheeks and a little smile). Kept a deeper green than the grass so it never sinks into it. Other foods (game) swap all three: a body, a halo halfway to the cap, and a pale cap; the golden loaf's are deep gold `#F0A43A`, gold `#FFC56B` and `#FFF3D6`. Seed plops (game) are a fresher, yellower olive (`#A6AB4F`, halo `#D0D2A0`, the plain cap) with the sunflower seeds he ate showing in them (little dark teardrops, `#4A3B2E`, with a cream stripe) and a **seedling sprouting from the peak**: a short sage-deep stem and two inked sage leaves, on every frame and on its goo. **Every kind of plop differs in shape, not only colour** (game): at HUD size, and for colour-blind players, colour alone doesn't tell two greens apart, so each food that changes what a plop does gets a mark of its own on its silhouette (seeds: the sprout) |
+| Plop | Body `#7F9A5A`, halo `#B9C59E`, cap `#F4F1E2` | The poop: goose-poop olive with an off-white cap, the logo's chest splash grown up, the halo halfway between so the cap blends in with no line (always with white googly eyes, pink cheeks and a little smile). Kept a deeper green than the grass so it never sinks into it. Other foods (game) swap all three: a body, a halo halfway to the cap, and a pale cap; the golden loaf's are deep gold `#F0A43A`, gold `#FFC56B` and `#FFF3D6`. Seed plops (game) are a fresher, yellower olive (`#A6AB4F`, halo `#D0D2A0`, the plain cap) with the sunflower seeds he ate showing in them (little dark teardrops, `#4A3B2E`, with a cream stripe) and a **seedling sprouting from the peak**: a short sage-deep stem and two inked sage leaves, on every frame and on its goo. Bean plops (game) are a rusty orange-brown (`#B5552F`, halo `#D98B5F`, cap `#F6E6CF`) with fat pale beans showing in them and a **curly tendril** springing from the peak (a sage-deep stem curling into a spiral, one little inked sage leaf off it). **Every kind of plop differs in shape, not only colour** (game): at HUD size, and for colour-blind players, colour alone doesn't tell two greens apart, so each food that changes what a plop does gets a mark of its own on its silhouette (seeds: the sprout; beans: the tendril) |
 | Gingham | `#FFF6EA` + orange at 45% | Picnic blanket, with an ink border |
 | Shadow | `rgba(60,40,25, .32–.40)` | Soft blob shadows on the ground |
 
@@ -333,6 +333,17 @@ Poopy Goose) are the template for the game's look.
   It grows in three cut-out frames, each popping in like a sticker: a seedling (two little leaves), a bud on a tall
   stem with yellow just showing at its tip (0.25s), then open (0.55s). The dish is about 1.4 m across its petals and
   1.8 m up. It stands a little behind the birds, like the scenery, and lasts.
+- **Beans and the beanstalk (game):** a food that grows, for taller climbs (GAME.md section 15). Baked beans
+  (`BEANS`, `drawBean` in `site/paper-art.js`): fat oval beans, a little kidney-shaped, pale apricot (`#F2B06A`) with
+  a lighter shine (`#FBD9A6`), each inked, in their orange-red sauce (`#C8502A`, lighter `#E0703F`). In the game a
+  little heap of them lies in a puddle of sauce where a breadcrumb would hang, a drip running down its front. The
+  beanstalk a bean plop grows is a thick **twisting stalk**, two strands wound round each other (`#6E9F4E`, the second
+  strand a darker band `#4F7D3A` crossing from side to side), inked along its sides only, built of **1.5 m segments**
+  stacked so they join seamlessly (no border across the stalk, a white border along its sides). Each segment holds out
+  one **broad bean leaf** flat to one side (`#86BA5F`, its underside `#5E9443`, an inked midrib and veins), 1.2 m up it,
+  the sides taking turns up the stalk, with a curly tendril off the other side; the base sits in a mound of earth
+  (`#8A5A3C`) with a few beans in it, and the top tapers into a tight curl with one little leaf. It pops up a segment
+  at a time like stickers, quick spurts from the bottom, and lasts.
 - **The plop HUD (game):** the game's one always-on piece of HUD, in the top left corner: the goose's
   insides as a cute diagram, never gross (no colours of real insides beyond a soft pink, nothing wet). A
   paper panel drawn like the site's cards (paper `#FFFDF8`, 7px ink border at 600 px a metre, round
@@ -534,7 +545,9 @@ These rules are fixed. Changing them needs the creator's sign-off.
   seeds he bolts down the same way, his bill clamped on a beakful of sunflower seeds (dark, a cream stripe each,
   sticking out where the chunk would) with a couple flying off, never a chunk of bread. Bill's blueberry scone
   (game) is eaten like the slice was, but what he bites off is a craggy chunk of scone (scone bake `#E2A55C`, a
-  paler torn end `#F6DDAA`, a blueberry or two in it) with scone crumbs and a blueberry flying off. **Every food
+  paler torn end `#F6DDAA`, a blueberry or two in it) with scone crumbs and a blueberry flying off. Baked beans (game)
+  he bolts down like seeds, a glob of beans in their sauce clamped in his bill (the beans fat and pale in it, sauce
+  dripping off its end), a bean and a drop of sauce flying off. **Every food
   gets its own bite:** he's never drawn holding bread while eating something else.
   Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
@@ -621,6 +634,13 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   thrown one way and the other (frames tilted 6–10°, plus a 7° sway five times over), swish marks either side
   and the goo flying off him in drops and one last lump (still wearing its face). All goo on him is drawn with
   `drawGoo` in the plop's colours, on its own sheet a food laid over his frames, so it matches what the goose
+  ate. **A bean toot** (game, GAME.md section 15) gets him worse than stink: he throws up in his mouth for 0.55s,
+  hunched forward (7°), eyes popped wide and round and watering (a pale blue line under each, `#9FD3E6`, a tear welling
+  at its outer corner), his cheek puffed out in a round green ball behind his bill and his lower bill bulging, shut tight,
+  a bead of sweat, his fist up at his bill; swallows it back down for 0.3s, eyes screwed shut (> <), a round lump going
+  down his neck with three little lines by it; then gives the goose a long flat glare for 0.65s, his wings down, lids
+  dropped low over slivers of pupil and scowling hard, a crease under each eye. He stands still for all of it. In the
+  backpack he retches (the same face, 0.85s), then glares on with his grumpy look.
   ate. The game's frames are exported from
   his rig by the game repo's `Tools/ArtExport/bill-frames.html`.
 - **Bill's backpack** (`drawBackpackBack`, `drawBackpackFront`, `drawBackpackStraps`): one backpack between the
@@ -653,7 +673,7 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
   about 0.27 m), between the bag's back and front: the goose looking about, blinking, glancing back behind him (his 3/4 head
   turned round), up (tipped 16°) or at us (his front, raised to sit as high), or delighted (his front with his eyes
   squeezed into the logo's happy arcs); Bill grumpy, blinking,
-  rolling his eyes or coughing; either ducked down so only the top of its head and eyes show (in the game, landing
+  rolling his eyes, coughing or retching (a bean toot); either ducked down so only the top of its head and eyes show (in the game, landing
   hard, or under anything low over its head). Exported by the
   game repo's `Tools/ArtExport/backpack.html`. Stay (game): the rider hops out of the top in a 0.45 m arc over
   0.35 s, landing up to 1.1 m behind its carrier, and the bag (now shut, on Bill) pops onto Bill's back halfway if it
