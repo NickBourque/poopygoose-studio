@@ -129,7 +129,7 @@ Both are free Google Fonts (SIL Open Font License), so they can ship in the game
 | Dev diary | The site's nav and footer around a 760px column. The head: tracked navy caps with the diary's number in `orange-deep` ("DEV DIARY #001 · 17 NOVEMBER 2026"), a two-line Baloo 2 headline with the squiggle under its last word, an `ink-soft` lede. The body: Nunito at 1.12rem, Baloo 2 subheads, links underlined 3px in orange. Game art sits in the text as stickers, floated and tilted ±3° (alternating sides) with the soft drop shadow and a caption in Nunito 800 `ink-soft`; on phones they centre. It ends on a "What's next" card (tilted -1°), the loop in Baloo 2 caps, and the Join the flock band. The list of diaries is cards, newest first, tilted ±0.6°, the latest's sticker beside it. |
 | Focus | 3px orange outline, 3px offset. Always visible for keyboard use. |
 | Decorative blob | Sage at ~55%, wobbling shape and slow 12° rotation over 12s. |
-| Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill ("Go again.", or "On we go." for a level that leads on to the next), after the glyph of the button that does it. No sticker border: it's UI, not a cut-out in the world. |
+| Results card (game) | A card held in front of the camera, tilted -2°, popping in like a cut-out: a Baloo 2 headline with a squiggle under its last word ("Made *it.*"), two info tiles (TIME, MISHAPS) with their values in Baloo 2 ink, a line in Nunito 800 `ink-soft`, and the primary button's orange pill ("Go again.", or "On we go." for a level that leads on to the next), after the glyph of the button that does it. At the end of a world its headline is the world's ("That's The *Pond.*", shrunk to fit) and its pill "Nap time.", back to the title until there's a map. No sticker border: it's UI, not a cut-out in the world. |
 | Menu (game) | The site's pills at a 1080p screen's size: 84px tall with a 5px ink border over a hard ink shadow 5px straight down, words in Nunito 800 ink (36px). The one thing to press is orange, the rest `paper`. The picked-out option lifts 2px (shadow 7px) inside the orange focus ring (4px thick, 4px out) and gets the choose button's glyph in front of its words ("[A] Carry on."); choosing presses it down 4px (shadow 1px); 0.12s. An option not on yet is faded to 45%. Pause is a card like the results card (tilted -2°, popping in): "Hold *on.*" in Baloo 2 with the squiggle, over its options stacked, with a 45% cream wash over the frozen world. The title screen's options sit in a row along the bottom of the live diorama. Drawn by the game repo's `Tools/ArtExport/interface.html` (9-sliced). |
 | Settings card (game) | A card like pause (tilted 1.5°, popping in): "*Settings.*" in Baloo 2 with the squiggle, over its volumes and an orange "Done.". From pause it swaps places with the pause card; on the title screen it brings its own 45% cream wash. A volume is its name in Nunito 800 ink on the card, then a slider. |
 | Slider (game) | A `paper` menu pill, 440px wide, filling from the left with an orange pill (never narrower than it is tall, so it stays a pill), with the goose-head sticker (104px) riding the end of the orange. Ten steps, each sliding 0.12s. At the bottom step the orange's gone and the goose sits at the left end. It lifts and gets the focus ring like any option, and the waddle glyph goes in front of its name; the name doesn't lift. |
@@ -316,8 +316,12 @@ Poopy Goose) are the template for the game's look.
   the koi's own drawing stood on end and balanced on the tip of its tail, facing left down at the goose, its
   mouth gaping at the sky about 3.3 m up: white marble (`#EEEAE3`, shaded `#D3CDC3`) with grey veins (`#B5AEA3`),
   its fins gilt (the swan's `#FFC56B` and `#E9A94A`), its scales carved. Smug, a flat lid over its eye; improved,
-  eye popped and a carved brow shot up, and the goo lands **right in its open mouth**. Each level's statue
-  is someone new to be rude about (drawn with its world).
+  eye popped and a carved brow shot up, and the goo lands **right in its open mouth**. Level 4's is **a gilt goose
+  in flight** ("THE FLOCK / Gone south. Unlike some."), the one thing in The Pond that flies: all gilt (`#FFC56B`, its
+  far wing and belly `#E9A94A`, its near wing lit `#FFE3A3`), wings raised, neck stretched out ahead and beak
+  pointing south, feet tucked, borne up on a gilt rod from a gilt cloud on the plinth's cap, its head about 3.6 m
+  up, facing left. Its beak is gilt too, not orange. Smug, lids half down; improved, eye popped, brow up and beak
+  dropped open, the goo on top of its head. Each level's statue is someone new to be rude about (drawn with its world).
 - **The flock's splats (game):** by each level's nest, proof the flock stopped there on the way south (GAME.md
   section 15). One big plop (twice the goose's) with two smaller ones beside it, in the plain plop's colours and
   faces, one sticker round them all, standing a little behind the birds. Off the big one curls **steam**: three wavy
@@ -380,7 +384,8 @@ Poopy Goose) are the template for the game's look.
   like a timer about to ring, then dings and pops away. More beans while it's up fill it again with a bump.
   Beside the dial, tucked under its edge and held still while it rattles, a paper pill tag (drawn like the count
   tag) says **"Super Toots!"** in Baloo 2, bean sauce outlined in ink: the one word on the HUD, because a countdown
-  needs to say what it counts.- **The Pond (game):** level 1's world, the site's diorama grown into a side-scroller, on the same bright
+  needs to say what it counts.
+- **The Pond (game):** level 1's world, the site's diorama grown into a side-scroller, on the same bright
   morning: a cream sky with the site's sun and clouds hanging in it, the site's round and tall trees and bushes
   behind the lane, its reeds (with cattails) and white and yellow flowers along it. Those are the site's own
   drawings, exported as they are, so the game's pond is the site's pond. Its own pieces, drawn to match:
@@ -413,6 +418,30 @@ Poopy Goose) are the template for the game's look.
   reeds), with the canoe and bench at its start (the bread bag gone). Its signs are the same board and post:
   "Toss scone." and "Stare." over Bill's glyphs, the "NO FISHING." notice in one big line (honked: "Fish exempt."), and
   "DEEP WATER. / Mind the fish." by the golden loaf (honked: "Look up. Then down. / Then at the fish.").
+- **The golden afternoon (game):** level 4, "Full of Beans" (GAME.md section 19), The Pond's last, and the game's
+  first time of day after morning (GAME.md section 12). Its look is `GOLDEN_AFTERNOON` in `paper-art.js`: the
+  backdrop paper turns **warm peach** (`#F7DCC4`); the sun hangs low and deeper (`#FFB347`); the sky's clouds are a
+  warmer white (`#FFF8EE`) with a peach belly (`#FFD3A6`) **edged in orange** (`#FF9F55`) along the bottom, where the
+  low sun catches them (`drawCloud` and `scenery.cloud` take the look); and **every cut-out is washed a touch warm**,
+  `#FFF0DF` multiplied over its art, the birds and the HUD too, so everything sits in the same light. The ground's
+  banks, the water and the results card keep their colours. Lit things, when there are any, would stay at full
+  brightness: none yet.
+- **The Pond's far end (game):** level 4's pieces, drawn at the goose's 300 px a metre unless said. **Old willows**,
+  drawn at half that density as they're 10.4 m tall and 12 m wide (ink and border halved to match): a gnarled
+  wood-brown trunk (darker grain `#7E5538`) splitting into boughs, and a crown in grass green with a **broad flat top**
+  (it's a platform, 9 m up) and green fronds hanging down from it in ragged strands, deeper green (`#98B08A`) in its
+  depths and strand lines, the trunk showing between, the site's "v" leaf tufts along the top; a wide crown (10 m) and
+  a narrow one (7 m). Someone's **bag of shopping** fallen on its side under the bench: a cream canvas tote with sky
+  blue stripes (`#F6F1E7`, `#8DB4D2`) and navy handles flopped over, a carrot and a red apple rolled out of it (the
+  cans of beans by it are the game's own, `drawBeanCan`). A **fingerpost** by the gate out, 2.5 m: a wood-brown post,
+  one arm pointing on, "PICNIC PARK" in Baloo 2 ink, and one pointing back, "THE POND" in Nunito navy. The last
+  stopover's nest sits in a **lost straw sun hat** upturned on the ground, 3.9 m across its brim: straw
+  (`#EBCB84`) woven in rings of darker straw (`#D2AE62`), a sage ribbon round its band with its tails over the brim,
+  and a white daisy tucked in at the side; one cut-out behind the nest, like level 3's lifebuoy. Level 4's signs are
+  the same board and post: "THE POND / Thank you for visiting." (honked: "Geese especially."), "Herons sleep /
+  standing up." (honked: "In pairs, / apparently."), "Beans." and "Super Toots." over the goose's glyphs (Eat and
+  Toot; honked: "Contents may cause / altitude." and "Bill has asked us to / apologise in advance."), and "MIND THE
+  GAP." by the golden loaf (honked: "Further than it looks. / Ask your tail.").
 
 ### Drawing new art (characters, props, scenery)
 

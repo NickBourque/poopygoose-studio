@@ -307,11 +307,11 @@ export const scenery = {
       g.restore();
     }
   }),
-  cloud: () => canvasOf(480, 240, g => drawCloud(g)),
-  sun: () => canvasOf(300, 300, g => {
+  cloud: (look = null) => canvasOf(480, 240, g => drawCloud(g, 11, look)),
+  sun: (colour = '#FFC56B') => canvasOf(300, 300, g => {
     g.strokeStyle = INK; g.lineWidth = 10;
     for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; g.beginPath(); g.moveTo(150 + Math.cos(a) * 92, 150 + Math.sin(a) * 92); g.lineTo(150 + Math.cos(a) * 128, 150 + Math.sin(a) * 128); g.stroke(); }
-    fillStroke(g, path('M 150 70 A 80 80 0 1 1 149.9 70 Z'), '#FFC56B', 11);
+    fillStroke(g, path('M 150 70 A 80 80 0 1 1 149.9 70 Z'), colour, 11);
   }),
   sign: () => canvasOf(520, 360, g => {
     fillStroke(g, path('M 240 340 L 250 170 L 278 170 L 288 340 Z'), PAL.trunk, 10);
@@ -874,13 +874,25 @@ export function drawGlint(g) {
 
 // ---------- clouds (shared with the game) ----------
 // A puffy white cloud with a soft grey belly, sitting on y 214, its middle at x 240, in a 480 x 240 box. The
-// site hangs them in the sky; the game's honkable cloud (props.html) and its sky are this drawing too.
-export function drawCloud(g, lw = 11) {
+// site hangs them in the sky; the game's honkable cloud (props.html) and its sky are this drawing too. Given a time
+// of day's look (GOLDEN_AFTERNOON below), its belly takes the low sun: warm, edged in orange along the bottom.
+export function drawCloud(g, lw = 11, look = null) {
   const c = path('M 70 190 C 20 190 20 120 70 116 C 70 60 150 40 190 80 C 220 30 320 30 340 90 C 400 70 450 120 420 170 C 440 200 400 214 370 200 Z');
-  fillStroke(g, c, PAL.white, lw);
-  clipFill(g, c, () => { g.fillStyle = '#EEF1EE'; g.beginPath(); g.ellipse(240, 230, 220, 50, 0, 0, Math.PI * 2); g.fill(); });
+  fillStroke(g, c, look ? look.cloud : PAL.white, lw);
+  clipFill(g, c, () => {
+    g.fillStyle = look ? look.cloudBelly : '#EEF1EE'; g.beginPath(); g.ellipse(240, 230, 220, 50, 0, 0, Math.PI * 2); g.fill();
+    if (look) { g.fillStyle = look.cloudEdge; g.beginPath(); g.ellipse(240, 222, 240, 44, 0, 0, Math.PI * 2); g.fill(); }
+  });
   g.lineWidth = lw; g.strokeStyle = INK; g.stroke(c);
 }
+
+// ---------- times of day (shared with the game) ----------
+// The golden afternoon (the game's GAME.md section 12; DESIGN.md "Times of day"): The Pond's last level. The backdrop
+// paper turns warm peach, clouds hang edged in orange under a low, deeper sun, and every cut-out is washed a touch
+// warm (tint, multiplied over the art), the birds and the HUD included.
+export const GOLDEN_AFTERNOON = {
+  backdrop: '#F7DCC4', cloud: '#FFF8EE', cloudBelly: '#FFD3A6', cloudEdge: '#FF9F55', sun: '#FFB347', tint: '#FFF0DF',
+};
 
 // ---------- Bill's backpack (shared with the game) ----------
 // One backpack between the two birds (GAME.md section 6): it's Bill's, a sensible canvas rucksack in sage with
