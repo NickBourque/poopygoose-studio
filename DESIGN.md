@@ -551,7 +551,8 @@ These rules are fixed. Changing them needs the creator's sign-off.
   lift, his bill stretches out into a trumpet (face on, a round open bell; turned, a long narrow pipe with
   a flare into a bell, reaching about twice the bill's length), and the sheet stretches up
   6% rather than squashing.
-- **The Drop (plop):** tap him and he honks and leaves a plop behind him (opposite the way he faces).
+- **The Drop (plop):** on the site, tap him and he honks and leaves a plop behind him (opposite the way he faces). In the game
+  he leaves it without a honk or the honk face.
   Plops pop in, stay a few seconds, then shrink away. Few on screen at once (the site keeps 6). A plop
   (`drawPlop` in `site/paper-art.js`) is a low splat, not a swirl: rounded lobes stepping down to each side
   (no spikes), its dome pulled up into a single peak flicked over to the right, and one round droplet flung off
