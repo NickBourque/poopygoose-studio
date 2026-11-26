@@ -446,6 +446,19 @@ Poopy Goose) are the template for the game's look.
   Toot; honked: "Contents may cause / altitude." and "Bill has asked us to / apologise in advance."), and "MIND THE
   GAP." by the golden loaf (honked: "Further than it looks. / Ask your tail.").
 
+- **The Picnic Park's wind (game):** GAME.md section 21. Wind shows on what it blows, never as lines in the air. A
+  **windsock** (orange and white bands on a white pole, 2.5 m) and **streamers** (an orange and a sage ribbon on a
+  wooden stake) hang limp in the calm, lift as a gust is told (0.75 s ahead) and stand out, fluttering, while it blows;
+  behind something that shelters them they stay limp. A **sapling** is a skinny young tree (a bark-brown trunk,
+  `#8C5E3F`, in two jointed pieces with no sticker border, so it bends rather than tips, and a leafy sage crown with
+  deeper green patches and leaf ticks) on a wooden stake with a black rubber tie: it bends right over downwind in a
+  gust and whips back up with a wobble. A striped **deckchair** (its canvas striped along its length, orange and white,
+  on a wooden frame) folds flat with the paper flip. **Newspaper** is newsprint (`#EFEADD`) with grey columns and a
+  masthead in Baloo 2, "GEESE FLY SOUTH"; on a bird's face it's a crumpled ball with a corner flapping, and it comes off
+  in a tumble. A municipal green **park bin** spills it. A **kite** is six-sided and flat along its top (orange with a sunny panel, its spars in ink, three sage
+  bows on its tail), on a thin ink string pegged in the ground. A wicker **hamper** with gingham under its lid, and a
+  round **barbecue** with three wobbles of heat in `orangeLight` rising off it (its warm air lifts a glide). Drawn by
+  the game repo's `Tools/ArtExport/props.html`; for now only in the sandbox.
 - **The map (game):** GAME.md section 20: each world is a **paper board game** lying flat, seen from 40° down (the one
   place the camera isn't at 18°), on thick card like a level's banks. The Pond's is 26 x 14 m: a `paper` margin, an ink
   frame with round corners, sage printed with paler mown patches and tufts, and the pond **seen from above** (a
@@ -611,6 +624,11 @@ These rules are fixed. Changing them needs the creator's sign-off.
   the empty can over his shoulder, spinning, and it clatters down and pops away. **Every food
   gets its own bite:** he's never drawn holding bread while eating something else.
   Gaping he stretches up, biting he squashes. With nothing in reach he snaps at the air.
+- **A page in the face (game):** GAME.md section 21. A newspaper page blown into his face wraps round his head, a
+  crumpled ball of newsprint with a corner flapping, and he stands stopped under it, turned, struggling (swaying) for
+  0.55s. Then he **raises his near wing to his cheek** to grab it and flings it back over his shoulder with the wing
+  up behind him (his flap's frame), 0.3s in all, and it tumbles away on the wind. Bill grabs his with his fist (his
+  cough's frame) and flings his arm up.
 - **Flap:** the near wing lifts from the shoulder (about 26°) with little hops, for 0.9s. In the game
   it's a full wingbeat, five a second: up (about 51°), middle, down (about 18° below, with the body
   pushed up a little), middle. A jump gets one beat, the mid-air flap three, and holding on after the
