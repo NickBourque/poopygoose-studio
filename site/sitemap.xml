@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Every page on the site. Add each new diary, and bump a page's lastmod when its words change
+     (README.md, "Search and AI"). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://poopygoose.studio/</loc>
+    <lastmod>2026-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://poopygoose.studio/devlog/</loc>
+    <lastmod>2026-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://poopygoose.studio/devlog/two-birds-one-backpack/</loc>
+    <lastmod>2026-11-26</lastmod>
+  </url>
+</urlset>

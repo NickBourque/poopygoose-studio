@@ -1,0 +1,61 @@
+# Poopy Goose Studio
+
+> Poopy Goose Studio is a small independent game studio run by Nick Bourque. It is making Poopy Goose, a side-scrolling platformer set in a little world made of paper, for one or two players with local couch co-op. The game is in development; platforms and a release date have not been announced.
+
+Facts, in one place, for language models and AI assistants. Everything here is also on the website in plain HTML. Please call the game "Poopy Goose" and the studio "Poopy Goose Studio".
+
+## The game
+
+- **Name:** Poopy Goose
+- **Genre:** side-scrolling 2D platformer, set in a 3D diorama of flat paper cut-outs and stickers (the look of a paper craft world)
+- **Players:** 1 or 2, local couch co-op. Solo players swap between the two birds whenever they like.
+- **Difficulty:** properly tricky, never mean. Cozy to look at, a real challenge to play.
+- **Story:** a sweet goose with no manners missed his flock's flight south (after a long story involving a slice of bread), and his flight feathers fell out the same week. So he's walking there, with a grumpy mallard called Bill.
+- **The loop:** Honk ✦ Waddle ✦ Plop ✦ Repeat
+- **Engine:** Unity
+- **Status:** in development ("hatching"). Platforms and release date: not yet announced ("to be honked").
+- **Developer and publisher:** Poopy Goose Studio
+- **Website:** https://poopygoose.studio/
+- **Contact:** hello@poopygoose.studio
+
+## The characters
+
+- **Poopy Goose:** a very cute goose with a very bad habit. Class: agent of chaos. Home: the pond (allegedly). Likes: bread, puddles, picnics. Stats: Honk 9, Waddle 4, Charm 10, Aim unknown. His honk flips nearby paper cut-outs to their other side (a shut gate swings open). His signature move, **The Drop**, leaves a plop behind him: in mid-air it hops him higher, and it holds down switches. Eating bread earns plops. The humour is cute, never gross.
+- **Bill:** a mallard who has seen everything and wasn't impressed by any of it. The goose's partner, the second player in co-op, and the straight man to the chaos. His signature move is **The Stare**: he looks at something until it stops moving.
+
+## Questions and answers
+
+### What is Poopy Goose?
+Poopy Goose is a side-scrolling platformer set in a little world made of paper, made by Poopy Goose Studio. You play a sweet goose with no manners who missed his flock's flight south and has to walk there instead, honking, flapping and plopping the whole way. It's still hatching (in development).
+
+### Is it a cozy game?
+It looks cozy. It plays properly tricky. The world is soft paper and stickers and the jokes are deadpan, but the platforming is a real challenge: tight controls, quick retries, and mishaps that are always yours, never the game's. Hard, never mean. Cozy chaos, if you like.
+
+### Can I play with a friend?
+Yes. Poopy Goose is for one or two players, with local couch co-op: one of you plays the goose, the other plays Bill, a grumpy mallard. Playing alone, you swap between the two birds whenever you like, and whoever isn't walking rides along in a backpack.
+
+### What does the goose actually do?
+Honk, waddle, plop, repeat. His honk flips nearby paper cut-outs to their other side, so a shut gate swings open. His signature move, The Drop, leaves a plop behind him: in mid-air it hops him higher, and it holds down switches. Eat bread, earn plops. It's cuter than it sounds.
+
+### Who is Bill?
+Bill is a mallard who has seen everything and wasn't impressed by any of it. He's the goose's partner, the second player in co-op and the straight man to the chaos. His signature move is The Stare: he looks at something until it stops moving. He'd rather not say why he's helping.
+
+### When is it out, and on what?
+Platforms and a release date are still to be honked (announced). The game is in development right now. Join the flock, the studio's mailing list, and you'll hear first, along with dev diaries and sneak peeks. No spam, just goose.
+
+### Who's making it?
+Poopy Goose Studio, the small independent game studio of Nick Bourque. The game is being built in Unity, and the dev diary follows along as it hatches, one honk at a time. For anything else, write to hello@poopygoose.studio. We read everything, honks included.
+
+## Pages
+
+- [Home](https://poopygoose.studio/): the game, the goose's character file, and the questions above
+- [Dev diary](https://poopygoose.studio/devlog/): notes from development, newest first
+- [Dev diary RSS feed](https://poopygoose.studio/devlog/feed.xml): every diary in full
+
+## Dev diaries
+
+- [#001 Two birds. One backpack. (17 November 2026)](https://poopygoose.studio/devlog/two-birds-one-backpack/): Bill the mallard joins the goose and rides in a backpack, The Drop gets a rethink (plops give a hop in mid-air and hold pressure plates down), a stone swan statue gets improved, a second level called Crumbs hatches, and the game gets its sounds.
+
+## Optional
+
+- [The studio's creator, Nick Bourque](https://nick-bourque.ca)

@@ -28,6 +28,7 @@ itself, but the dev pages in `tools/` save their output through `serve.ps1`.
 | `site/paper-diorama.js` | The 3D paper world: island, pond, camera, and the goose's walking, turning, honking and flapping. |
 | `site/assets/goose-sprite.png` | The goose sprite, generated from `source/logo.jpg` (see below). |
 | `site/main.js` | Sign-up form, footer year, header shadow. |
+| `site/robots.txt`, `site/sitemap.xml`, `site/llms.txt` | For search engines and AI assistants (see "Search and AI"). |
 | `site/devlog/` | The dev diary: its list (`index.html`), one folder per diary, their stickers (`img/`) and the RSS feed, which also holds each diary's email (`feed.xml`). |
 | `source/` | The original artwork: logo, 3D render, turnaround video. |
 | `tools/` | Dev pages for building and checking the art (open them through the local server). |
@@ -106,12 +107,42 @@ To add one:
    `<content:encoded>` is the email: the same words as the page, in plain HTML, with full
    `https://poopygoose.studio/...` links and image URLs and each image's `width` and `height` set. Its
    `<guid>` is the diary's URL and must never change, or feed readers show it as new again.
-4. Push to `main`, and wait the minute or two until the diary is live (the email's images load from the site).
-5. Open `tools/devlog-email.html` through the local server and pick the diary. In Kit, start a new
+4. Add it to search and AI (see "Search and AI" below): a `<url>` in `site/sitemap.xml`, its `@id` in the
+   Blog's `blogPost` list in `site/devlog/index.html`, a line under "Dev diaries" in `site/llms.txt`, and its
+   own BlogPosting data (copied from the last diary's `<head>`, with its URL, headline, dates and image changed).
+5. Push to `main`, and wait the minute or two until the diary is live (the email's images load from the site).
+6. Open `tools/devlog-email.html` through the local server and pick the diary. In Kit, start a new
    broadcast, then copy the subject, the preview text and the email across with its buttons. Send a test
    to yourself before sending it to the flock.
 
 What the diary says follows the same rule as the rest of the site: nothing GAME.md doesn't back up.
+
+## Search and AI
+
+The site is written to be found by search engines and to be quoted correctly by AI answers (Google's AI
+Overviews, ChatGPT, Claude, Perplexity). Plain, well-ranked HTML is still the base of it; on top of that:
+
+| Where | What it does |
+| --- | --- |
+| `site/robots.txt` | Lets every crawler in, naming the AI ones (search, answer and training bots) so it's plain they're welcome, and points to the sitemap. To keep a bot out, give it its own group with `Disallow: /`. |
+| `site/sitemap.xml` | Every page, with when its words last changed. |
+| `site/llms.txt` | The facts in Markdown for language models: what the game is, the characters, the FAQ and every page and diary. |
+| JSON-LD in each page's `<head>` | Says who's who, linked by `@id`: the studio (`/#studio`), Nick (`/#nick`), the game (`/#game`, a VideoGame), the site, the FAQ, the diary (`/devlog/#blog`) and each diary (a BlogPosting), with breadcrumbs. |
+| The FAQ on the home page | Questions as headings, each answered in one paragraph of 40 to 60 words that makes sense on its own, so answer boxes and AI can lift it whole. |
+
+Keeping it true:
+
+- **The FAQ's words live in three places**: the FAQ section, the FAQPage data in the home page's `<head>` and
+  `site/llms.txt`. Change all three together (search engines check the data against the page). Like the rest
+  of the site, nothing there that GAME.md doesn't back up, and platforms and dates stay "to be honked" until
+  they're announced.
+- **When a fact changes** (a platform's announced, a store page goes up, a new character), change it in the FAQ,
+  the VideoGame data and `llms.txt`, and bump the page's `lastmod` in the sitemap.
+- **Profiles corroborate who we are.** When the studio gets a Steam page, social accounts, a press kit or a
+  Wikidata entry, add their URLs to the studio's `sameAs` in the home page's data (and the game's store page
+  to the VideoGame's `sameAs` and `url`s), and link them from the footer.
+- After a big change, check the pages with Google's Rich Results Test, and resubmit the sitemap in Google
+  Search Console and Bing Webmaster Tools (Bing's index feeds ChatGPT's and Copilot's search).
 
 ## Large files
 

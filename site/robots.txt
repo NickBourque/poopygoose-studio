@@ -1,0 +1,34 @@
+# poopygoose.studio: everyone's welcome to waddle about, search engines and AI assistants alike.
+# The AI crawlers are named so it's plain they're allowed (README.md, "Search and AI").
+# A summary for language models is at /llms.txt.
+
+User-agent: *
+Allow: /
+
+# Search and answer engines
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Applebot
+Allow: /
+
+# AI assistants: live search and fetching for answers
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: DuckAssistBot
+Allow: /
+
+# AI model training
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: meta-externalagent
+Allow: /
+
+Sitemap: https://poopygoose.studio/sitemap.xml

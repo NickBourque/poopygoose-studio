@@ -5,23 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Two birds. One backpack. · Poopy Goose dev diary</title>
   <meta name="description" content="Dev diary #001: Bill the duck joins the goose, The Drop gets a rethink, a stone swan gets improved, and a second level hatches.">
+  <meta name="author" content="Nick Bourque">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <meta name="theme-color" content="#F6F1E7">
   <link rel="canonical" href="https://poopygoose.studio/devlog/two-birds-one-backpack/">
 
   <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Poopy Goose Studio">
   <meta property="og:url" content="https://poopygoose.studio/devlog/two-birds-one-backpack/">
   <meta property="og:title" content="Two birds. One backpack.">
   <meta property="og:description" content="Dev diary #001: Bill joins, The Drop gets a rethink, and a second level hatches.">
   <meta property="og:image" content="https://poopygoose.studio/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Poopy Goose Studio logo beside the paper goose shouting HONK! on a patch of grass.">
   <meta property="article:published_time" content="2026-11-17">
+  <meta property="article:section" content="Dev diary">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Two birds. One backpack.">
+  <meta name="twitter:description" content="Dev diary #001: Bill joins, The Drop gets a rethink, and a second level hatches.">
 
   <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="../../favicon-64.png">
   <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Poopy Goose dev diary" href="https://poopygoose.studio/devlog/feed.xml">
+
+  <!-- For search engines and AI assistants (README.md, "Search and AI"). A new diary copies this and changes
+       its URL, headline, description, dates and image. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": "https://poopygoose.studio/devlog/two-birds-one-backpack/#post",
+        "url": "https://poopygoose.studio/devlog/two-birds-one-backpack/",
+        "mainEntityOfPage": "https://poopygoose.studio/devlog/two-birds-one-backpack/",
+        "headline": "Two birds. One backpack.",
+        "alternativeHeadline": "Poopy Goose dev diary #001",
+        "description": "Dev diary #001: Bill the duck joins the goose, The Drop gets a rethink, a stone swan gets improved, and a second level hatches.",
+        "datePublished": "2026-11-17",
+        "dateModified": "2026-11-17",
+        "inLanguage": "en",
+        "image": ["https://poopygoose.studio/devlog/img/backpack-goose.png", "https://poopygoose.studio/og-image.jpg"],
+        "author": { "@id": "https://poopygoose.studio/#nick" },
+        "publisher": { "@id": "https://poopygoose.studio/#studio" },
+        "isPartOf": { "@id": "https://poopygoose.studio/devlog/#blog" },
+        "about": { "@id": "https://poopygoose.studio/#game" },
+        "mentions": [
+          { "@type": "Person", "name": "Bill", "description": "A grumpy mallard in Poopy Goose, the goose's partner and the second player in co-op." }
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://poopygoose.studio/#nick",
+        "name": "Nick Bourque",
+        "url": "https://nick-bourque.ca",
+        "sameAs": ["https://nick-bourque.ca", "https://github.com/NickBourque"]
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://poopygoose.studio/#studio",
+        "name": "Poopy Goose Studio",
+        "url": "https://poopygoose.studio/",
+        "logo": { "@type": "ImageObject", "url": "https://poopygoose.studio/assets/logo-1000.png", "width": 1000, "height": 944 }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Poopy Goose Studio", "item": "https://poopygoose.studio/" },
+          { "@type": "ListItem", "position": 2, "name": "Dev diary", "item": "https://poopygoose.studio/devlog/" },
+          { "@type": "ListItem", "position": 3, "name": "Two birds. One backpack.", "item": "https://poopygoose.studio/devlog/two-birds-one-backpack/" }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +105,7 @@
 
   <main id="main">
     <header class="devlog-head">
-      <p class="post-meta"><span class="eyebrow">Dev diary #001</span> · <time datetime="2026-11-17">17 November 2026</time></p>
+      <p class="post-meta"><span class="eyebrow">Dev diary #001</span> · <time datetime="2026-11-17">17 November 2026</time> · By <a href="https://nick-bourque.ca" rel="author">Nick Bourque</a></p>
       <h1>Two birds.<br>One <span class="squiggle">backpack.</span></h1>
       <p class="lede">Three weeks in the nest, in one short read. Bill joined the goose, The Drop got a lot more useful, and there's a second level to waddle through.</p>
     </header>

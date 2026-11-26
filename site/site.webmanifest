@@ -1,6 +1,9 @@
 {
   "name": "Poopy Goose Studio",
   "short_name": "Poopy Goose",
+  "description": "Poopy Goose: a side-scrolling platformer in a little world made of paper. One goose. Zero manners.",
+  "lang": "en",
+  "start_url": "/",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }

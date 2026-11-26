@@ -3,25 +3,102 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Poopy Goose Studio</title>
-  <meta name="description" content="Poopy Goose is a cozy-chaos video game about a very cute paper goose with a very bad habit. Now hatching at Poopy Goose Studio.">
+  <title>Poopy Goose: a paper platformer with zero manners · Poopy Goose Studio</title>
+  <meta name="description" content="Poopy Goose is a side-scrolling platformer in a little world made of paper: a very cute goose with a very bad habit, for one or two players on the couch. Now hatching at Poopy Goose Studio.">
+  <meta name="author" content="Poopy Goose Studio">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <meta name="theme-color" content="#F6F1E7">
   <link rel="canonical" href="https://poopygoose.studio/">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Poopy Goose Studio">
   <meta property="og:url" content="https://poopygoose.studio/">
   <meta property="og:title" content="Poopy Goose Studio">
-  <meta property="og:description" content="One goose. Zero manners. A cozy-chaos game, now hatching.">
+  <meta property="og:description" content="One goose. Zero manners. A side-scrolling platformer in a world made of paper, now hatching.">
   <meta property="og:image" content="https://poopygoose.studio/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Poopy Goose Studio logo beside the paper goose shouting HONK! on a patch of grass.">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Poopy Goose Studio">
+  <meta name="twitter:description" content="One goose. Zero manners. A side-scrolling platformer in a world made of paper, now hatching.">
 
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="alternate" type="application/rss+xml" title="Poopy Goose dev diary" href="https://poopygoose.studio/devlog/feed.xml">
+  <link rel="alternate" type="text/markdown" title="Poopy Goose, for language models" href="https://poopygoose.studio/llms.txt">
+
+  <!-- Who and what this site is about, for search engines and AI assistants (README.md, "Search and AI").
+       The FAQPage answers are the FAQ section's words, word for word: change them together. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://poopygoose.studio/#studio",
+        "name": "Poopy Goose Studio",
+        "url": "https://poopygoose.studio/",
+        "logo": { "@type": "ImageObject", "url": "https://poopygoose.studio/assets/logo-1000.png", "width": 1000, "height": 944 },
+        "image": "https://poopygoose.studio/og-image.jpg",
+        "email": "hello@poopygoose.studio",
+        "description": "A small independent game studio making Poopy Goose, a side-scrolling platformer set in a world made of paper.",
+        "founder": { "@id": "https://poopygoose.studio/#nick" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://poopygoose.studio/#nick",
+        "name": "Nick Bourque",
+        "url": "https://nick-bourque.ca",
+        "sameAs": ["https://nick-bourque.ca", "https://github.com/NickBourque"],
+        "worksFor": { "@id": "https://poopygoose.studio/#studio" }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://poopygoose.studio/#website",
+        "url": "https://poopygoose.studio/",
+        "name": "Poopy Goose Studio",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://poopygoose.studio/#studio" }
+      },
+      {
+        "@type": "VideoGame",
+        "@id": "https://poopygoose.studio/#game",
+        "name": "Poopy Goose",
+        "url": "https://poopygoose.studio/",
+        "description": "A side-scrolling platformer set in a little world made of paper. A sweet goose with no manners missed his flock's flight south and has to walk there, honking, flapping and plopping the whole way, with Bill, a grumpy mallard. Properly tricky, never mean. One or two players, with local couch co-op.",
+        "genre": ["Platformer", "Side-scroller"],
+        "playMode": ["SinglePlayer", "CoOp"],
+        "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2 },
+        "image": "https://poopygoose.studio/og-image.jpg",
+        "inLanguage": "en",
+        "author": { "@id": "https://poopygoose.studio/#studio" },
+        "publisher": { "@id": "https://poopygoose.studio/#studio" },
+        "character": [
+          { "@type": "Person", "name": "Poopy Goose", "description": "A very cute goose with a very bad habit. Agent of chaos. Signature move: The Drop." },
+          { "@type": "Person", "name": "Bill", "description": "A grumpy mallard: the goose's partner, the second player in co-op. Signature move: The Stare." }
+        ],
+        "subjectOf": { "@id": "https://poopygoose.studio/devlog/#blog" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://poopygoose.studio/#faq",
+        "about": { "@id": "https://poopygoose.studio/#game" },
+        "mainEntity": [
+          { "@type": "Question", "name": "What is Poopy Goose?", "acceptedAnswer": { "@type": "Answer", "text": "Poopy Goose is a side-scrolling platformer set in a little world made of paper, made by Poopy Goose Studio. You play a sweet goose with no manners who missed his flock's flight south and has to walk there instead, honking, flapping and plopping the whole way. It's still hatching (in development)." } },
+          { "@type": "Question", "name": "Is it a cozy game?", "acceptedAnswer": { "@type": "Answer", "text": "It looks cozy. It plays properly tricky. The world is soft paper and stickers and the jokes are deadpan, but the platforming is a real challenge: tight controls, quick retries, and mishaps that are always yours, never the game's. Hard, never mean. Cozy chaos, if you like." } },
+          { "@type": "Question", "name": "Can I play with a friend?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Poopy Goose is for one or two players, with local couch co-op: one of you plays the goose, the other plays Bill, a grumpy mallard. Playing alone, you swap between the two birds whenever you like, and whoever isn't walking rides along in a backpack." } },
+          { "@type": "Question", "name": "What does the goose actually do?", "acceptedAnswer": { "@type": "Answer", "text": "Honk, waddle, plop, repeat. His honk flips nearby paper cut-outs to their other side, so a shut gate swings open. His signature move, The Drop, leaves a plop behind him: in mid-air it hops him higher, and it holds down switches. Eat bread, earn plops. It's cuter than it sounds." } },
+          { "@type": "Question", "name": "Who is Bill?", "acceptedAnswer": { "@type": "Answer", "text": "Bill is a mallard who has seen everything and wasn't impressed by any of it. He's the goose's partner, the second player in co-op and the straight man to the chaos. His signature move is The Stare: he looks at something until it stops moving. He'd rather not say why he's helping." } },
+          { "@type": "Question", "name": "When is it out, and on what?", "acceptedAnswer": { "@type": "Answer", "text": "Platforms and a release date are still to be honked (announced). The game is in development right now. Join the flock, the studio's mailing list, and you'll hear first, along with dev diaries and sneak peeks. No spam, just goose." } },
+          { "@type": "Question", "name": "Who's making it?", "acceptedAnswer": { "@type": "Answer", "text": "Poopy Goose Studio, the small independent game studio of Nick Bourque. The game is being built in Unity, and the dev diary follows along as it hatches, one honk at a time. For anything else, write to hello@poopygoose.studio. We read everything, honks included." } }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +133,7 @@
       <div class="hero-copy">
         <p class="pill"><span class="dot" aria-hidden="true"></span> A game in the nest</p>
         <h1>One goose.<br>Zero <span class="squiggle">manners.</span></h1>
-        <p class="lede">Poopy Goose is a cozy-chaos game about a very cute goose with a very bad habit, waddling through a little world made of paper. We're hatching it right now. Come waddle along.</p>
+        <p class="lede">Poopy Goose is a cozy-chaos platformer about a very cute goose with a very bad habit, waddling through a little world made of paper. We're hatching it right now. Come waddle along.</p>
         <div class="cta-row">
           <a class="btn" href="#flock">Join the flock</a>
           <a class="btn btn-ghost" href="#goose">Meet the goose</a>
@@ -155,6 +232,46 @@
       <p class="tba">Platforms and release date: <strong>to be honked</strong> (announced) soon.</p>
     </section>
 
+    <!-- FAQ: each answer is one short paragraph (40 to 60 words) that makes sense on its own, under its
+         question, so search and AI answers can quote it whole. The same words are in the FAQPage data in
+         <head> and in llms.txt: change all three together. -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <header class="section-head">
+        <p class="eyebrow">Good questions</p>
+        <h2 id="faq-title">You asked.<br>We <span class="squiggle">honked.</span></h2>
+      </header>
+      <div class="faq-list">
+        <article class="faq-item">
+          <h3>What is Poopy Goose?</h3>
+          <p>Poopy Goose is a side-scrolling platformer set in a little world made of paper, made by Poopy Goose Studio. You play a sweet goose with no manners who missed his flock's flight south and has to walk there instead, honking, flapping and plopping the whole way. It's still hatching (in development).</p>
+        </article>
+        <article class="faq-item">
+          <h3>Is it a cozy game?</h3>
+          <p>It looks cozy. It plays properly tricky. The world is soft paper and stickers and the jokes are deadpan, but the platforming is a real challenge: tight controls, quick retries, and mishaps that are always yours, never the game's. Hard, never mean. Cozy chaos, if you like.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Can I play with a friend?</h3>
+          <p>Yes. Poopy Goose is for one or two players, with local couch co-op: one of you plays the goose, the other plays Bill, a grumpy mallard. Playing alone, you swap between the two birds whenever you like, and whoever isn't walking rides along in a backpack.</p>
+        </article>
+        <article class="faq-item">
+          <h3>What does the goose actually do?</h3>
+          <p>Honk, waddle, plop, repeat. His honk flips nearby paper cut-outs to their other side, so a shut gate swings open. His signature move, The Drop, leaves a plop behind him: in mid-air it hops him higher, and it holds down switches. Eat bread, earn plops. It's cuter than it sounds.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Who is Bill?</h3>
+          <p>Bill is a mallard who has seen everything and wasn't impressed by any of it. He's the goose's partner, the second player in co-op and the straight man to the chaos. His signature move is The Stare: he looks at something until it stops moving. He'd rather not say why he's helping.</p>
+        </article>
+        <article class="faq-item">
+          <h3>When is it out, and on what?</h3>
+          <p>Platforms and a release date are still to be honked (announced). The game is in development right now. <a href="#flock">Join the flock</a>, the studio's mailing list, and you'll hear first, along with dev diaries and sneak peeks. No spam, just goose.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Who's making it?</h3>
+          <p>Poopy Goose Studio, the small independent game studio of Nick Bourque. The game is being built in Unity, and the <a href="devlog/">dev diary</a> follows along as it hatches, one honk at a time. For anything else, write to <a href="mailto:hello@poopygoose.studio">hello@poopygoose.studio</a>. We read everything, honks included.</p>
+        </article>
+      </div>
+    </section>
+
     <!-- SIGN UP -->
     <section class="flock" id="flock">
       <div class="flock-inner">
@@ -180,7 +297,7 @@
     <svg class="wave" viewBox="0 0 1600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22Q50 4 100 22T200 22T300 22T400 22T500 22T600 22T700 22T800 22T900 22T1000 22T1100 22T1200 22T1300 22T1400 22T1500 22T1600 22V40H0z"/></svg>
     <div class="footer-inner">
       <img src="assets/goose-head-sticker.png" alt="" width="56" height="56">
-      <p>© <span id="year">2026</span> Poopy Goose Studio · <a href="mailto:hello@poopygoose.studio">hello@poopygoose.studio</a> · <a href="devlog/">Dev diary</a></p>
+      <p>© <span id="year">2026</span> Poopy Goose Studio · <a href="mailto:hello@poopygoose.studio">hello@poopygoose.studio</a> · <a href="devlog/">Dev diary</a> · <a href="#faq">FAQ</a></p>
       <p class="tiny">Made by <a href="https://nick-bourque.ca" rel="author">Nick Bourque</a> with bread crumbs and questionable decisions.</p>
     </div>
   </footer>
