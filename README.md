@@ -55,7 +55,7 @@ change here reaches the game the next time its art is exported.
 | Lives here (the game reads it) | Lives in the game (documented here) |
 | --- | --- |
 | `DESIGN.md`: how everything looks, moves and sounds, the site and the game | `GAME.md`: how the game plays (moves, rules, numbers, story) |
-| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle; the plop and the bread (breadcrumbs, the story's slice, Bill's blueberry scone, the golden loaf and its glints) and the cloud, which its props use; and the scenery (trees, bush, reeds, flowers, sun), which The Pond exports as it is | The other props' drawings (`Tools/ArtExport/props.html`), The Pond's own scenery and the heron (`scenery.html`), the results card, the plop HUD and the button glyphs |
+| `site/paper-art.js`: the ink, the palettes, the sticker border, the goose's legs, wing and walk cycle; the plop and the bread (breadcrumbs, the story's slice, Bill's blueberry scone, the golden loaf and its glints) and the cloud, which its props use; and the scenery (trees, bush, reeds, flowers, sun), which The Pond exports as it is | The other props' drawings (`Tools/ArtExport/props.html`), The Pond's own scenery and the heron (`scenery.html`), giving up's crumple, Phil D. Bin and his bin (`giving-up.html`), the results card, the plop HUD and the button glyphs |
 | `source/goose/`, `source/bill/`: both characters' vector art and rigs | The exported sheets in `Assets/Art/`, and everything Unity |
 
 Keeping them in step:

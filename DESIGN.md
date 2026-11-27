@@ -479,6 +479,23 @@ Poopy Goose) are the template for the game's look.
   bows on its tail), on a thin ink string pegged in the ground. A wicker **hamper** with gingham under its lid, and a
   round **barbecue** with three wobbles of heat in `orangeLight` rising off it (its warm air lifts a glide). Drawn by
   the game repo's `Tools/ArtExport/props.html`; for now only in the sandbox.
+- **Giving up (game):** GAME.md section 5. Holding give up (about a second), a bird **scrunches himself into a ball of
+  paper**, eyes squeezed shut, in three steps: a third of the way (his own drawing pulled in towards the ball,
+  twisting a little, crinkled and creased), two thirds (mostly wrapped up in the ball already, only his head and feet
+  poking out) and the ball, each with a squash (8%, 0.18 s); letting go smooths him back out 2.5 times as fast. The
+  **ball** is **just a ball of crumpled paper** (Nick): lumpy, about 0.7 m across, whites and pale greys broken into
+  facets, a couple of small facets in his colours, creases (thin `inkSoft` lines with a white highlight beside each),
+  his ink outline round it, and nothing of him poking out. Climbing out of the bin he's still
+  **creased**: crease lines over him, only where he's drawn, fading over 1.8 s. **The bin** at the flag is a park
+  litter bin in `sageDeep` slats under a navy rim, open at the top (seen a little from above, dark inside), a `sunny`
+  plate on its front (a ball of paper and an arrow down), 1.06 m to its rim; it **pops up** out of the ground like a
+  pop-up page, swinging up from lying flat with an overshoot (0.38 s), and rocks as the ball lands in it. Once Phil's
+  gone, the bird **peeks out of it**, mischievously: just his eyes over the rim (0.55 s), his head up (0.35 s), a look
+  to our left and to our right (0.45 s each; the goose's 3/4 head, Bill's eyes darting), up again (0.25 s), then he
+  springs up out of the top, from the rim (never drawn down inside it, where he'd show past its sides), 1 m up
+  and down to the flag in 0.55 s. In co-op the bin pops up near the bird still playing and he rises up out of it in his
+  bubble instead. The bin folds back down flat (0.3 s) once he's out. Drawn by the game repo's
+  `Tools/ArtExport/giving-up.html`; Phil D. Bin, who does the binning, is in section 8.
 - **The map (game):** GAME.md section 20: each world is a **paper board game** lying flat, seen from 40° down (the one
   place the camera isn't at 18°), on thick card like a level's banks. The Pond's is 26 x 14 m: a `paper` margin, an ink
   frame with round corners, sage printed with paler mown patches and tufts, and the pond **seen from above** (a
@@ -787,6 +804,41 @@ every bit of it, the goose most of all. These rules are fixed; changing them nee
 | Home | The pond (he was here first) |
 | Likes | Quiet. Order. Not being honked at |
 | Signature move | The Stare |
+
+### Phil D. Bin (character rules)
+
+The park worker who bins a bird that gives up (GAME.md section 5: crumple and bin), and the game's first person seen
+up close. The same Phil turns up in every world, which is the joke. Drawn by the game repo's
+`Tools/ArtExport/giving-up.html`, at the props' 300 px a metre.
+
+- **Look:** big, round and unhurried, about 2.5 m tall in the game (a goose comes up to his hip). A hi-vis vest in
+  the goose's `orange` with two `cream` reflective stripes, open at the neck on a navy (`#26394E`) shirt; a navy cap
+  with its peak out over his eyes and a `sunny` badge; olive work trousers (`#6B7A5A`), brown boots (`#7A5040`). A
+  big round face (`#F0C29A`, nose and ear `#E3A27E`), a bushy brown moustache (`#7A5040`), a pink cheek, and
+  **heavy lids**: he's seen it all. A pencil stub in his vest pocket.
+- **Two ways round.** **Leaning in** (for the ball): his upper body from the waist, **face on** to us, a white
+  **name tag** on his chest, his full name "Phil D. Bin" in navy Baloo 2; his reaching arm is left off the drawing (one frame reaching on
+  our right, one on our left), the other hanging at his side. **Standing** (at the flag): side on, turned towards the
+  way he walks (right; the game flips him with the paper flip). Either way his reaching arm is a piece of its own,
+  held straight out from his shoulder with his fist round the picker's `sunny` grip, so the game can turn it about
+  his shoulder to aim.
+- **The litter picker:** a silver shaft (`#C9D1D6`, its underside `#A7B2B9`) with orange rubber tips on its jaws. Its
+  shaft is a piece cut square at both ends, stretched as it **telescopes**, up to 6 m.
+- **Motion:** leaning in, he slides in from the side of the screen nearer the ball (0.4 s, overshooting a little),
+  6.5 m in front of the camera with his waist at the screen's edge low down, **tipped in 24°**, so he's big and close;
+  the picker reaches into the scene along the camera's line of sight to the ball (0.4 s), so on screen its jaws close
+  on it, snaps shut, draws back (0.4 s), and he slides back out with the ball (0.35 s, easing out). At the flag he's
+  already standing there at the cut (in co-op, by a bin near the bird still playing, he pops up like any cut-out); tossing, his arm swings up in 0.22 s and the ball flies in a spinning arc for
+  0.55 s; then he turns his back and, after a beat (0.25 s), shrinks away where he stands like a
+  cut-out leaving: he never walks, so never through the level. Standing, he blinks every 1.6-3.5 s.
+- **Voice:** none. He just does his job.
+
+| | |
+| --- | --- |
+| Name | Phil D. Bin |
+| Job | Keeping the park tidy. Birds included |
+| Likes | A clean path. A good throw |
+| Signature move | The toss |
 
 ---
 
