@@ -446,7 +446,25 @@ Poopy Goose) are the template for the game's look.
   Toot; honked: "Contents may cause / altitude." and "Bill has asked us to / apologise in advance."), and "MIND THE
   GAP." by the golden loaf (honked: "Further than it looks. / Ask your tail.").
 
-- **The Picnic Park's wind (game):** GAME.md section 21. Wind shows on what it blows, never as lines in the air. A
+- **Midday (game):** The Picnic Park (GAME.md sections 21 and 22). The backdrop paper is a **pale clean sky blue**
+  (`#DCEBEE`), the sun **small and high** (the morning's sun at 0.7 the size, hung near the top of the view), the sky's
+  clouds the morning's white, and the cut-outs exactly as drawn, with no wash: the crispest light in the game.
+- **The Picnic Park's things (game):** GAME.md section 22. **Rose beds** are the park's brambles: a clipped box edging
+  (`#7FA06F`) in front of rose bushes (`sageDeep`) with red (`#E2564B`), pink (`#F29BB0`) and orange roses, each a
+  spiral of petals, and thorny stems poking up. **The park keeper's signs** are green enamel (`#3F6B4C`) on a grey
+  metal post (`#7B868E`), white lettering in Baloo 2, a thin white line round the edge with a rivet in each corner;
+  their backs have a paper label stuck on with his reply in navy Nunito, as if in marker. **Bollards** are black with a white band; **stone planters** (`STONE`, a paler rim) are 1.1 m
+  wide with a box of pansies on top (lilac, white and sunny). **A picnic hamper** opens with the paper flip when honked:
+  its lid thrown back behind it, the gingham pulled out over the rim, a baguette, a can of beans and an apple poking out,
+  and its food arcs out of the top to land around it. **The
+  bandstand** is white iron: six columns, a railing round a stage on a lattice skirt (`#EDE3D0`, its lattice
+  `#B9A68F`), and a flat roof whose fascia is scalloped and striped green (`#5E8A63`) and white, a little green cupola
+  with a gilt finial on top. **Alderman Pickering** is a stone bust on the statues' plinth: bald on top, huge mutton-chop
+  whiskers, a high collar and cravat, frowning down his nose; improved, his eyes pop and his mouth falls into an O.
+- **The Picnic Park's wind (game):** GAME.md section 21. Wind shows on what it blows, and (Nick, 2026-11-27, so it's always plain when it's
+  blowing and which way) as **paper swooshes in the air**: a picture book's wind, cut out, each a long wavy line ending in
+  a curl, white with an ink outline and a sticker border, 2 m long. They stream across behind the birds' lane the way it
+  blows (9 m/s, popping in and shrinking away), up from a thermal; in a gust's tell a few small ones start. A
   **windsock** (orange and white bands on a white pole, 2.5 m) and **streamers** (an orange and a sage ribbon on a
   wooden stake) hang limp in the calm, lift as a gust is told (0.75 s ahead) and stand out, fluttering, while it blows;
   behind something that shelters them they stay limp. A **sapling** is a skinny young tree (a bark-brown trunk,
@@ -455,7 +473,9 @@ Poopy Goose) are the template for the game's look.
   gust and whips back up with a wobble. A striped **deckchair** (its canvas striped along its length, orange and white,
   on a wooden frame) folds flat with the paper flip. **Newspaper** is newsprint (`#EFEADD`) with grey columns and a
   masthead in Baloo 2, "GEESE FLY SOUTH"; on a bird's face it's a crumpled ball with a corner flapping, and it comes off
-  in a tumble. A municipal green **park bin** spills it. A **kite** is six-sided and flat along its top (orange with a sunny panel, its spars in ink, three sage
+  in a tumble. On a bird's face it's **shaped to his head**: his own silhouette above the neck (head and bill) in
+  newsprint, creased, a corner flapping off the back of his head. It comes from a street **newspaper box**: blue
+  (`#3D6A9E`) on a grey post, "NEWS" in white Baloo 2, today's front page in its window, its lid sprung with pages poking out. A **kite** is six-sided and flat along its top (orange with a sunny panel, its spars in ink, three sage
   bows on its tail), on a thin ink string pegged in the ground. A wicker **hamper** with gingham under its lid, and a
   round **barbecue** with three wobbles of heat in `orangeLight` rising off it (its warm air lifts a glide). Drawn by
   the game repo's `Tools/ArtExport/props.html`; for now only in the sandbox.
